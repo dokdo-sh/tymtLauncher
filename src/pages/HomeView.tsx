@@ -1,3 +1,4 @@
+import { type } from "@tauri-apps/api/os";
 import { useEffect, useState } from "react";
 import { BsInfoCircle } from "react-icons/bs";
 import { redirect, useNavigate } from "react-router-dom";
@@ -60,9 +61,11 @@ export const PlayButton = (props: {game: {key:string, data: Game}}) => {
 
 
 export const Home = () => {
+
     const dispatch = useAppDispatch();
     const navigate = useNavigate()
     const session : Session = useAppSelector(getSession);
+    const [platform, setPlatform] = useState("linux")
 
     async function gameAction(game: {key:string, data: Game}) {
         if (await TymtCore.Launcher.Library.isInstalled(game.key)) {
@@ -71,6 +74,21 @@ export const Home = () => {
             } else {
                 navigate(`/games/${game.key}`)
             }
+        }
+    }
+
+    async function getPlatform() {
+        let platform = await type();
+        switch (platform) {
+            case 'Linux':
+                setPlatform("linux")
+                break;
+            case 'Darwin':
+                setPlatform("macos")
+                break;
+            case 'Windows_NT':
+                setPlatform("windows")
+            break;
         }
     }
 
@@ -85,11 +103,11 @@ export const Home = () => {
                 <div className="text-3xl font-Orbitron">Available games</div>
                 <div className="grow"></div>
                 <div>
-                <input type="text" className='bg-white/10 rounded py-1 px-2 text-sm ease-in duration-200 ' placeholder='Search games'/>
+                {/* <input type="text"  className='bg-white/10 rounded py-1 px-2 text-sm ease-in duration-200 ' placeholder='Search games'/> */}
                 </div>
                 </div>
                 <div className="py-8 flex flex-row gap-4 flex-wrap">
-                    {Object.keys(Games).map((key) => {return {key:key, data: Games[key]}}).map((game) => (
+                    {Object.keys(Games).map((key) => { return {key:key, data: Games[key]}}).map((game) =>  {if (Games[game.key].executables[platform]) {return (
                                                 <div className=" cursor-pointer hover:scale-110 ease-in duration-150 w-[240px] h-[340px] " onClick={() => {gameAction(game)}} key={game.key}>
                                                 <img src={game.data.thumbnail} className="absolute  rounded drop-shadow-xl -z-10" alt="" />
                     
@@ -108,7 +126,7 @@ export const Home = () => {
                                                         </div>
                                                     </div>
                                             </div>
-                    ))}  
+                    )}})}  
                 </div>
             </div>
         </div>

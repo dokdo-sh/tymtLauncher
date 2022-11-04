@@ -19,6 +19,13 @@ export async function downloadFile(url:string, targetFile:string) {
     });
 }
 
+export async function downloadFileLinux(url:string, targetFile:string) {
+    return invoke('download_file', {
+        url: url,
+        target: targetFile
+    });
+}
+
 export async function downloadGame(game_key:string) {
     let platform = await type();
     let game = Games[game_key]
@@ -28,17 +35,17 @@ export async function downloadGame(game_key:string) {
                 dir: BaseDirectory.App,
                 recursive:true
             });
-            return downloadFile(game.executables.linux, `/games/${game_key}/${game_key}.AppImage`);
+            return downloadFileLinux(game.executables.linux.url, `/games/${game_key}/${game_key}.AppImage`);
 
         case 'Darwin':
             await createDir(`games/${game_key}`, {
                 dir: BaseDirectory.App,
                 recursive:true
             });
-            return downloadAndUnzip(game.executables.macos, `/games/${game_key}/${game_key}.app`);
+            return downloadAndUnzip(game.executables.macos.url, `/games/${game_key}/${game_key}.app`);
 
         case 'Windows_NT':
-            return downloadAndUnzip(game.executables.windows, `/games/${game_key}`);
+            return downloadAndUnzip(game.executables.windows.url, `/games/${game_key}`);
     }
     return false;
 }

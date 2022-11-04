@@ -35,8 +35,6 @@ root.render(
               <Route path="wallet/receive" element={<Receive />} />
               <Route path="wallet/send" element={<Send />} />
               <Route path="downloads" element={<Downloads />} />
-              <Route path="import" element={<Import />} />
-              <Route path="create" element={<Create />} />
               <Route path="session" element={<SessionView />} />
               <Route path="/" element={<Home />} />
               </Route>

@@ -18,7 +18,7 @@ export const Create = (props: {password:string}) => {
     return (
         <div className="mx-auto max-w-3xl py-safe">
                 <div className="py-4">
-                <a href="#" className="px-4 flex" onClick={() => navigate('/session')}> <MdArrowBack className="text-2xl"/> Go back to login</a>
+                <a href="#" className="px-4 flex" onClick={() => window.location.href = "/session"}> <MdArrowBack className="text-2xl"/> Go back to login</a>
       </div>
           <Wizard>
             <GenerateWallet setPassphrase={setPassphrase}/>
@@ -221,7 +221,7 @@ const WalletSetup = (props: { passphrase:string, password:string }) => {
                 <div className="grow">
                   <div className="font-bold text-xl">{blockchain.data.name}</div>
                   <div className="font-mono flex flex-row items-center text-center text-primary/70 font-bold  cursor-pointer">
-                  {addresses[blockchain.key]}
+                    {addresses[blockchain.key]}
                   </div>
                 </div>
               </div>

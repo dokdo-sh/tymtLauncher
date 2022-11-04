@@ -13,7 +13,16 @@ class Solar implements IWallet {
     static async getAddress(mnemonic:string) : Promise<string> {
         Managers.configManager.setFromPreset("mainnet")
         return Identities.Address.fromPassphrase(mnemonic);
-    }   
+    }
+    
+    static async getBalance(addr:string) : Promise<number> {       
+
+        try {
+            return ((await (await fetch(`https://sxp.mainnet.sh/api/wallets/${addr}`)).json()).data.balance as number) / 100000000;
+       } catch {
+           return 0;
+       }
+    }
 
 }
 export default Solar;

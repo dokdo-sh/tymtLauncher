@@ -64,7 +64,7 @@ export const Login = () => {
                     Enter your password to unencrypt your mnemonic.
                 </div>
 
-                <div className="mx-auto w-fit my-2"><input type="password" value={password} onChange={(e) => setPassword(e.currentTarget.value)} className="rounded bg-white/10 py-1 px-2" placeholder="Password"/></div>
+                <div className="mx-auto w-fit my-2"><input type="password" value={password} onKeyDown={(e) => {if (e.key == 'Enter') {login()}}} onChange={(e) => setPassword(e.currentTarget.value)} className="rounded bg-white/10 py-1 px-2" placeholder="Password"/></div>
         {wrongPassword && <div className="text-red-800 text-center text-xs pb-4">Password is not correct</div>}
     <div className="py-3"><Button onClick={login}>Login</Button></div>
 

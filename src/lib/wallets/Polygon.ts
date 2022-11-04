@@ -3,7 +3,7 @@ import {ethers} from 'ethers'
 import {hdkey} from 'ethereumjs-wallet'
 import {mnemonicToSeed} from 'bip39'
 
-class Ethereum implements IWallet {
+class Polygon implements IWallet {
     address:string;
     
     constructor(mnemonic:string) {
@@ -24,13 +24,13 @@ class Ethereum implements IWallet {
 
     static async getBalance(addr:string) : Promise<number> {
         try {
-            const customProvider = new ethers.providers.JsonRpcProvider("https://eth1.mainnet.sh/");
+            const customProvider = new ethers.providers.JsonRpcProvider("https://polygon-rpc.com/");
             return parseFloat(ethers.utils.formatEther(await customProvider.getBalance(addr)))
     
         } catch {
-            return 0
+                return  0           
         }
     }
 }
 
-export default Ethereum;
+export default Polygon;

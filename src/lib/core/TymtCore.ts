@@ -8,6 +8,9 @@ import { arch, type } from "@tauri-apps/api/os";
 import { appDir } from "@tauri-apps/api/path";
 import {encrypt, decrypt} from '@metamask/browser-passworder'
 import { Wallet } from "../store/walletSlice";
+import BSC from "../wallets/BSC";
+import Solana from "../wallets/Solana";
+import Polygon from "../wallets/Polygon";
 export type BlockchainKey =
   | "solar"
   | "bsc"
@@ -122,12 +125,17 @@ const TymtCore = {
     });
     },
   },
+  //thumb spray theme edit indoor extra absurd fantasy fragile bottom employ mansion rain orphan gas actor three often oval diagram attend early mask focus
   Crypto: {
     validateMnemonic: (mnemonic: string) : boolean => {
-      return validateMnemonic(mnemonic);
+        if (mnemonic.split(" ").length == 24) {
+          return validateMnemonic(mnemonic.split(" ").slice(0,12).join(" ")) && validateMnemonic(mnemonic.split(" ").slice(12,24).join(" "))
+        } else {
+          return validateMnemonic(mnemonic);
+        }
     },
     generateMnemonic: () : string => {
-      return generateMnemonic()
+      return `${generateMnemonic()} ${generateMnemonic()}`
     }
   },
   Blockchains: {
@@ -139,7 +147,7 @@ const TymtCore = {
     bsc: {
       name: "Binance Smart Chain",
       ticker: "BNB",
-      wallet: Ethereum,
+      wallet: BSC,
     },
     eth: {
       name: "Ethereum",
@@ -159,12 +167,12 @@ const TymtCore = {
     solana: {
       name: "Solana",
       ticker: "SOL",
-      wallet: Ethereum,
+      wallet: Solana,
     },
     polygon: {
       name: "Polygon",
       ticker: "MATIC",
-      wallet: Ethereum,
+      wallet: Polygon,
     },
     // polka: {
     //   name: "Polkadot",

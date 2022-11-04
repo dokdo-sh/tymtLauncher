@@ -42,7 +42,7 @@ const Passphrase = (props: {setPassphrase: (passphrase:string) => void}) => {
 
   return (
     <div>
-        <div className="py-4"> <a href="#" className="px-4  hover:underline flex" onClick={() => navigate('/session')}> <MdArrowBack className="text-2xl"/> Go back to login</a></div>
+        <div className="py-4"> <a href="#" className="px-4  hover:underline flex" onClick={() => window.location.href = "/session"}> <MdArrowBack className="text-2xl"/> Go back to login</a></div>
         <div className="px-4 py-16">
         <img src="/full_logo.png" className="h-12 mx-auto" />
         <div className=" text-2xl font-black mt-6 text-center">
@@ -94,7 +94,7 @@ const WalletSetup = (props: { passphrase:string, password:string }) => {
   return (
     <div className="px-4 py-8">
         <div className="pb-10">
-        <div className=""> <a href="#" className="px-4  hover:underline flex" onClick={() => navigate('/session')}> <MdArrowBack className="text-2xl"/> Go back to login</a></div>
+        <div className=""> <a href="#" className="px-4  hover:underline flex" onClick={() => window.location.href = "/session"}> <MdArrowBack className="text-2xl"/> Go back to login</a></div>
         <div className="px-4 py-4">
         <img src="/full_logo.png" className="h-12 mx-auto" />
         <div className=" text-2xl font-black mt-6 text-center">

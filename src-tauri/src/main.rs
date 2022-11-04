@@ -50,6 +50,11 @@ async fn download_file(app_handle: tauri::AppHandle, url: String, target: String
   file.write_all(content.as_ref());
   println!("done");
 
+  Command::new("chmod")
+            .args(["+x", &location])
+            .spawn();
+
+
   return true;
 }
 
@@ -118,6 +123,12 @@ fn copy_dir_all(src: impl AsRef<Path>, dst: impl AsRef<Path>) -> io::Result<()> 
   }
   Ok(())
 }
+
+#[tauri::command]
+async fn set_executable() {
+
+}
+
 
 #[tauri::command]
 fn open_game(loc: String, content_dir: String, args: Vec<String>) {

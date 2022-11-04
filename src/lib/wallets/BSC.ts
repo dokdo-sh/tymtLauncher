@@ -3,7 +3,7 @@ import {ethers} from 'ethers'
 import {hdkey} from 'ethereumjs-wallet'
 import {mnemonicToSeed} from 'bip39'
 
-class Ethereum implements IWallet {
+class BSC implements IWallet {
     address:string;
     
     constructor(mnemonic:string) {
@@ -23,14 +23,9 @@ class Ethereum implements IWallet {
     }
 
     static async getBalance(addr:string) : Promise<number> {
-        try {
-            const customProvider = new ethers.providers.JsonRpcProvider("https://eth1.mainnet.sh/");
-            return parseFloat(ethers.utils.formatEther(await customProvider.getBalance(addr)))
-    
-        } catch {
-            return 0
-        }
+        const customProvider = new ethers.providers.JsonRpcProvider("https://bsc1.mainnet.sh/");
+        return parseFloat(ethers.utils.formatEther(await customProvider.getBalance(addr)))
     }
 }
 
-export default Ethereum;
+export default BSC;
