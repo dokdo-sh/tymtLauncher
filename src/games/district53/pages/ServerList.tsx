@@ -3,11 +3,12 @@ import { FC, useEffect, useState } from "react";
 import { fetch as tFetch } from '@tauri-apps/api/http';
 import {BsPlay} from 'react-icons/bs'
 import {RiCloudOffLine} from 'react-icons/ri'
-
+import { Button } from "../../../pages/components/Button";
+import TymtCore from "../../../lib/core/TymtCore";
 
 export const ServerList = () => {
     const [servers, setServers] = useState([])
-
+    const [selectedServer, setSelectedServer] = useState("")
     useEffect(() => {
         tFetch("https://serverlist.mainnet.sh/list").then((rp:any) => {
             setServers(rp.data.list)
@@ -32,17 +33,19 @@ export const ServerList = () => {
                 <div className='grid grid-cols-4  my-3  p-4'>
                   <div className='col-span-3 border border-gray-800 rounded'>
                     <div className='divide-y divide-gray-900'>
-                    {servers && servers.map((srv:any) => (
-                      <div className='py-3 px-3 hover:bg-black  hover:bg-gray-800 cursor-pointer' key={srv.update_time}>
-                        <div className="text-green-500 font-bold">{srv.address}</div>
+                    {servers && servers.map((srv:any, indx:number) => {
+                      return (
+                        <div onClick={() => {setSelectedServer(`${srv.address}:${srv.port}`)}} className={`py-3 px-3  hover:bg-gray-800 cursor-pointer ${selectedServer == `${srv.address}:${srv.port}`? 'bg-gray-800' : ''}`} key={`${srv.address}:${srv.port}`}>
+                        <div className="text-green-500 font-bold">{srv.address}:{srv.port}</div>
                         <div className="text-gray-500 italic font-xs">{srv.description.slice(1,-1)}</div>
                       </div>
-                    ))}
+                      )
+})}
                     </div>
                   </div>
                   <div className='px-7 space-y-3'>
-                      <div className='bg-primary/70 py-4 mx-auto px-6 text-base w-fit font-Orbitron hover:bg-primary cursor-pointer hover:ease-in duration-200 w-full flex flex-row items-center'> <BsPlay className="mx-1"/> <div>Play now</div></div>
-                      <div className='bg-red-500/50 py-2 mx-auto px-6 text-sm w-fit font-Orbitron hover:bg-red-600 cursor-pointer hover:ease-in duration-200 w-full flex flex-row items-center'><RiCloudOffLine className="mx-1"/><div>Play offline</div></div>
+                    <Button className="py-6" onClick={() => { TymtCore.Launcher.Launch("district53",["--address",selectedServer.split(":")[0],selectedServer.split(":")[1],"--name","","--pasword","","--go"]) }} disabled={selectedServer == ""}><BsPlay className="mx-1"/> <div>Play online</div></Button>
+                    <Button className="py-3 bg-red-500/70 hover:bg-red-500" onClick={() => { TymtCore.Launcher.Launch("district53") }}><RiCloudOffLine className="mx-1"/><div>Play offline</div></Button>
                   </div>
                 </div>
             </div>

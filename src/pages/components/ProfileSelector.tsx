@@ -1,11 +1,15 @@
-import { useAppSelector } from '../../app/hooks';
+import { redirect, useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { change } from '../../lib/store/gameSlice';
 import {changeWallet, selectWallet} from '../../lib/store/walletSlice'
 export const ProfileSelector = () => {
     const walletState = useAppSelector(selectWallet)
-    if (walletState != undefined) {
+    const dispatch = useAppDispatch();
+
+    const navigate = useNavigate()
         return (
             <div className="flex flex-row px-2">
-                            <div className="px-3 text-sm font-mono flex flex-row items-center text-center text-primary/70 hover:text-primary font-bold hover:border hover:border-primary cursor-pointer ease-in duration-200 border border-primary/30 py-1 mx-1 divide-x divide-primary space-x-2 " onClick={() => {window.location.href = "/wallet"}}>
+                            <div className="px-3 text-sm font-mono flex flex-row items-center text-center text-primary/70 hover:text-primary font-bold hover:border hover:border-primary cursor-pointer ease-in duration-200 border border-primary/30 py-1 rounded mx-1 divide-x divide-primary space-x-2 " onClick={() =>{dispatch(change(undefined));navigate("/wallet")}}>
                                 <div>Wallet</div>
                             </div>
                                         {/* <div className="px-3 text-sm font-mono flex flex-row items-center text-center text-primary/70 hover:text-primary font-bold hover:border hover:border-primary cursor-pointer ease-in duration-200 border border-primary/30 py-1 divide-x divide-primary space-x-2 opacity-50 hover:opacity-100">
@@ -16,7 +20,9 @@ export const ProfileSelector = () => {
                             </div> */}
             </div>
         );
-    } else {
-        return ( <div></div> )
-    }
+
 }
+function dispatch(arg0: any) {
+    throw new Error('Function not implemented.');
+}
+

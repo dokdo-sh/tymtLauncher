@@ -17,6 +17,9 @@ import { WalletView } from './pages/WalletView';
 import { Receive } from './pages/wallet/Receive';
 import { Send } from './pages/wallet/Send';
 import { Downloads } from './pages/Downloads';
+import { Import } from './pages/wallet/Import';
+import { Login, SessionView, SignUp } from './pages/SessionView';
+import { Create } from './pages/wallet/Create';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
@@ -27,11 +30,14 @@ root.render(
       <BrowserRouter>
           <Routes>
               <Route path="/" element={<App />} >
-              <Route path="games/district53" element={<District53 />} />
+              <Route path="games/district53" element={<District53 />} />ç
               <Route path="wallet" element={<WalletView />} />
               <Route path="wallet/receive" element={<Receive />} />
               <Route path="wallet/send" element={<Send />} />
               <Route path="downloads" element={<Downloads />} />
+              <Route path="import" element={<Import />} />
+              <Route path="create" element={<Create />} />
+              <Route path="session" element={<SessionView />} />
               <Route path="/" element={<Home />} />
               </Route>
             </Routes>

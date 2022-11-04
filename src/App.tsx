@@ -1,20 +1,34 @@
 
-import { Outlet } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { useAppSelector } from './app/hooks';
+import TymtCore from './lib/core/TymtCore';
+import { getSession, Session } from './lib/store/sessionSlice';
+import { Loading } from './pages/components/Loading';
 import { Navbar } from './pages/components/Navbar';
-import { Login } from './pages/Login';
+import { SessionView } from './pages/SessionView';
 
 function App() {
-  const logged = true;
+  const session : Session = useAppSelector(getSession);
+  const navigate = useNavigate()
 
-  if (logged) {
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    TymtCore.Launcher.Settings.init().then(() => setLoading(false))
+  })
+
+  if (loading) {
+    return <Loading/>
+  } else {
     return (
       <div className="h-screen ">
-          <Navbar/>
-          <Outlet/>
-      </div>
-    );
-  }  else {
-    return <Login/>
+      {session.logged && <Navbar/>}
+      {session.logged && <Outlet/>}
+      {!session.logged && <SessionView/>}
+  </div>
+    )
   }
 
 }

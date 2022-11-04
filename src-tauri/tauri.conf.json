@@ -7,25 +7,61 @@
     "distDir": "../build"
   },
   "package": {
-    "productName": "launcher",
+    "productName": "tymtClient",
     "version": "0.1.0"
   },
   "tauri": {
     "allowlist": {
-      "all": true,
+      "os": {
+          "all": true
+      },
+      "clipboard": {
+        "all":true
+      },
+      "dialog": {
+          "all": true
+      },
+      "path": {
+          "all": true
+      },
+      "shell": {
+          "execute": true,
+          "open": ".*"
+      },
+      "protocol": {
+          "asset": true,
+          "assetScope": [
+              "$APP/versions/*"
+          ]
+      },
+      "fs": {
+          "readFile": true,
+          "writeFile": true,
+          "readDir": true,
+          "copyFile": true,
+          "createDir": true,
+          "renameFile": true,
+          "scope": [
+              "$APP/settings.json",
+              "$APP",
+              "$APP/games",
+              "$APP/games/*",
+              "$APP/tmp.zip"
+          ]
+      },
       "http": {
-        "request": true,
-        "scope": [
-            "https://servers.minetest.net/list",
-            "https://serverlist.mainnet.sh/list",
-            "https://github.com/minetest/district53/releases/download/*",
-            "https://api.github.com/repos/district53/minetest/releases",
-            "https://api.github.com/repos/district53/minetest/download/*",
-            "https://blog.minetest.net/feed.rss",
-            "https://content.minetest.net/api/*"
-        ]
-    }
-    },
+          "request": true,
+          "scope": [
+              "https://servers.minetest.net/list",
+              "https://serverlist.mainnet.sh/list",
+              "https://github.com/minetest/district53/releases/download/*",
+              "https://api.github.com/repos/district53/minetest/releases",
+              "https://api.github.com/repos/district53/minetest/download/*",
+              "https://blog.minetest.net/feed.rss",
+              "https://content.minetest.net/api/*"
+          ]
+      }
+  },
     "bundle": {
       "active": true,
       "category": "DeveloperTool",
@@ -41,7 +77,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.launcher.dev",
+      "identifier": "tymtClient",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -70,7 +106,7 @@
         "fullscreen": false,
         "height": 600,
         "resizable": true,
-        "title": "launcher",
+        "title": "Tymt Client",
         "width": 800
       }
     ]

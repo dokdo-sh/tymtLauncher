@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import Core, { BlockchainKey } from '../core/Core';
+import Core, { BlockchainKey } from '../core/TymtCore';
 
-export type Wallet = {mnemonic: string, name: string}
+export type Wallet = {mnemonic: string}
 
 export interface WalletState {
     value: Wallet | undefined;
@@ -10,7 +10,7 @@ export interface WalletState {
   }
 
   const initialState: WalletState = {
-    value: {mnemonic:"goddess fish saddle original badge vintage shed page usual address practice focus", name: "wallet1"},
+    value: undefined,
     status: 'idle',
   };
 

@@ -1,15 +1,15 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import counterReducer from '../features/counter/counterSlice';
 import gameReducer from '../lib/store/gameSlice';
 import currentGameReducer from '../lib/store/currentGameSlice';
 import currentWalletReducer from '../lib/store/walletSlice';
+import sessionReducer from '../lib/store/sessionSlice'
 
 export const store = configureStore({
   reducer: {
-    counter: counterReducer,
     game: gameReducer,
     currentGame: currentGameReducer,
-    wallet: currentWalletReducer
+    wallet: currentWalletReducer,
+    session: sessionReducer
   },
 });
 
