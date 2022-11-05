@@ -11,6 +11,7 @@ import { Wallet } from "../store/walletSlice";
 import BSC from "../wallets/BSC";
 import Solana from "../wallets/Solana";
 import Polygon from "../wallets/Polygon";
+
 export type BlockchainKey =
   | "solar"
   | "bsc"
@@ -114,7 +115,7 @@ const TymtCore = {
                 return `${baseDir}/${gamekey}.app`;
     
             case 'Windows_NT':
-                return `${baseDir}/bin/${gamekey}.exe`;
+                return `${baseDir}/bin/${Games[gamekey].executables.windows.file? Games[gamekey].executables.windows.file : gamekey}.exe`;
         }
 
     }
@@ -123,9 +124,9 @@ const TymtCore = {
         contentDir: `${await appDir()}/games/${gamekey}`,
         args: args
     });
+
     },
   },
-  //thumb spray theme edit indoor extra absurd fantasy fragile bottom employ mansion rain orphan gas actor three often oval diagram attend early mask focus
   Crypto: {
     validateMnemonic: (mnemonic: string) : boolean => {
         if (mnemonic.split(" ").length == 24) {

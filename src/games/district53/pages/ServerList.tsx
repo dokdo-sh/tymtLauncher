@@ -65,7 +65,7 @@ export const ServerList = () => {
                   </div>
                   <div className='px-7 space-y-3'>
                     <Button className="py-6" onClick={() => { TymtCore.Launcher.Launch("district53",["--address",selectedServer.split(":")[0],"--port",selectedServer.split(":")[1],"--name",username,"--password",password,"--go"]) }} disabled={selectedServer == ""}><BsPlay className="mx-1"/> <div>Play online</div></Button>
-                    <Button className="py-3 bg-red-500/70 hover:bg-red-500" onClick={() => { TymtCore.Launcher.Launch("district53") }}><RiCloudOffLine className="mx-1"/><div>Play offline</div></Button>
+                    {/* <Button className="py-3 bg-red-500/70 hover:bg-red-500" onClick={() => { TymtCore.Launcher.Launch("district53") }}><RiCloudOffLine className="mx-1"/><div>Play offline</div></Button> */}
                   </div>
                 </div>
             </div>
