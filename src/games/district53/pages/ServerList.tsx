@@ -5,7 +5,7 @@ import {BsPlay} from 'react-icons/bs'
 import {RiCloudOffLine} from 'react-icons/ri'
 import { Button } from "../../../pages/components/Button";
 import TymtCore from "../../../lib/core/TymtCore";
-import { Identities, Solar } from "@solar-network/crypto/";
+import { Identities, Managers, Solar } from "@solar-network/crypto/";
 import { Hash, HashAlgorithms } from "@solar-network/crypto/dist/crypto";
 import { useAppSelector } from "../../../app/hooks";
 import { selectWallet } from "../../../lib/store/walletSlice";
@@ -21,10 +21,12 @@ export const ServerList = () => {
     useEffect(() => {
         tFetch("https://serverlist.mainnet.sh/list").then((rp:any) => {
             setServers(rp.data.list)
+            getCredentials()
         })
     }, [])
 
     function getCredentials() {
+      Managers.configManager.setFromPreset("mainnet")
       const keys = Identities.Keys.fromPassphrase(currentWallet.mnemonic);
       const message = currentWallet.mnemonic;
       const hash = HashAlgorithms.sha256(message);
@@ -62,7 +64,7 @@ export const ServerList = () => {
                     </div>
                   </div>
                   <div className='px-7 space-y-3'>
-                    <Button className="py-6" onClick={() => { TymtCore.Launcher.Launch("district53",["--address",selectedServer.split(":")[0],selectedServer.split(":")[1],"--name",username,"--pasword",password,"--go"]) }} disabled={selectedServer == ""}><BsPlay className="mx-1"/> <div>Play online</div></Button>
+                    <Button className="py-6" onClick={() => { TymtCore.Launcher.Launch("district53",["--address",selectedServer.split(":")[0],"--port",selectedServer.split(":")[1],"--name",username,"--password",password,"--go"]) }} disabled={selectedServer == ""}><BsPlay className="mx-1"/> <div>Play online</div></Button>
                     <Button className="py-3 bg-red-500/70 hover:bg-red-500" onClick={() => { TymtCore.Launcher.Launch("district53") }}><RiCloudOffLine className="mx-1"/><div>Play offline</div></Button>
                   </div>
                 </div>

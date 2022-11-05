@@ -99,7 +99,7 @@ const TymtCore = {
       
     },
     Launch: async (gamekey:string, args: string[] = []) => {
-
+      console.log(args)
       async function getBinaryLocation() {
         let [ platform, baseDir ] = await Promise.all([
             type(),
