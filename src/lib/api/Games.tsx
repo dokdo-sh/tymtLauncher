@@ -18,8 +18,8 @@ const Games : {[key:string] : Game} = {
         },
         executables: {
             linux: {url: "https://github.com/district53/minetest/releases/download/5.6.0/Minetest-5.6.0-x86_64.AppImage", type: "exec"},
-            macos: undefined, //{url: "https://github.com/district53/minetest/releases/download/5.6.0/minetest-5.6.0-osx.zip", type: "zip"},
-            windows: undefined //{url: "https://github.com/district53/minetest/releases/download/5.6.0/minetest-5.6.0-win64.zip", type: "zip", file: "minetest.exe"}
+            macos: {url: "https://github.com/district53/minetest/releases/download/5.6.0/minetest-5.6.0-osx.zip", type: "zip"}, 
+            windows: {url: "https://github.com/district53/minetest/releases/download/5.6.0/minetest-5.6.0-win64.zip", type: "zip", file: "minetest.exe"}
         },
         component: <District53/>,
     },
