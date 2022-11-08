@@ -61,7 +61,7 @@ export const Login = () => {
                     <div className="text-3xl text-center py-3 font-Orbitron font-bold">Log in on <span className="text-primary">tymt</span></div>
                     <div className="">
                                 <div className="font-Orbitron text-center py-4 text-xs">
-                    Enter your password to unencrypt your mnemonic.
+                    Enter your password to decrypt your mnemonic.
                 </div>
 
                 <div className="mx-auto w-fit my-2"><input type="password" value={password} onKeyDown={(e) => {if (e.key == 'Enter') {login()}}} onChange={(e) => setPassword(e.currentTarget.value)} className="rounded bg-white/10 py-1 px-2" placeholder="Password"/></div>
