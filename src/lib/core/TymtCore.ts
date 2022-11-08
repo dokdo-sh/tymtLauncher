@@ -115,7 +115,7 @@ const TymtCore = {
                 return `${baseDir}/${gamekey}.app`;
     
             case 'Windows_NT':
-                return `${baseDir}/bin/${Games[gamekey].executables.windows.file? Games[gamekey].executables.windows.file : gamekey}.exe`;
+                return `${baseDir}/bin/${Games[gamekey].executables.windows.file? Games[gamekey].executables.windows.file : gamekey }.exe`;
         }
 
     }
