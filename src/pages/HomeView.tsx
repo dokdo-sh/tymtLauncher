@@ -107,7 +107,7 @@ export const Home = () => {
                 </div>
                 </div>
                 <div className="py-8 flex flex-row gap-4 flex-wrap">
-                    {Object.keys(Games).map((key) => { return {key:key, data: Games[key]}}).map((game) =>  {if (Games[game.key].executables[platform]) {return (
+                    {Object.keys(Games).map((key) => { return {key:key, data: Games[key]}}).map((game) =>  {if (Games[game.key].executables[platform] != undefined) {return (
                                                 <div className=" cursor-pointer hover:scale-110 ease-in duration-150 w-[240px] h-[340px] " onClick={() => {gameAction(game)}} key={game.key}>
                                                 <img src={game.data.thumbnail} className="absolute  rounded drop-shadow-xl -z-10" alt="" />
                     

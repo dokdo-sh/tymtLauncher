@@ -40,8 +40,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "TSC_COMPILE_ON_ERROR=true react-app-rewired start",
-    "build": "TSC_COMPILE_ON_ERROR=true react-app-rewired build",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
