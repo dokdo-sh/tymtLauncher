@@ -23,7 +23,7 @@ class BSC implements IWallet {
     }
 
     static async getBalance(addr:string) : Promise<number> {
-        const customProvider = new ethers.providers.JsonRpcProvider("https://bsc1.mainnet.sh/");
+        const customProvider = new ethers.providers.JsonRpcProvider("https://data-seed-prebsc-1-s1.binance.org:8545/");
         return parseFloat(ethers.utils.formatEther(await customProvider.getBalance(addr)))
     }
 }
