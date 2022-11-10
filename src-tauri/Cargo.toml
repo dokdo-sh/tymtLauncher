@@ -18,7 +18,7 @@ tauri-build = { version = "1.1.1", features = [] }
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
 assert2 = "0.3.6"
-tauri = { version = "1.1.1", features = ["clipboard-all", "devtools", "dialog-all", "fs-copy-file", "fs-create-dir", "fs-read-dir", "fs-read-file", "fs-rename-file", "fs-write-file", "http-request", "os-all", "path-all", "protocol-asset", "shell-execute", "shell-open"] }
+tauri = { version = "1.1.1", features = ["clipboard-all", "devtools", "dialog-all", "fs-copy-file", "fs-create-dir", "fs-read-dir", "fs-read-file", "fs-rename-file", "fs-write-file", "http-request", "os-all", "path-all", "protocol-asset", "shell-execute", "shell-open", "window-all"] }
 reqwest = { version = "0.11"}
 zip = "*"
 zip-extensions = "*"

@@ -39,9 +39,9 @@ export const Navbar = () => {
                             }
                         </div>
                         <div className="grow"></div>
-                                <a className='font-Orbitron text-sm border border-transparent px-3 hover:text-white/70 hover:border hover:border-white/30 py-1 ease-in duration-200 hover:bg-primary/10 cursor-pointer rounded' onClick={() => {dispatch(change(undefined));navigate('/downloads')}} href='#'>
+                                {/* <a className='font-Orbitron text-sm border border-transparent px-3 hover:text-white/70 hover:border hover:border-white/30 py-1 ease-in duration-200 hover:bg-primary/10 cursor-pointer rounded' onClick={() => {dispatch(change(undefined));navigate('/downloads')}} href='#'>
                                 <BsDownload/>
-                                </a>
+                                </a> */}
                                 <ProfileSelector/>
                                 <div className='pr-4 text-xs font-Orbitron hover:text-red-500 hover:cursor-pointer rounded' onClick={() => { dispatch(changeSession({logged:false, password:undefined}));navigate("/session")}}> <RiLogoutCircleLine/> </div>
                 </div>                

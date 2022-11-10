@@ -28,6 +28,9 @@
           "execute": true,
           "open": ".*"
       },
+      "window": {
+        "all": true
+      },
       "protocol": {
           "asset": true,
           "assetScope": [
@@ -59,7 +62,8 @@
               "https://api.github.com/repos/district53/minetest/download/*",
               "https://blog.minetest.net/feed.rss",
               "https://content.minetest.net/api/*",
-              "https://map.district53.io/"
+              "https://map.district53.io/*",
+              "https://**"
           ]
       }
   },
@@ -97,7 +101,7 @@
       }
     },
     "security": {
-      "csp": "default-src 'self' 'unsafe-eval' 'unsafe-inline'; script-src 'self' 'unsafe-eval' https://fonts.googleapis.com; font-src 'self' https://fonts.googleapis.com; img-src 'self' asset: https://asset.localhost https://blog.minetest.net https://content.minetest.net"
+      "csp": "default-src 'self' 'unsafe-eval' 'unsafe-inline'; script-src 'self' 'unsafe-eval' https://fonts.googleapis.com; font-src 'self' https://fonts.googleapis.com; img-src 'self' *"
     },
     "updater": {
       "active": false
