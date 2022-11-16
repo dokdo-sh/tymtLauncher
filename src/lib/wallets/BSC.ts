@@ -7,7 +7,6 @@ class BSC implements IWallet {
     address:string;
     
     constructor(mnemonic:string) {
-
         this.address = ""
     }
 
@@ -25,8 +24,7 @@ class BSC implements IWallet {
     static async getBalance(addr:string) : Promise<number> {
         try {
             const customProvider = new ethers.providers.JsonRpcProvider("https://bsc-dataseed.binance.org/");
-            return parseFloat(ethers.utils.formatEther(await customProvider.getBalance(addr)))
-    
+            return parseFloat(ethers.utils.formatEther(await customProvider.getBalance(addr)))    
         } catch {
             return 0
         }

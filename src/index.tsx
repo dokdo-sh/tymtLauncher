@@ -20,6 +20,8 @@ import { Downloads } from './pages/Downloads';
 import { Import } from './pages/wallet/Import';
 import { Login, SessionView, SignUp } from './pages/SessionView';
 import { Create } from './pages/wallet/Create';
+import { GamePage } from './games/GamePage';
+import { Library } from './pages/Library';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
@@ -29,8 +31,10 @@ root.render(
     <Provider store={store}>
       <BrowserRouter>
           <Routes>
-              <Route path="/" element={<App />} >
-              <Route path="games/district53" element={<District53 />} />ç
+              <Route path="/" element={<GamePage />} >
+              <Route path="library" element={<Library />} />
+              <Route path="library/district53" element={<District53 />} />
+              <Route path="games/*" element={<GamePage />} />
               <Route path="wallet" element={<WalletView />} />
               <Route path="wallet/receive" element={<Receive />} />
               <Route path="wallet/send" element={<Send />} />
