@@ -11,54 +11,48 @@ import { getSession, Session } from "../lib/store/sessionSlice";
 import { Button } from "./components/Button";
 import { Login, SessionView } from "./SessionView";
 
-export const PlayButton = (props: {game: {key:string, data: Game}}) => {
-    const navigate = useNavigate()
-    const [loading, setLoading] = useState(true)
-    const [installed, setInstalled] = useState(false)
-    const [installing, setInstalling] = useState(false)
+import { Swiper, SwiperSlide } from "swiper/react";
 
-    async function install() {
-        setInstalling(true);
-        await downloadGame(props.game.key).then(async () => {
-        } )
-        setInstalling(false);
-        checkInstalled()
-	}
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/navigation";
+import { Navigation } from "swiper";
 
-    async function checkInstalled() {
-        setInstalled(await TymtCore.Launcher.Library.isInstalled(props.game.key))
-        setLoading(false)
+
+
+    function SliderComponent() {
+        return (
+            <>
+                <Swiper
+                    navigation={true}
+                    modules={[Navigation]}
+                    className="mySwiper "
+                >
+                    <SwiperSlide>
+                        <img
+                            className="object-fill w-full h-96"
+                            src="/backgrounds/district53.webp"
+                            alt="image slide 1"
+                        />
+                    </SwiperSlide>
+                    <SwiperSlide>
+                        <img
+                            className="object-fill w-full h-96"
+                            src="/backgrounds/district53.webp"
+                            alt="image slide 2"
+                        />
+                    </SwiperSlide>
+                    <SwiperSlide>
+                        <img
+                            className="object-fill w-full h-96"
+                            src="/backgrounds/district53.webp"
+                            alt="image slide 3"
+                        />
+                    </SwiperSlide>
+                </Swiper>
+            </>
+        );
     }
-
-    useEffect(() => {
-        checkInstalled()
-    }, [])
-
-    if (loading) {
-        return <></>
-    } else {
-        if (installed) {
-            return (<Button className="py-0 px-1 text-sm"
-            onClick={
-                () => {
-                    props.game.data.component == undefined?
-                    TymtCore.Launcher.Launch(props.game.key)
-                    :
-                    navigate(`/games/${props.game.key}`)
-                }
-            }
-            >Play</Button>) 
-        } else {
-            if (installing) {
-                return <Button className="py-0 px-1 text-sm">Installing...</Button>
-            } else {
-                return <Button className="py-0 px-1 text-sm" onClick={install}>Install</Button>
-            }
-        }
-    }
-        
-    }
-
 
 export const Home = () => {
 
@@ -68,13 +62,7 @@ export const Home = () => {
     const [availableGames, setAvailableGames] = useState([])
 
     async function gameAction(game: {key:string, data: Game}) {
-        if (await TymtCore.Launcher.Library.isInstalled(game.key)) {
-            if (game.data.component == undefined) {
-                TymtCore.Launcher.Launch(game.key)
-            } else {
-                navigate(`/games/${game.key}`)
-            }
-        }
+        navigate(`/games/${game.key}`)
     }
 
     async function getPlatform() {
@@ -102,10 +90,20 @@ export const Home = () => {
     }, [])
 
     return (
-        <div className="max-w-7xl mx-auto">
-            <div className="p-16">
+        <div className="">
+            <div className=""><SliderComponent/></div>
+            <div className="max-w-7xl mx-auto">
+            <div className="p-8">
                 <div className="flex flex-row">
-                <div className="text-3xl font-Orbitron">Available games</div>
+                <div className="text-3xl font-Orbitron space-x-3">
+                    <div className="inline-block">
+                    <div className="flex flex-row items-center ">
+                        <div className="w-2 h-6 skew-y-12 mb-1 bg-primary inline-block"></div>
+                        <div className="w-2 h-6 skew-y-12 bg-red-500 inline-block"></div>
+                    </div>
+                    </div>
+                    <span>Available games</span>
+                     </div>
                 <div className="grow"></div>
                 <div>
                 {/* <input type="text"  className='bg-white/10 rounded py-1 px-2 text-sm ease-in duration-200 ' placeholder='Search games'/> */}
@@ -113,27 +111,26 @@ export const Home = () => {
                 </div>
                 <div className="py-8 flex flex-row gap-4 flex-wrap">
                     { availableGames.map((game) => {return (
-                                                <div className=" cursor-pointer hover:scale-110 ease-in duration-150 w-[240px] h-[340px] " onClick={() => {gameAction(game)}} key={game.key}>
-                                                <img src={game.data.thumbnail} className="absolute  rounded drop-shadow-xl -z-10" alt="" />
+                                                <div className=" cursor-pointer  ease-in duration-150 hover:scale-110" onClick={() => {gameAction(game)}} key={game.key}>
+                                                <img src={game.data.thumbnail} className="border rounded-lg border-white/5 shadow-sm shadow-white/10 w-[180px]" alt="" />
                     
-                                                    <div className="flex flex-1 flex-col justify-between w-full h-full ">
+                                                    <div className="flex flex-1 flex-col justify-between ">
                                                         <div></div>
                                                         <div className="grow"></div>
-                                                        <div className="bg-gradient-to-t from-black to-transparent">
+                                                        <div className="">
 
                                                          <div className="flex flex-row text-base font-bold py-2 px-2  items-center">
-                                                         <div className="font-Orbitron">{game.data.name}</div>
+                                                         <div className="font-light">{game.data.name}</div>
                                                         <div className="grow"></div>
-                                                        <div> 
-                                                            <PlayButton game={game}/>
-                                                         </div>
                                                     </div>
                                                         </div>
                                                     </div>
+
                                             </div>
                     )})}  
                 </div>
             </div>
+        </div>
         </div>
     );
 }

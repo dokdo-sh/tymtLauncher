@@ -25,8 +25,8 @@ module.exports = {
           'dark-evenish': '#121c26'
       },
       fontFamily: {
-        Sora: ["Sora", "regular"],
-        Orbitron: ["Orbitron", "regular"]
+        Sora: ["Work Sans", "regular"],
+        Orbitron: ["Work Sans", "regular"]
        },
   } },
   plugins: [],
