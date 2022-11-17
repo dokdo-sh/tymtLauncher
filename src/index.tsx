@@ -11,8 +11,9 @@ import {
   BrowserRouter,
   Navigate,
 } from 'react-router-dom'
+
 import { District53 } from './games/district53/District53';
-import { Home } from './pages/HomeView';
+import { Catalog } from './pages/Catalog';
 import { WalletView } from './pages/WalletView';
 import { Receive } from './pages/wallet/Receive';
 import { Send } from './pages/wallet/Send';
@@ -31,16 +32,16 @@ root.render(
     <Provider store={store}>
       <BrowserRouter>
           <Routes>
-              <Route path="/" element={<GamePage />} >
-              <Route path="library" element={<Library />} />
-              <Route path="library/district53" element={<District53 />} />
-              <Route path="games/*" element={<GamePage />} />
-              <Route path="wallet" element={<WalletView />} />
-              <Route path="wallet/receive" element={<Receive />} />
-              <Route path="wallet/send" element={<Send />} />
-              <Route path="downloads" element={<Downloads />} />
-              <Route path="session" element={<SessionView />} />
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<App />} >
+                <Route path="library" element={<Library />} />
+                <Route path="library/district53" element={<District53 />} />
+                <Route path="games/*" element={<GamePage />} />
+                <Route path="wallet" element={<WalletView />} />
+                <Route path="wallet/receive" element={<Receive />} />
+                <Route path="wallet/send" element={<Send />} />
+                <Route path="downloads" element={<Downloads />} />
+                <Route path="session" element={<SessionView />} />
+                <Route path="/" element={<Catalog />} />
               </Route>
             </Routes>
           </BrowserRouter>

@@ -55,7 +55,7 @@ export const Login = () => {
 
     <div className="h-screen w-screen flex  items-center">
     <div className="min-w-1/2 max-w-4xl mx-auto px-8">
-                <div className="border border-primary p-1 rounded space-y-3">
+                <div className="border border-primary p-1 rounded space-y-3 bg-black/40">
                     <div className="border-2 border-red-500 rounded space-y-4 p-6 w-full h-full">
                     <img src="/logo.png" className="h-16 mx-auto" alt="" />
                     <div className="text-3xl text-center py-3 font-Orbitron font-bold">Log in on <span className="text-primary">tymt</span></div>
@@ -66,7 +66,7 @@ export const Login = () => {
 
                 <div className="mx-auto w-fit my-2"><input type="password" value={password} onKeyDown={(e) => {if (e.key == 'Enter') {login()}}} onChange={(e) => setPassword(e.currentTarget.value)} className="rounded bg-white/10 py-1 px-2" placeholder="Password"/></div>
         {wrongPassword && <div className="text-red-800 text-center text-xs pb-4">Password is not correct</div>}
-    <div className="py-3"><Button onClick={login}>Login</Button></div>
+    <div className="py-3 w-fit mx-auto"><Button onClick={login}>Login</Button></div>
 
                     </div>
         </div>

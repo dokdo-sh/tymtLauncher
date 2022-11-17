@@ -6,7 +6,7 @@ export const LandMap = () => {
                 <div className='grid grid-cols-4'>
                   <div className="col-span-3">
                   <div className="flex flex-row px-4">
-                  <div className='text-xl font-Orbitron'>Land map</div>
+                  <div className='text-3xl text-primary font-bold'>Land map</div>
                   <div className="grow"></div>
                   
                   </div>

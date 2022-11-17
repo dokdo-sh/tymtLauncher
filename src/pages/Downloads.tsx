@@ -11,7 +11,7 @@ export const Downloads = () => {
           </div>
         </div>
         <div>
-            <div className="bg-white bg-opacity-60 px-3 py-5 w-1/2 text-gray-800 rounded font-Orbitron text-xs">
+            <div className="bg-gray-800/50 bg-opacity-60 px-3 py-5 w-1/2 text-gray-300 border border-gray-800 rounded font-Orbitron text-xs">
             No downloads in progress.
             </div>
         </div>
