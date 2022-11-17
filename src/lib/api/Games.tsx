@@ -23,102 +23,102 @@ const Games : {[key:string] : Game} = {
         },
         component: <District53/>,
     },
-    "red_eclipse" : {
-        name: "Red Eclipse",
-        url: "http://d.com/",
-        thumbnail: "https://resources.tymt.com/media/7/thumb-240x340.png",
-        tabs : {
-            "servers": "Servers",
-            "auctions": "Land auctions",
-            "map": "Land map"
-        },
-        executables: {
-            windows: undefined,
-            macos: undefined,
-            linux: {url: "https://github.com/redeclipse/deploy/releases/download/appimage_continuous_stable/redeclipse-stable-x86_64.AppImage",  type: "exec"}
-        },
-        component: undefined,
-    },
-    "openra" : {
-        name: "OpenRA",
-        url: "http://d.com/",
-        thumbnail: "https://resources.tymt.com/media/6/thumb-240x340.png",
-        tabs : {
-            "servers": "Servers",
-            "auctions": "Land auctions",
-            "map": "Land map"
-        },
-        executables: {
-            windows: undefined,// {url: "https://github.com/OpenRA/OpenRA/releases/download/release-20210321/OpenRA-release-20210321-x64-winportable.zip", type: "zip"},
-            macos: undefined,//{url: "https://github.com/OpenRA/OpenRA/releases/download/release-20210321/OpenRA-release-20210321.dmg", type: "exec"},
-            linux: {url: "https://github.com/OpenRA/OpenRA/releases/download/release-20210321/OpenRA-Red-Alert-x86_64.AppImage", type: "exec"}
-        },
-        component: undefined,
-    },
-    "openra_dune" : {
-        name: "OpenRA Dune 2000",
-        url: "http://d.com/",
-        thumbnail: "https://resources.tymt.com/media/6/thumb-240x340.png",
-        tabs : {
-            "servers": "Servers",
-            "auctions": "Land auctions",
-            "map": "Land map"
-        },
-        executables: {
-            windows: undefined,//{url: "https://github.com/OpenRA/OpenRA/releases/download/release-20210321/OpenRA-release-20210321-x64-winportable.zip", type: "zip"},
-            macos: undefined,//{url: "https://github.com/OpenRA/OpenRA/releases/download/release-20210321/OpenRA-release-20210321.dmg", type: "exec"},
-            linux: {url: "https://github.com/OpenRA/OpenRA/releases/download/release-20210321/OpenRA-Tiberian-Dawn-x86_64.AppImage", type: "exec"}
-        },
-        component: undefined,
-    },
-    "openra_2000" : {
-        name: "OpenRA Tiberian Dawn",
-        url: "http://d.com/",
-        thumbnail: "https://resources.tymt.com/media/6/thumb-240x340.png",
-        tabs : {
-            "servers": "Servers",
-            "auctions": "Land auctions",
-            "map": "Land map"
-        },
-        executables: {
-            windows: undefined,//{url: "https://github.com/OpenRA/OpenRA/releases/download/release-20210321/OpenRA-release-20210321-x64.exe", type: "exec"},
-            macos: undefined,//{url: "https://github.com/OpenRA/OpenRA/releases/download/release-20210321/OpenRA-release-20210321.dmg", type: "exec"},
-            linux: {url: "https://github.com/OpenRA/OpenRA/releases/download/release-20210321/OpenRA-Dune-2000-x86_64.AppImage", type: "exec"}
-        },
-        component: undefined,
-    },
-    "minetest" : {
-        name: "Minetest",
-        url: "http://d.com/",
-        thumbnail: "https://resources.tymt.com/media/2/thumb-240x340.png",
-        tabs : {
-            "servers": "Servers",
-            "auctions": "Land auctions",
-            "map": "Land map"
-        },
-        executables: {
-            windows: undefined,//{url: "https://github.com/minetest/minetest/releases/download/5.6.1/minetest-5.6.1-win64.zip", type: "zip"},
-            macos: undefined,//{url: "https://github.com/minetest/minetest/releases/download/5.6.1/minetest-5.6.1-osx.zip", type: "zip"},
-            linux: undefined
-        },
-        component: undefined,
-    },
-    "flightgear" : {
-        name: "Flightgear",
-        url: "http://d.com/",
-        thumbnail: "https://resources.tymt.com/media/3/thumb-240x340.png",
-        tabs : {
-            "servers": "Servers",
-            "auctions": "Land auctions",
-            "map": "Land map"
-        },
-        executables: {
-            windows: undefined,
-            macos: undefined,
-            linux: {url: "https://jztkft.dl.sourceforge.net/project/flightgear/release-2020.3/FlightGear-2020.3.13-x86_64.AppImage", type: "exec"}
-        },
-        component: undefined,
-    },
+    // "red_eclipse" : {
+    //     name: "Red Eclipse",
+    //     url: "http://d.com/",
+    //     thumbnail: "https://resources.tymt.com/media/7/thumb-240x340.png",
+    //     tabs : {
+    //         "servers": "Servers",
+    //         "auctions": "Land auctions",
+    //         "map": "Land map"
+    //     },
+    //     executables: {
+    //         windows: undefined,
+    //         macos: undefined,
+    //         linux: {url: "https://github.com/redeclipse/deploy/releases/download/appimage_continuous_stable/redeclipse-stable-x86_64.AppImage",  type: "exec"}
+    //     },
+    //     component: undefined,
+    // },
+    // "openra" : {
+    //     name: "OpenRA",
+    //     url: "http://d.com/",
+    //     thumbnail: "https://resources.tymt.com/media/6/thumb-240x340.png",
+    //     tabs : {
+    //         "servers": "Servers",
+    //         "auctions": "Land auctions",
+    //         "map": "Land map"
+    //     },
+    //     executables: {
+    //         windows: undefined,// {url: "https://github.com/OpenRA/OpenRA/releases/download/release-20210321/OpenRA-release-20210321-x64-winportable.zip", type: "zip"},
+    //         macos: undefined,//{url: "https://github.com/OpenRA/OpenRA/releases/download/release-20210321/OpenRA-release-20210321.dmg", type: "exec"},
+    //         linux: {url: "https://github.com/OpenRA/OpenRA/releases/download/release-20210321/OpenRA-Red-Alert-x86_64.AppImage", type: "exec"}
+    //     },
+    //     component: undefined,
+    // },
+    // "openra_dune" : {
+    //     name: "OpenRA Dune 2000",
+    //     url: "http://d.com/",
+    //     thumbnail: "https://resources.tymt.com/media/6/thumb-240x340.png",
+    //     tabs : {
+    //         "servers": "Servers",
+    //         "auctions": "Land auctions",
+    //         "map": "Land map"
+    //     },
+    //     executables: {
+    //         windows: undefined,//{url: "https://github.com/OpenRA/OpenRA/releases/download/release-20210321/OpenRA-release-20210321-x64-winportable.zip", type: "zip"},
+    //         macos: undefined,//{url: "https://github.com/OpenRA/OpenRA/releases/download/release-20210321/OpenRA-release-20210321.dmg", type: "exec"},
+    //         linux: {url: "https://github.com/OpenRA/OpenRA/releases/download/release-20210321/OpenRA-Tiberian-Dawn-x86_64.AppImage", type: "exec"}
+    //     },
+    //     component: undefined,
+    // },
+    // "openra_2000" : {
+    //     name: "OpenRA Tiberian Dawn",
+    //     url: "http://d.com/",
+    //     thumbnail: "https://resources.tymt.com/media/6/thumb-240x340.png",
+    //     tabs : {
+    //         "servers": "Servers",
+    //         "auctions": "Land auctions",
+    //         "map": "Land map"
+    //     },
+    //     executables: {
+    //         windows: undefined,//{url: "https://github.com/OpenRA/OpenRA/releases/download/release-20210321/OpenRA-release-20210321-x64.exe", type: "exec"},
+    //         macos: undefined,//{url: "https://github.com/OpenRA/OpenRA/releases/download/release-20210321/OpenRA-release-20210321.dmg", type: "exec"},
+    //         linux: {url: "https://github.com/OpenRA/OpenRA/releases/download/release-20210321/OpenRA-Dune-2000-x86_64.AppImage", type: "exec"}
+    //     },
+    //     component: undefined,
+    // },
+    // "minetest" : {
+    //     name: "Minetest",
+    //     url: "http://d.com/",
+    //     thumbnail: "https://resources.tymt.com/media/2/thumb-240x340.png",
+    //     tabs : {
+    //         "servers": "Servers",
+    //         "auctions": "Land auctions",
+    //         "map": "Land map"
+    //     },
+    //     executables: {
+    //         windows: undefined,
+    //         macos: undefined,
+    //         linux: undefined
+    //     },
+    //     component: undefined,
+    // },
+    // "flightgear" : {
+    //     name: "Flightgear",
+    //     url: "http://d.com/",
+    //     thumbnail: "https://resources.tymt.com/media/3/thumb-240x340.png",
+    //     tabs : {
+    //         "servers": "Servers",
+    //         "auctions": "Land auctions",
+    //         "map": "Land map"
+    //     },
+    //     executables: {
+    //         windows: undefined,
+    //         macos: undefined,
+    //         linux: {url: "https://jztkft.dl.sourceforge.net/project/flightgear/release-2020.3/FlightGear-2020.3.13-x86_64.AppImage", type: "exec"}
+    //     },
+    //     component: undefined,
+    // },
 }
 
 export default Games;
