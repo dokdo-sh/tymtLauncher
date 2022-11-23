@@ -9,10 +9,10 @@ export const ProfileSelector = () => {
 
     const navigate = useNavigate()
 
-    function getAddress() {
-        Managers.configManager.setFromPreset("mainnet")
-       return  Identities.Address.fromPassphrase(walletState.mnemonic)
-    }
+        function getAddress() {
+            Managers.configManager.setFromPreset("mainnet")
+        return  Identities.Address.fromPassphrase(walletState.mnemonic)
+        }
 
         return (
             <div className="flex flex-row px-2">

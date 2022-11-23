@@ -5,6 +5,7 @@ import {mnemonicToSeed} from 'bip39'
 
 class Ethereum implements IWallet {
     address:string;
+    ticker: "ETH";
     
     constructor(mnemonic:string) {
 

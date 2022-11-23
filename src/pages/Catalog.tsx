@@ -77,11 +77,20 @@ export const Catalog = () => {
 
     return (
         <div className="">
-            <div className="max-w-7xl mx-auto px-8">
-            <div className="grid grid-cols-6 py-8">
+            <div className="max-w-7xl border-x border-[#161616] mx-auto flex flex-row items-center px-8 h-[600px] " style={{background: `url('/backgrounds/banner.jpg') no-repeat`}}>
+                <div className="py-16 h-fit font-Sora">
+                    <div className="text-6xl font-bold" style={{textShadow: '4px 4px #161616;'}}>District 53</div>
+                    <div className="font-bold py-3">Recent release</div>
+                    <div className="w-1/2 py-2" style={{textShadow: '4px 4px #000000;'}}>District 53 is a virtual desktop and mobile voxel based metaverse game.
+                    It has unique features utilizing the SXP blockchain with the Minetest codebase.</div>
+                    <div className="py-3">
+                        <Button className="font-bold" onClick={() => {navigate(`/games/district53`)}}>ADD TO LIBRARY</Button>
+                    </div>
+                    </div>
+            <div className="grid grid-cols-6 py-8 hidden">
                 {/* <div className="col-span-1"></div> */}
                 <div className="col-span-6">
-                <div className="grid grid-cols-6 w-full px-16 py-8 bg-black rounded border border-gray-800 gap-4">
+                <div className="grid grid-cols-6 w-full px-16 py-8  rounded border border-gray-800 gap-4">
                 <div className="col-span-4 py-6"><img src={currentPreview} alt="" /></div>
             
                 <div className="col-span-2 px-3 bg-black">
@@ -105,7 +114,7 @@ export const Catalog = () => {
                 </div>
             </div>
             </div>
-            <div className="max-w-7xl mx-auto">
+            <div className="max-w-7xl mx-auto bg-[#080808] border-x border-[#161616]">
             <div className="p-8">
                 <div className="flex flex-row">
                 <div className="text-4xl font-Orbitron space-x-3">
@@ -141,10 +150,14 @@ export const Catalog = () => {
                         By genre
                     </div> */}
                     <div className="col-span-10">
-                        <div className="flex flex-row gap-3">
+                        <div className="grid grid-cols-3">
                         { availableGames.map((game) => {return (
-                            <div className="bg-gray-800/80 shadow-black shadow-lg hover:scale-110 rounded-lg ease-in duration-150 cursor-pointer flex flex-row">
-                                <img src={game.data.thumbnail} onClick={() => navigate(`/games/${game.key}`)} className="border w-fit border-gray-800/50 shadow-sm shadow-white/10 rounded-lg w-48" alt="" />
+                            <div className="col-span-1">
+                                <div className="font-Sora mx-auto hover:scale-110 w-[301px] rounded-lg ease-in duration-150 cursor-pointer ">
+                                <img src={game.data.thumbnail} onClick={() => navigate(`/games/${game.key}`)} className="border w-fit border-gray-800/50  rounded-lg " alt="" />
+                                <div className="py-1 font-bold text-xl">{game.data.name}</div>
+                                <div className="text-sm text-justify">A virtual desktop and mobile voxel based metaverse game.</div>
+                            </div>
                             </div>
                         )})}
                         </div>

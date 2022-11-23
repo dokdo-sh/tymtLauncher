@@ -10,6 +10,10 @@ import { writeText } from "@tauri-apps/api/clipboard";
 import { BiCopy } from "react-icons/bi";
 import { Button } from "./components/Button";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { Downloads } from "./Downloads";
+import { WalletTransactions } from "./components/wallet/WalletTransactions";
+import Solar from "../lib/wallets/Solar";
 
 
 export const WalletView = () => {
@@ -17,12 +21,14 @@ export const WalletView = () => {
   const [addresses, setAddresses] = useState({})
   const [selectedBlockchain, setSelectedBlockchain] = useState("solar")
   const navigate = useNavigate()
+  const cW = new Solar(wallet.mnemonic)
   async function getAddresses() {
     Object.keys(TymtCore.Blockchains).map((key:string) => {
       return {key: key as BlockchainKey, data: TymtCore.Blockchains[key as BlockchainKey]}
     }).map(async (blockchain)=> {
       let addr = await blockchain.data.wallet.getAddress(wallet? wallet.mnemonic : "")
-      let bal = await blockchain.data.wallet.getBalance(addr)
+      let bal = (await blockchain.data.wallet.getBalance(addr)).toFixed(2)
+      console.log(addr)
       setAddresses(addresses => ({
         ...addresses,
         ...{[blockchain.key]: {address: addr, balance: bal}}
@@ -38,10 +44,11 @@ export const WalletView = () => {
     return (
       <div className="max-w-7xl mx-auto pb-16 px-8">
         <div className="py-16">
-          <div className="flex flex-row max-w-3xl space-x-3">
-            <div className="text-3xl font-Orbitron">Your wallet</div>
+          <div className="flex flex-row max-w-3xl space-x-3 mt-8">
+            <div className="text-4xl font-Orbitron">Your wallet</div>
             <div className="grow"></div>
-            <Button className="bg-primary/60" >Send</Button>
+            <Button className="bg-primary hover:bg-[#7fe9f5]" onClick={() => navigate("/wallet/send")}>Send</Button>
+            <Button className="bg-[#f64a28] hover:bg-greenish" onClick={() => navigate("/wallet/staking")}> <img src="/blockchains/solar.png" className="w-6 mr-2" alt="" /> Staking</Button>
           </div>
         </div>
 <div className="grid grid-cols-6 space-x-2">
@@ -57,7 +64,7 @@ export const WalletView = () => {
                   </div>
                 </div>
                 <div className="text-sm font-bold font-Orbitron text-primary w-[100px]">
-                {addresses[blockchain.key] && <div>{(addresses[blockchain.key].balance as number).toFixed(2)} {blockchain.data.ticker}</div> } 
+                {addresses[blockchain.key] && <div>{addresses[blockchain.key].balance} {blockchain.data.ticker}</div> } 
                 </div>
               </div>
             </div>))
@@ -78,12 +85,14 @@ export const WalletView = () => {
         </div>
 </div>
 <div>
+
 <div className="text-2xl py-4">Latest transactions</div>
-<div className="h-96 grid grid-cols-8">
-  <div className="py-2 px-3 rounded bg-gray-800/50  col-span-4 h-fit text-gray-400">
-  No transactions yet!
+<div className="h-96 grid grid-cols-6">
+  <div className="py-2 rounded bg-gray-800/30 border border-gray-800/30 col-span-4 h-fit text-gray-400">
+  <WalletTransactions currentWallet={cW} setShowTransaction={(b) => {}} setModalTx={(a) => {}}/>
   </div>
 </div>
+<div className="h-96"></div>
 </div>
       </div>
     );

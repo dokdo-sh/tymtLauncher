@@ -19,8 +19,8 @@ export const Navbar = () => {
     return (
         <div className=" border-b border-gray-800 top-0 sticky bg-black bg-opacity-90 z-50 shadow-lg shadow-black">
                 <div className="flex flex-row items-center justify-items-center max-w-7xl mx-auto">
-                        <div className="py-2">
-                        <div className="mx-4 flex flex-row items-center  rounded p-2 bg-red-500 cursor-pointer opacity-80 hover:opacity-100 ease-in duration-200" onClick={() => {dispatch(change(undefined));navigate("/")}  }><img src="/isotype_white.png" className="my-auto h-6  " alt="logo"  />
+                        <div className="">
+                        <div className="mx-4 flex flex-row items-center my-1 rounded-lg border-2 border-transparent hover:border-white p-2 bg-red-500 cursor-pointer opacity-80 hover:opacity-100 ease-in duration-200" onClick={() => {dispatch(change(undefined));navigate("/")}  }><img src="/isotype_white.png" className="my-auto h-6  " alt="logo"  />
                         
                         </div>
                         </div>
@@ -28,7 +28,7 @@ export const Navbar = () => {
                           
                            </div>
                             {game && currentGame &&
-                                <div className='flex flex-row bg-primary/20 py-1 rounded'>
+                                <div className='flex flex-row bg-primary/40 my-2   rounded'>
                                     <div>
                                     </div>
                                     <div className='text-2xl text-primary  mr-3'><span className=" text-primary/60"> <BsChevronCompactRight className='inline-block text-4xl'/> </span>

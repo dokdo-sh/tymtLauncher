@@ -90,7 +90,7 @@ const PlayButton = (props: { game: { key: string; data: Game } }) => {
       if (installing) {
         return (
           <div className="rounded py-2  px-8 text-xl w-fit font-Orbitron  duration-200 flex flex-row items-center h-fit bg-primary/70  hover:bg-primary cursor-pointer hover:ease-in '} select-none ease-in duration-100 my-3">
-            Installing...
+            Downloading...
           </div>
         );
       } else {
@@ -99,7 +99,7 @@ const PlayButton = (props: { game: { key: string; data: Game } }) => {
             className="rounded py-2  px-8 text-xl w-fit font-Orbitron  duration-200 flex flex-row items-center h-fit bg-primary/70  hover:bg-primary cursor-pointer hover:ease-in '} select-none ease-in duration-100 my-3"
             onClick={install}
           >
-            Install
+            Add to library
           </div>
         );
       }

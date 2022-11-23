@@ -45,10 +45,11 @@ export const Library = () => {
     return (
         <div className="max-w-7xl mx-auto py-16 px-8">
             <div className="pb-8 text-4xl">Library</div>
-            <div className="py-8 flex flex-row gap-4 flex-wrap">
+            <div className="py-8 grid grid-cols-3 gap-4 flex-wrap">
                     { availableGames.map((game) => {return (
-                                                <div className=" cursor-pointer  ease-in duration-150 hover:scale-110" onClick={() => {gameAction(game)}} key={game.key}>
-                                                <img src={game.data.thumbnail} className="border rounded-lg border-white/5 shadow-sm shadow-white/10 w-[180px]" alt="" />
+                                                <div className="col-span-1">
+                                                    <div className=" cursor-pointer  ease-in duration-150 hover:scale-110 mx-auto" onClick={() => {gameAction(game)}} key={game.key}>
+                                                <img src={game.data.thumbnail} className="border rounded-lg border-white/5 shadow-sm shadow-white/10" alt="" />
                     
                                                     <div className="flex flex-1 flex-col justify-between ">
                                                         <div></div>
@@ -56,13 +57,14 @@ export const Library = () => {
                                                         <div className="">
 
                                                          <div className="flex flex-row text-base font-bold py-2 px-2  items-center">
-                                                         <div className="font-light">{game.data.name}</div>
+                                                         <div className="text-xl">{game.data.name}</div>
                                                         <div className="grow"></div>
                                                     </div>
                                                         </div>
                                                     </div>
 
                                             </div>
+                                                </div>
                     )})}  
                 </div>
         </div>

@@ -23,6 +23,7 @@ import { Login, SessionView, SignUp } from './pages/SessionView';
 import { Create } from './pages/wallet/Create';
 import { GamePage } from './games/GamePage';
 import { Library } from './pages/Library';
+import { Staking } from './pages/wallet/Staking';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
@@ -39,6 +40,7 @@ root.render(
                 <Route path="wallet" element={<WalletView />} />
                 <Route path="wallet/receive" element={<Receive />} />
                 <Route path="wallet/send" element={<Send />} />
+                <Route path="wallet/staking" element={<Staking />} />
                 <Route path="downloads" element={<Downloads />} />
                 <Route path="session" element={<SessionView />} />
                 <Route path="/" element={<Catalog />} />
