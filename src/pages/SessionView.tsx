@@ -66,7 +66,7 @@ export const Login = () => {
 
                 <div className="mx-auto w-fit my-2"><input type="password" value={password} onKeyDown={(e) => {if (e.key == 'Enter') {login()}}} onChange={(e) => setPassword(e.currentTarget.value)} className="rounded bg-white/10 py-1 px-2" placeholder="Password"/></div>
         {wrongPassword && <div className="text-red-800 text-center text-xs pb-4">Password is not correct</div>}
-    <div className="py-3 w-fit mx-auto"><Button onClick={login}>Login</Button></div>
+    <div className="py-3 px-9 mx-auto"><Button className="w-full text-center font-bold" onClick={login}><div className="mx-auto">LOGIN</div></Button></div>
 
                     </div>
         </div>

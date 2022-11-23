@@ -10,7 +10,7 @@ const Games : {[key:string] : Game} = {
    "district53" : {
         name: "District 53",
         url: "http://d.com/",
-        thumbnail: "https://resources.tymt.com/media/1/thumb-240x340.png",
+        thumbnail: "/backgrounds/District53.png",
         tabs : {
             "servers": "Servers",
             "auctions": "Land auctions",
@@ -106,7 +106,7 @@ const Games : {[key:string] : Game} = {
     // "flightgear" : {
     //     name: "Flightgear",
     //     url: "http://d.com/",
-    //     thumbnail: "https://resources.tymt.com/media/3/thumb-240x340.png",
+    //     thumbnail: "/backgrounds/FlightGear.png",
     //     tabs : {
     //         "servers": "Servers",
     //         "auctions": "Land auctions",

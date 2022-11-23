@@ -65,7 +65,7 @@ export const ServerList = () => {
                       }
                     {servers && servers.map((srv:any, indx:number) => {
                       return (
-                        <div onClick={() => {setSelectedServer(`${srv.address}:${srv.port}`)}} className={`py-3 ease-in duration-300 bg-primary/10 px-3  hover:bg-primary/10 hover:scale-110 cursor-pointer ${selectedServer == `${srv.address}:${srv.port}`? 'bg-primary/20 rounded border border-primary' : ''}`} key={`${srv.address}:${srv.port}`}>
+                        <div onClick={() => {setSelectedServer(`${srv.address}:${srv.port}`)}} className={`py-3 ease-in duration-150 bg-primary/10 px-3  hover:bg-primary/10 hover:scale-105 cursor-pointer ${selectedServer == `${srv.address}:${srv.port}`? 'bg-primary/20 rounded border border-primary' : ''}`} key={`${srv.address}:${srv.port}`}>
                         <div className="text-green-500 font-bold">{srv.name.slice(1,-1)}</div>
                         <div className="text-gray-500 italic font-xs">{srv.description.slice(1,-1)}</div>
                       </div>

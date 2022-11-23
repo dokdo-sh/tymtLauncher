@@ -232,7 +232,7 @@ const WalletSetup = (props: { passphrase:string, password:string }) => {
 
       <div className="flex pt-2 flex-row-reverse items-center justify-items-center pb-10">
         <Button onClick={()=> {
-          TymtCore.Launcher.Settings.save({mnemonic: props.passphrase},props.password).then(() => window.location.href = "/session")
+          TymtCore.Launcher.Settings.save({mnemonic: props.passphrase, addresses: {} },props.password).then(() => window.location.href = "/session")
         }}>
           {t("Confirm")}
         </Button>

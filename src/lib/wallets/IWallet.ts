@@ -1,4 +1,5 @@
 
 export interface IWallet {
-    address: string
+    address: string,
+    ticker: string
   }

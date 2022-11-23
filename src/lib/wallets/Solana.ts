@@ -5,7 +5,8 @@ import {mnemonicToSeed} from 'bip39'
 
 class Solana implements IWallet {
     address:string;
-    
+    ticker: "SOL";
+
     constructor(mnemonic:string) {
 
         this.address = ""

@@ -5,7 +5,8 @@ import {mnemonicToSeed} from 'bip39'
 
 class Polygon implements IWallet {
     address:string;
-    
+    ticker: "MATIC";
+
     constructor(mnemonic:string) {
 
         this.address = ""
