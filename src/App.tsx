@@ -25,7 +25,7 @@ function App() {
     "/library/district53": "linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.5)), url('/backgrounds/district53/background.png') no-repeat",
     "/games/district53":"linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.5)), url('/backgrounds/district53/background.png') no-repeat",
     "/wallet/staking": "linear-gradient(rgb(246, 74, 40,.3), rgba(255,255,255,1))",
-    "all":"linear-gradient(rgba(0,0,0,.9), rgba(0,0,0,.9)), url('/backgrounds/tymt.jpg') no-repeat"
+    "all":"#101010"
   }
 
   useEffect(() => {

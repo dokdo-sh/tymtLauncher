@@ -65,7 +65,7 @@ export const Staking = () => {
                 <img src="/blockchains/solar.png" className="bg-[#f64a28] border rounded-full border-greenish  p-2"   alt="" />
                 <div>
                 <div className="text-3xl font-bold">Stake your SXP</div>
-                <div className="py-2 text-xs">Vote for the delegates with most contributions on the Solar blockchain.</div>
+                <div className="py-2 text-xs">Vote for public delegates on the Solar Blockchain</div>
                 </div>
                 <div className="grow"></div>
                 <Button className="bg-greenish text-white border border-gray-300/30 hover:bg-white hover:text-greenish" onClick={() => navigate("/wallet")}>Stake now</Button>
@@ -86,7 +86,7 @@ export const Staking = () => {
 }
 
 const DelegateItem = (props: {username:string}) => {
-    const [del, setDel] = useState({rank:0, short_proposal: "", contribution_count: 0})
+    const [del, setDel] = useState({rank:0, short_proposal: "", contribution_count: 0, avatar: "/blockchains/solar.png"})
     useEffect(() => {
         fetch(`https://delegates.solar.org/api/delegates/${props.username}`).then((rp) => {return rp.json()}).then((dlRp) => {
             setDel(dlRp)
@@ -95,14 +95,15 @@ const DelegateItem = (props: {username:string}) => {
 
     return (
 <div className="py-3 px-3 flex flex-row items-center hover:bg-gray-800/20 cursor-pointer">
-                <div className="px-6 w-24"> 
-                <div className="text-3xl text-center text-white font-black ">#{del.rank}</div>
+                <div className="flex-none w-38"> 
+                <img src={del.avatar? del.avatar :  "/blockchains/solar.png"} className="rounded-full bg-white border border-gray-100 shadow-sm w-16 h-16 aspect-square" alt="" />
+               
                  </div>
-                <div className="px-4">
-                <div className=" font-bold">{props.username}</div>
+                <div className="px-4 grow">
+                <div className=" font-bold">{props.username}<span className="text-gray-400">#{del.rank}</span> </div>
                 <div className="text-sm text-gray-400 py-2">{del.short_proposal}</div>
                 <div className="flex flex-row">
-                    <div className="bg-green-500/30 border border-green-500/20 w-fit p-1 text-xs rounded text-green-200 my-1">Forging</div>
+                    <div className="bg-green-500/30 border border-green-500/20 w-fit p-1 text-xs rounded text-green-200 my-1">Active</div>
                     <div className="bg-greenish/70 w-fit p-1 text-xs rounded text-white border border-gray-200/20 my-1 mx-2">{del.contribution_count} contributions</div>
                 </div>
                 </div>

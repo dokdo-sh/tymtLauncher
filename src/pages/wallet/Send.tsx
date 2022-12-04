@@ -13,7 +13,7 @@ import { selectWallet } from "../../lib/store/walletSlice";
 
 export const Send = (props:{}) => {
   const [performAction, setPerformAction] = useState(undefined)
-  const [txData, setTxData] = useState(undefined)
+  const [txData, setTxData] = useState(undefined) 
   const navigate = useNavigate()
   const wallet = useAppSelector(selectWallet)
 

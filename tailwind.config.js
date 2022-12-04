@@ -7,7 +7,7 @@ module.exports = {
           'hero': "url('https://thenerdstash.com/wp-content/uploads/2022/06/Minecraft-Fight-Warden.jpg')",
         },
       colors: {
-          'primary': '#52e1f2',
+          'primary': '#00d8d2',
           'secondary': '#f8f9fa',
           'tertiary': '#ffffff',
           'greenish': '#f25d38',

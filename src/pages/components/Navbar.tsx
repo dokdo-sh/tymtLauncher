@@ -3,10 +3,11 @@ import Games from '../../lib/api/Games';
 import {change, selectGame} from '../../lib/store/gameSlice'
 import {changeTab, selectCurrentGame} from '../../lib/store/currentGameSlice'
 import { ProfileSelector } from './ProfileSelector';
-import { BsArrowRight, BsChevronBarRight, BsChevronCompactRight, BsDownload } from 'react-icons/bs';
+import { BsArrowRight, BsChat, BsChevronBarRight, BsChevronCompactRight, BsDownload } from 'react-icons/bs';
 import { RiLogoutCircleLine } from 'react-icons/ri';
 import { redirect, useNavigate } from 'react-router-dom';
 import { changeSession } from '../../lib/store/sessionSlice';
+import { WebviewWindow } from '@tauri-apps/api/window';
 
 export const Navbar = () => {
     const game = useAppSelector(selectGame);
@@ -54,11 +55,17 @@ export const Navbar = () => {
                         </div>
                           } 
                         <div className="grow"></div>
-                                <a className={`bg-gray-800  font-Orbitron text-sm border border-transparent px-3 hover:text-white/70 hover:border hover:border-white/30 py-2 ease-in duration-200 hover:bg-primary/10 cursor-pointer rounded ${window.location.pathname == "/downloads"?'border-primary/30 text-primary':''}`} onClick={() => {dispatch(change(undefined));navigate('/downloads')}} href='#'>
+                                <a className={`bg-gray-800   text-sm border border-transparent px-3 hover:text-white/70 hover:border hover:border-white/30 py-2 ease-in duration-200 hover:bg-primary/10 cursor-pointer rounded ${window.location.pathname == "/downloads"?'border-primary/30 text-primary':''}`} onClick={() => {dispatch(change(undefined));navigate('/downloads')}} href='#'>
                                 <BsDownload/>
                                 </a>
                                 <ProfileSelector/>
-                                <div className='pr-4 text-xs font-Orbitron hover:text-red-500 hover:cursor-pointer rounded' onClick={() => { dispatch(changeSession({logged:false, password:undefined}));navigate("/session")}}> <RiLogoutCircleLine/> </div>
+                                <div className='text-primary flex flex-row items-center gap-3   text-sm border border-primary px-3 hover:text-white/70 hover:border hover:border-white/30 py-1 ease-in duration-200 hover:bg-primary/10 cursor-pointer rounded mx-2' onClick={() => {
+                                    const webview = new WebviewWindow('theUniqueLabel', {
+                                        url: '/chat ',
+                                        title: 'tymt Chat'
+                                      });
+                                }}> <BsChat className='inline-block'/> Chat </div>
+                                <div className='pr-4 text-xs  hover:text-red-500 hover:cursor-pointer rounded' onClick={() => { dispatch(changeSession({logged:false, password:undefined}));navigate("/session")}}> <RiLogoutCircleLine/> </div>
                 </div>                
         </div>
     );

@@ -78,7 +78,7 @@ export const Catalog = () => {
     return (
         <div className="">
             <div className="max-w-7xl border-x border-[#161616] mx-auto flex flex-row items-center px-8 h-[600px] " style={{background: `url('/backgrounds/banner.jpg') no-repeat`}}>
-                <div className="py-16 h-fit font-Sora">
+                <div className="py-16 h-fit">
                     <div className="text-6xl font-bold" style={{textShadow: '4px 4px #161616;'}}>District 53</div>
                     <div className="font-bold py-3">Recent release</div>
                     <div className="w-1/2 py-2" style={{textShadow: '4px 4px #000000;'}}>District 53 is a virtual desktop and mobile voxel based metaverse game.
@@ -117,7 +117,7 @@ export const Catalog = () => {
             <div className="max-w-7xl mx-auto bg-[#080808] border-x border-[#161616]">
             <div className="p-8">
                 <div className="flex flex-row">
-                <div className="text-4xl font-Orbitron space-x-3">
+                <div className="text-4xl  space-x-3">
                     {/* <span>Tymt Catalog</span> */}
                      </div>
                 <div className="grow"></div>
@@ -153,8 +153,8 @@ export const Catalog = () => {
                         <div className="grid grid-cols-3">
                         { availableGames.map((game) => {return (
                             <div className="col-span-1">
-                                <div className="font-Sora mx-auto hover:scale-110 w-[301px] rounded-lg ease-in duration-150 cursor-pointer ">
-                                <img src={game.data.thumbnail} onClick={() => navigate(`/games/${game.key}`)} className="border w-fit border-gray-800/50  rounded-lg " alt="" />
+                                <div className="mx-auto hover:scale-110 w-[301px] rounded-lg ease-in duration-150 cursor-pointer ">
+                                <img src={game.data.thumbnail} onClick={() => navigate(`/games/${game.key}`)} className="border-2 hover:border-white w-fit border-gray-800/50  rounded-lg " alt="" />
                                 <div className="py-1 font-bold text-xl">{game.data.name}</div>
                                 <div className="text-sm text-justify">A virtual desktop and mobile voxel based metaverse game.</div>
                             </div>

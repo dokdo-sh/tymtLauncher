@@ -40,7 +40,7 @@ export const WalletTransactions = (props:{currentWallet: Solar, setModalTx: (tx:
         <div className="overflow-y-scroll h-full divide-y divide-gray-800/30">
         {transactions.map((transaction: any) => (
           <div className="py-4 items-center hover:bg-gray-800/30 cursor-pointer select-none px-6" onClick={() => {props.setModalTx(transaction.id);props.setShowTransaction(true)}}>
-            <img src="/blockchains/solar.png" className="w-4 absolute translate-x-8 translate-y-6" alt="" />
+            <img src="/blockchains/solar.png" className="w-5 absolute translate-x-8 translate-y-6 border-2 border-gray-800 rounded-full" alt="" />
                   {transaction.type == 2 && transaction.typeGroup == 2 &&
                               <div className="flex align-middle items-center">
                               <div className="bg-dark-secondary rounded-full items-center justify-center py-2 mx-2"><MdHowToVote className="inline-flex text-primary hover:text-dark-primary cursor-pointer mx-3 " /></div>
@@ -54,7 +54,7 @@ export const WalletTransactions = (props:{currentWallet: Solar, setModalTx: (tx:
                   {transaction.type == 6 && transaction.typeGroup == 1 &&
                                 <div className="flex align-middle items-center">
                                 {transaction.sender != currentWallet.address && 
-                                <div className="bg-dark-secondary rounded-full items-center justify-center py-2 mx-2"><BsArrowDownLeft className="inline-flex text-primary hover:text-dark-primary cursor-pointer mx-3" /></div>
+                                <div className="bg-red-500 rounded-full items-center justify-center py-2 mx-2"><BsArrowDownLeft className="inline-flex text-white hover:text-dark-primary cursor-pointer mx-3" /></div>
                                 }
                                 {transaction.sender == currentWallet.address && 
                                 <div className="bg-dark-secondary rounded-full items-center justify-center py-2 mx-2"><BsArrowUpRight className="inline-flex text-primary hover:text-dark-primary cursor-pointer mx-3" /></div>

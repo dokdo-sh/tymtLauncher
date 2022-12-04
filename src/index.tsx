@@ -24,6 +24,7 @@ import { Create } from './pages/wallet/Create';
 import { GamePage } from './games/GamePage';
 import { Library } from './pages/Library';
 import { Staking } from './pages/wallet/Staking';
+import { Chat } from './pages/Chat';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
@@ -33,6 +34,7 @@ root.render(
     <Provider store={store}>
       <BrowserRouter>
           <Routes>
+          <Route path="/chat" element={<Chat />} />
               <Route path="/" element={<App />} >
                 <Route path="library" element={<Library />} />
                 <Route path="library/district53" element={<District53 />} />
