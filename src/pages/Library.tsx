@@ -49,7 +49,7 @@ export const Library = () => {
                     { availableGames.map((game) => {return (
                                                 <div className="col-span-1">
                                                     <div className=" cursor-pointer  ease-in duration-150 hover:scale-110 mx-auto" onClick={() => {gameAction(game)}} key={game.key}>
-                                                <img src={game.data.thumbnail} className="border rounded-lg border-white/5 shadow-sm shadow-white/10" alt="" />
+                                                <img src={game.data.thumbnail} className="border-2 rounded-lg hover:hover:border-white border-white/5 shadow-sm shadow-white/10" alt="" />
                     
                                                     <div className="flex flex-1 flex-col justify-between ">
                                                         <div></div>

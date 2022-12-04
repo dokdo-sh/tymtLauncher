@@ -58,9 +58,9 @@ export const Login = () => {
                 <div className="border border-primary p-1 rounded space-y-3 bg-black/40">
                     <div className="border-2 border-red-500 rounded space-y-4 p-6 w-full h-full">
                     <img src="/logo.png" className="h-16 mx-auto" alt="" />
-                    <div className="text-3xl text-center py-3 font-Orbitron font-bold">Log in on <span className="text-primary">tymt</span></div>
+                    <div className="text-3xl text-center py-3  font-bold">Log in on <span className="text-primary">tymt</span></div>
                     <div className="">
-                                <div className="font-Orbitron text-center py-4 text-xs">
+                                <div className=" text-center py-4 text-xs">
                     Enter your password to decrypt your mnemonic.
                 </div>
 
@@ -113,9 +113,9 @@ const FirstStep = (props: {setPassword: (password:string) => void}) => {
                     <div className="border border-primary p-1 rounded space-y-3">
                         <div className="border border-red-500 rounded space-y-4 p-6 w-full h-full">
                         <img src="/logo.png" className="h-16 mx-auto" alt="" />
-                        <div className="text-3xl text-center py-3 font-Orbitron font-bold">Welcome to <span className="text-primary">tymt</span></div>
+                        <div className="text-3xl text-center py-3  font-bold">Welcome to <span className="text-primary">tymt</span></div>
                         <div className="">
-                                    <div className="font-Orbitron text-center py-4 text-xs">
+                                    <div className=" text-center py-4 text-xs">
                         Set up a local password to encrypt your mnemonic.
                     </div>
         
@@ -147,12 +147,12 @@ const SecondStep = (props: {setAction: (action:string) => void}) => {
             <div className="border border-primary p-1 rounded space-y-3">
                 <div className="border border-red-500 rounded space-y-4 p-6 w-full h-full">
                 <img src="/logo.png" className="h-16 mx-auto" alt="" />
-                <div className="text-3xl text-center py-3 font-Orbitron font-bold">Log in on <span className="text-primary">tymt</span></div>
-                <div className="font-Orbitron text-center py-4 text-xs">
+                <div className="text-3xl text-center py-3  font-bold">Log in on <span className="text-primary">tymt</span></div>
+                <div className=" text-center py-4 text-xs">
                     You can log in with your mnemonic or create a new one.
                 </div>
-                <div className='bg-primary/70 py-2 mx-auto px-6 text-base w-fit font-Orbitron hover:bg-primary cursor-pointer hover:ease-in duration-200 flex flex-row items-center h-fit' onClick={() => proceed("import")}> <div  >Import mnemonic</div></div>
-                  <div className='bg-red-500/70 py-2 mx-auto px-6 text-base w-fit font-Orbitron hover:bg-red-500 cursor-pointer hover:ease-in duration-200 flex flex-row items-center h-fit' onClick={() => proceed("create")}> <div>Create mnemonic</div></div>
+                <div className='bg-primary/70 py-2 mx-auto px-6 text-base w-fit  hover:bg-primary cursor-pointer hover:ease-in duration-200 flex flex-row items-center h-fit' onClick={() => proceed("import")}> <div  >Import mnemonic</div></div>
+                  <div className='bg-red-500/70 py-2 mx-auto px-6 text-base w-fit  hover:bg-red-500 cursor-pointer hover:ease-in duration-200 flex flex-row items-center h-fit' onClick={() => proceed("create")}> <div>Create mnemonic</div></div>
                 <div className="text-center text-xs">
                     tymt.com
                 </div>

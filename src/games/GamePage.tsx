@@ -76,27 +76,27 @@ const PlayButton = (props: { game: { key: string; data: Game } }) => {
     if (installed) {
       return (
         <div
-          className="rounded py-2  px-8 text-xl w-fit font-Orbitron  duration-200 flex flex-row items-center h-fit bg-primary/70  hover:bg-primary cursor-pointer hover:ease-in '} select-none ease-in duration-100 my-3"
+          className="rounded py-2  px-8 font-bold w-fit   duration-200 flex flex-row items-center h-fit bg-primary/70  hover:bg-primary cursor-pointer hover:ease-in '} select-none ease-in duration-100 my-3"
           onClick={() => {
             props.game.data.component == undefined
               ? TymtCore.Launcher.Launch(props.game.key)
               : navigate(`/library/${props.game.key}`);
           }}
         >
-          Play
+          PLAY
         </div>
       );
     } else {
       if (installing) {
         return (
-          <div className="rounded py-2  px-8 text-xl w-fit font-Orbitron  duration-200 flex flex-row items-center h-fit bg-primary/70  hover:bg-primary cursor-pointer hover:ease-in '} select-none ease-in duration-100 my-3">
+          <div className="rounded py-2  px-8 text-xl w-fit   duration-200 flex flex-row items-center h-fit bg-primary/70  hover:bg-primary cursor-pointer hover:ease-in '} select-none ease-in duration-100 my-3">
             Downloading...
           </div>
         );
       } else {
         return (
           <div
-            className="rounded py-2  px-8 text-xl w-fit font-Orbitron  duration-200 flex flex-row items-center h-fit bg-primary/70  hover:bg-primary cursor-pointer hover:ease-in '} select-none ease-in duration-100 my-3"
+            className="rounded py-2  px-8 text-xl w-fit   duration-200 flex flex-row items-center h-fit bg-primary/70  hover:bg-primary cursor-pointer hover:ease-in '} select-none ease-in duration-100 my-3"
             onClick={install}
           >
             Add to library
