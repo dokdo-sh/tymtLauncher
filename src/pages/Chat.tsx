@@ -15,8 +15,8 @@ export const Chat = () => {
                         <div className="py-2 px-3 flex flex-row bg-primary/50">
                             <img className="rounded-full h-12 w-12 bg-gray-800" src="https://leitesv.dev/logo.jpg"></img>
                             <div>
-                                <div className="px-3 font-bold">Tío Gilipollas</div>
-                                <div className="italic text-sm px-3 text-gray-100">Qué va tío si te lo he dicho...</div>
+                                <div className="px-3 font-bold">placeholder</div>
+                                <div className="italic text-sm px-3 text-gray-100">placeholder</div>
                             </div>
                         </div>
                     </div>
@@ -24,7 +24,7 @@ export const Chat = () => {
                 <div className="grow flex flex-col">
                     <div className="py-3 px-4 border-b border-gray-800 flex flex-row items-center">
                         <div className="grow">
-                        <div className="font-bold py-">Tío Gilipollas</div>
+                        <div className="font-bold py-">placeholder</div>
                         <div className="italic text-gray-400 text-xs">last seen recently</div>
                         </div>
                         
