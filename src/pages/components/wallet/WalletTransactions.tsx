@@ -11,7 +11,8 @@ import Solar from "../../../lib/wallets/Solar";
 export const WalletTransactions = (props:{currentWallet: Solar, setModalTx: (tx:string) => void, setShowTransaction: (b:boolean) => void}) => {
     const [currentWallet, setCurrentWallet] = useState(undefined);
     
-    const url = `https://sxp.mainnet.sh/api//wallets/${props.currentWallet.address}/transactions?limit=10`;
+    const url = new URL(`https://sxp.mainnet.sh/api/wallets/${props.currentWallet.address}/transactions?limit=10`);
+    ;
     const { data, error, isLoading } = useSWR(url.toString(), {
       refreshInterval: 3000,
       dedupingInterval: 10000,
