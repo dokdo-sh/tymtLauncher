@@ -13,18 +13,17 @@ fn main() {
     .expect("error while running tauri application");
 }
 
+use std::ffi::c_int;
+
 use std::process::Command;
 
 use std::path::Path;
 use std::path::PathBuf;
 
 use std::fs::File;
-use std::fs::metadata;
 
 use std::{io, fs};
 use std::io::prelude::*;
-
-use zip_extensions::*;
 
 #[tauri::command]
 fn get_app_dir(app_handle: tauri::AppHandle) -> Option<PathBuf> {
@@ -53,7 +52,6 @@ async fn download_file(app_handle: tauri::AppHandle, url: String, target: String
   Command::new("chmod")
             .args(["+x", &location])
             .spawn();
-
 
   return true;
 }
@@ -106,6 +104,10 @@ async fn download_and_unzip(app_handle: tauri::AppHandle, url: String, target: S
 
   fs::remove_file(&path);
 
+  Command::new("chmod")
+            .args(["+x", &final_location])
+            .spawn();
+
   println!("done");
   return true;
 }
@@ -129,11 +131,25 @@ async fn set_executable() {
 
 }
 
-
 #[tauri::command]
-fn open_game(loc: String, content_dir: String, args: Vec<String>) {
-  Command::new(loc)
-      .env("MINETEST_USER_PATH", content_dir)
-      .args(args)
-      .spawn();
+fn open_game(app_handle: tauri::AppHandle, loc: String, content_dir: String, args: Vec<String>, platform: c_int) {
+  let app_dir = app_handle.path_resolver().app_dir().unwrap().into_os_string().into_string().to_owned().unwrap();
+  let mut cont_dir = (app_dir.to_string() + &content_dir).to_owned();  
+  if platform == 1 {  //OS X , Linux  
+    let mut exe_path = format!("{}/{}", &cont_dir, &loc);
+    Command::new(exe_path)
+        .env("MINETEST_USER_PATH", &cont_dir)
+        .args(args)
+        .spawn();
+        // .output()
+        // .unwrap();  
+  } else {    //Windows
+    let mut exe_path = format!("{}/bin/{}", &cont_dir, &loc);
+    Command::new(&exe_path)
+        .env("MINETEST_USER_PATH", &cont_dir)
+        .args(args)
+        .spawn();
+        // .output()
+        // .unwrap(); 
+  }
 }

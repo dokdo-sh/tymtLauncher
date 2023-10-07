@@ -4,6 +4,7 @@ import currentGameReducer from '../lib/store/currentGameSlice';
 import currentWalletReducer from '../lib/store/walletSlice';
 import sessionReducer from '../lib/store/sessionSlice'
 import appReducer from '../lib/store/appSlice'
+import searchReducer from '../lib/store/searchSlice'
 
 export const store = configureStore({
   reducer: {
@@ -11,7 +12,8 @@ export const store = configureStore({
     currentGame: currentGameReducer,
     wallet: currentWalletReducer,
     session: sessionReducer,
-    app: appReducer
+    app: appReducer,
+    search: searchReducer,
   },
 });
 

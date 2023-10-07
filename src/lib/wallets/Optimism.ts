@@ -5,29 +5,29 @@ import {mnemonicToSeed} from 'bip39'
 
 class Optimism implements IWallet {
     address:string;
-    ticker: "AVAX";
+    ticker: "ETH";
     
     constructor(mnemonic:string) {
-        this.address = ""
+        this.address = "";
     }
 
     static async getAddress(mnemonic:string) : Promise<string> {
         const seed = await mnemonicToSeed(mnemonic);
         const hdNode = hdkey.fromMasterSeed(seed);
-        const node = hdNode.derivePath(`m/44'/60'/0'`)
+        const node = hdNode.derivePath(`m/44'/60'/0'`);
         const change = node.deriveChild(0);
         const childNode = change.deriveChild(1);
         const childWallet = childNode.getWallet();
         const wallet = new ethers.Wallet(childWallet.getPrivateKey().toString('hex'));
-        return wallet.address
+        return wallet.address;
     }
 
     static async getBalance(addr:string) : Promise<number> {
         try {
             const customProvider = new ethers.providers.JsonRpcProvider("https://mainnet.optimism.io");
-            return parseFloat(ethers.utils.formatEther(await customProvider.getBalance(addr)))    
+            return parseFloat(ethers.utils.formatEther(await customProvider.getBalance(addr)))  ;  
         } catch {
-            return 0
+            return 0;
         }
     }
 }
