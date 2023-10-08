@@ -1,4 +1,5 @@
 import moment from "moment";
+import useSWR from "swr";
 import { useEffect, useState } from "react";
 import { BsArrowDownLeft, BsArrowRight, BsArrowUpRight, BsClock, BsReceipt } from "react-icons/bs";
 import "../../../lib/translations/i18n";
@@ -9,35 +10,23 @@ import Solar from "../../../lib/wallets/Solar";
 
 export const WalletTransactions = (props:{currentWallet: Solar, setModalTx: (tx:string) => void, setShowTransaction: (b:boolean) => void}) => {
     const [currentWallet, setCurrentWallet] = useState(undefined);
-    const [intervalTxs, setIntervalTxs] = useState(undefined);
-
+    
+    const url = `https://sxp.mainnet.sh/api//wallets/${props.currentWallet.address}/transactions?limit=10`;
+    const { data, error, isLoading } = useSWR(url.toString(), {
+      refreshInterval: 3000,
+      dedupingInterval: 10000,
+      fetcher: (...args) => fetch(...args).then(async (res) => await res.json()),
+    });
     const network = {ticker: "SXP"};
 
-    useEffect(() => {
-        setCurrentWallet(props.currentWallet)
-        function getTransactions() {
-            props.currentWallet.getLatestTransactions()
-            .then((transactions: any) => {
-                setTransactions(transactions);
-            }).catch(() => {});
-        }
-        setIntervalTxs(setInterval(getTransactions, 5000));
-        getTransactions();
-        return () => {
-            clearInterval(intervalTxs)
-        }
-    },[])
-
-    const [transactions, setTransactions] = useState(undefined);
-
-    if (transactions === undefined) {
-        return <div className="min-h-full">e</div>;
-    } else {
-        return (
+    if (error) return <span>Failed to fetch characters.</span>;
+    if (isLoading) return <span>Loading...</span>;
+    return (
         <div className="flex flex-col text-white">
             <div className="flex-1 grow">
-                <div className="overflow-y-scroll h-full divide-y divide-gray-800/30">
-                {transactions.map((transaction: any) => (
+                <div className=" h-full divide-y divide-gray-800/30">
+                {data.data.length === 0 && <span>No transactions</span>}
+                { data.data.length !== 0 && data.data.map((transaction: any) => (
                     <div className="py-4 items-center hover:bg-gray-800/30 cursor-pointer select-none px-6" 
                         onClick={
                             () => {
@@ -123,10 +112,9 @@ export const WalletTransactions = (props:{currentWallet: Solar, setModalTx: (tx:
                                 </div>
                             }
                         </div>
-                    ))}
+                ))}
                 </div>
             </div>
         </div>
-        );
-    }
+    );
 };

@@ -228,13 +228,13 @@ export class Solar implements IWallet {
     //     Armor.addTxToQueue(JSON.stringify({transactions: [txJson]}),api_url)     
     // }
     
-    async getLatestTransactions() : Promise<any> {
-        try {
-         return (await (await fetch(`${api_url}/wallets/${this.address}/transactions?limit=10`)).json()).data as any;
-        } catch {
-            return null;
-        }
-     }
+    // async getLatestTransactions() : Promise<any> {
+    //     try {
+    //         return (await (await fetch(`${api_url}/wallets/${this.address}/transactions?limit=10`)).json()).data as any;
+    //     } catch {
+    //         return null;
+    //     }
+    //  }
 
 }
 export default Solar;

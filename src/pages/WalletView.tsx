@@ -28,9 +28,8 @@ export const WalletView = () => {
         Object.keys(TymtCore.Blockchains).map((key: string) => {
             return { key: key as BlockchainKey, data: TymtCore.Blockchains[key as BlockchainKey] }
         }).map(async (blockchain) => {
-            let addr = await blockchain.data.wallet.getAddress(wallet ? wallet.mnemonic : "")
-            let bal = (await blockchain.data.wallet.getBalance(addr)).toFixed(2)
-            console.log(addr)
+            let addr = await blockchain.data.wallet.getAddress(wallet ? wallet.mnemonic : "");
+            let bal = (await blockchain.data.wallet.getBalance(addr)).toFixed(2);
             setAddresses(addresses => ({
                 ...addresses,
                 ...{ [blockchain.key]: { address: addr, balance: bal } }
@@ -98,12 +97,9 @@ export const WalletView = () => {
                 </div>
                 <div>
                     <div className="text-2xl py-4">Latest transactions</div>
-                    <div className="h-96 grid grid-cols-6">
-                        <div className="py-2 rounded bg-gray-800/30 border border-gray-800/30 col-span-4 h-fit text-gray-400">
-                            <WalletTransactions currentWallet={cW} setShowTransaction={(b) => { }} setModalTx={(a) => { }} />
-                        </div>
+                    <div className="py-2 rounded bg-gray-800/30 border border-gray-800/30 col-span-4 h-fit text-gray-400">
+                        <WalletTransactions currentWallet={cW} setShowTransaction={(b) => { }} setModalTx={(a) => { }} />
                     </div>
-                    <div className="h-96"></div>
                 </div>
             </div>
         );
