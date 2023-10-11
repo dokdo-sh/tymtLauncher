@@ -1,13 +1,6 @@
 import TymtCore, { BlockchainKey } from "../lib/core/TymtCore";
-<<<<<<< HEAD
 import { selectWallet } from "../lib/store/walletSlice";
 import { useAppSelector } from "../app/hooks";
-=======
-import { ethers } from 'ethers'
-import { selectWallet } from "../lib/store/walletSlice";
-import { useAppSelector } from "../app/hooks";
-import { Wallet } from "../lib/core/Wallet";
->>>>>>> e247bcb19599fded64ad44f70b12b4c323d433b9
 import { useEffect, useState } from "react";
 import { Loading } from "./components/Loading";
 import QRCode from "react-qr-code";
@@ -16,10 +9,6 @@ import { BiCopy } from "react-icons/bi";
 import { Button } from "./components/Button";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-<<<<<<< HEAD
-=======
-import { Downloads } from "./Downloads";
->>>>>>> e247bcb19599fded64ad44f70b12b4c323d433b9
 import { WalletTransactions } from "./components/wallet/WalletTransactions";
 import Solar from "../lib/wallets/Solar";
 
