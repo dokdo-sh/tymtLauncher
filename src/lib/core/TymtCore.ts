@@ -11,6 +11,8 @@ import { Wallet } from "../store/walletSlice";
 import BSC from "../wallets/BSC";
 import Solana from "../wallets/Solana";
 import Polygon from "../wallets/Polygon";
+import Avalanche from "../wallets/Avalnche";
+import Arbitrum from "../wallets/Arbitrum";
 
 export type BlockchainKey =
   | "solar"
@@ -18,8 +20,10 @@ export type BlockchainKey =
   | "eth"
   | "solana"
   | "polygon"
-  // | "doge"
+  | "avalanche"
+  | "arbitrum"
   // | "btc"
+  // | "doge"
   ;
 
 const TymtCore = {
@@ -152,16 +156,6 @@ const TymtCore = {
       ticker: "ETH",
       wallet: Ethereum,
     },
-    // btc: {
-    //   name: "Bitcoin",
-    //   ticker: "BTC",
-    //   wallet: Ethereum,
-    // },
-    // doge: {
-    //   name: "Dogecoin",
-    //   ticker: "DOGE",
-    //   wallet: Ethereum,
-    // },
     solana: {
       name: "Solana",
       ticker: "SOL",
@@ -172,11 +166,16 @@ const TymtCore = {
       ticker: "MATIC",
       wallet: Polygon,
     },
-    // polka: {
-    //   name: "Polkadot",
-    //   ticker: "DOT",
-    //   wallet: Ethereum,
-    // }
+    avalanche: {
+      name: "Avalanche",
+      ticker: "AVAX",
+      wallet: Avalanche,
+    },
+    arbitrum: {
+      name: "Arbitrum One",
+      ticker: "ETH",
+      wallet: Arbitrum,
+    },
   },
 };
 

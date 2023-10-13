@@ -3,9 +3,9 @@ import {ethers} from 'ethers'
 import {hdkey} from 'ethereumjs-wallet'
 import {mnemonicToSeed} from 'bip39'
 
-class Ethereum implements IWallet {
+class Avalanche implements IWallet {
     address:string;
-    ticker: "ETH";
+    ticker: "AVAX";
     
     constructor(mnemonic:string) {
         this.address = ""
@@ -24,7 +24,7 @@ class Ethereum implements IWallet {
 
     static async getBalance(addr:string) : Promise<number> {
         try {
-            const customProvider = new ethers.providers.JsonRpcProvider("https://eth1.mainnet.sh/");
+            const customProvider = new ethers.providers.JsonRpcProvider("https://api.avax.network/ext/bc/C/rpc");
             return parseFloat(ethers.utils.formatEther(await customProvider.getBalance(addr)))    
         } catch {
             return 0
@@ -32,4 +32,4 @@ class Ethereum implements IWallet {
     }
 }
 
-export default Ethereum;
+export default Avalanche;

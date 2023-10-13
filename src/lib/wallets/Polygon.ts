@@ -26,8 +26,7 @@ class Polygon implements IWallet {
     static async getBalance(addr:string) : Promise<number> {
         try {
             const customProvider = new ethers.providers.JsonRpcProvider("https://polygon-rpc.com/");
-            return parseFloat(ethers.utils.formatEther(await customProvider.getBalance(addr)))
-    
+            return parseFloat(ethers.utils.formatEther(await customProvider.getBalance(addr)))    
         } catch {
                 return  0           
         }

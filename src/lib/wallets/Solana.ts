@@ -1,7 +1,7 @@
 import { IWallet } from "./IWallet"
-import {ethers} from 'ethers'
-import {hdkey} from 'ethereumjs-wallet'
 import {mnemonicToSeed} from 'bip39'
+import * as ed25519 from 'ed25519-hd-key';
+import { Keypair, Connection, clusterApiUrl, PublicKey } from '@solana/web3.js';
 
 class Solana implements IWallet {
     address:string;
@@ -14,19 +14,30 @@ class Solana implements IWallet {
 
     static async getAddress(mnemonic:string) : Promise<string> {
         const seed = await mnemonicToSeed(mnemonic);
-        const hdNode = hdkey.fromMasterSeed(seed);
-        const node = hdNode.derivePath(`m/44'/60'/0'`)
-        const change = node.deriveChild(0);
-        const childNode = change.deriveChild(1);
-        const childWallet = childNode.getWallet();
-        const wallet = new ethers.Wallet(childWallet.getPrivateKey().toString('hex'));
-        return wallet.address
+        // Derive the solana address seed from the master seed
+        const derivationPath = "m/44'/501'/0'/0'";
+        const derivedSeed = ed25519.derivePath(derivationPath, seed.toString('hex')).key;
+        // Create the keypair from the derived seed
+        const keypair = Keypair.fromSeed(derivedSeed);
+        // Get the public key (address) and the private key from the keypair
+        const publicKey = keypair.publicKey.toString();
+        // const privateKey = keypair.secretKey.toString();
+        return publicKey
     }
 
     static async getBalance(addr:string) : Promise<number> {
         try {
-            const customProvider = new ethers.providers.JsonRpcProvider("https://api.devnet.solana.com/");
-        return parseFloat(ethers.utils.formatEther(await customProvider.getBalance(addr)))
+            // Create a connection to the network
+            const network = clusterApiUrl('mainnet-beta'); // You can change this to 'mainnet-beta' or 'testnet'
+            const connection = new Connection(network);
+
+            // Get the balance of your solana address in lamports
+            const pbKey = new PublicKey(addr);
+            const balance = await connection.getBalance(pbKey);
+
+            // Convert the balance from lamports to sols
+            const sols = balance / 1e9;
+            return sols;
         } catch {
             return 0
         }
