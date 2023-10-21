@@ -13,6 +13,8 @@ import Solana from "../wallets/Solana";
 import Polygon from "../wallets/Polygon";
 import Avalanche from "../wallets/Avalnche";
 import Arbitrum from "../wallets/Arbitrum";
+import Bitcoin from "../wallets/Bitcoin";
+import Optimism from "../wallets/Optimism";
 
 export type BlockchainKey =
   | "solar"
@@ -22,7 +24,9 @@ export type BlockchainKey =
   | "polygon"
   | "avalanche"
   | "arbitrum"
-  // | "btc"
+  | "btc"
+  | "op"
+  // | "cardano"
   // | "doge"
   ;
 
@@ -156,6 +160,16 @@ const TymtCore = {
       ticker: "ETH",
       wallet: Ethereum,
     },
+    btc: {
+      name: "Bitcoin",
+      ticker: "BTC",
+      wallet: Bitcoin,
+    },
+    // doge: {
+    //   name: "Dogecoin",
+    //   ticker: "DOGE",
+    //   wallet: Dogecoin,
+    // },
     solana: {
       name: "Solana",
       ticker: "SOL",
@@ -176,6 +190,16 @@ const TymtCore = {
       ticker: "ETH",
       wallet: Arbitrum,
     },
+    op: {
+      name: "Optimism",
+      ticker: "ETH",
+      wallet: Optimism,
+    },
+    // cardano: {
+    //   name: "Cardano",
+    //   ticker: "ADA",
+    //   wallet: Cardano,
+    // }
   },
 };
 
