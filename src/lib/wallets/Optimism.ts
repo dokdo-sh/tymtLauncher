@@ -5,7 +5,7 @@ import {mnemonicToSeed} from 'bip39'
 
 class Optimism implements IWallet {
     address:string;
-    ticker: "AVAX";
+    ticker: "ETH";
     
     constructor(mnemonic:string) {
         this.address = ""

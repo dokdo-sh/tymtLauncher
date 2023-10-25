@@ -14,7 +14,7 @@ import Solar from "../lib/wallets/Solar";
 
 export type WalletAddress = {
   [keyValue: string]: {
-    address: string, balance: string
+    address: string, balance: string, explorer: string
   }
 }
 
@@ -30,10 +30,11 @@ export const WalletView = () => {
     }).map(async (blockchain) => {
       let addr = await blockchain.data.wallet.getAddress(wallet ? wallet.mnemonic : "")
       let bal = (await blockchain.data.wallet.getBalance(addr)).toFixed(2)
+      let url = blockchain.data.explorer
       console.log(addr)
       setAddresses(addresses => ({
         ...addresses,
-        ...{ [blockchain.key]: { address: addr, balance: bal } }
+        ...{ [blockchain.key]: { address: addr, balance: bal, explorer: url+addr } }
       }))
     })
   }
@@ -75,7 +76,7 @@ export const WalletView = () => {
           <div className="col-span-2">
             <div className="bg-gray-800/50 py-8 rounded border border-gray-800">
               <div className="pb-6 text-center text-2xl ">Deposit</div>
-              <QRCode value={addresses[selectedBlockchain] ? addresses[selectedBlockchain].address : ""} size={150} className="mx-auto" />
+              <QRCode value={addresses[selectedBlockchain] ? addresses[selectedBlockchain].explorer : ""} size={150} className="mx-auto" />
               <div className="py-4">
                 <div className="grow w-fit rounded-lg   text-center select-none   cursor-pointer text-sm rounded-full hover:bg-primary/10 hover:text-white px-2 py-1 mx-auto text-primary hover:text-white">
                   <div className="font-mono " onClick={() => { writeText(addresses[selectedBlockchain] ? addresses[selectedBlockchain].address : "").then(() => { toast.success("Copied!", { autoClose: 2000 }) }) }}>

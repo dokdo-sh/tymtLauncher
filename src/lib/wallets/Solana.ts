@@ -8,7 +8,6 @@ class Solana implements IWallet {
     ticker: "SOL";
 
     constructor(mnemonic:string) {
-
         this.address = ""
     }
 

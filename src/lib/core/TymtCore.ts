@@ -149,21 +149,25 @@ const TymtCore = {
       name: "Solar",
       ticker: "SXP",
       wallet: Solar,
+      explorer: "https://solarscan.com/wallet/",
     },
     bsc: {
       name: "Binance Smart Chain",
       ticker: "BNB",
       wallet: BSC,
+      explorer: "https://bscscan.com/address/",
     },
     eth: {
       name: "Ethereum",
       ticker: "ETH",
       wallet: Ethereum,
+      explorer: "https://etherscan.io/address/",
     },
     btc: {
       name: "Bitcoin",
       ticker: "BTC",
       wallet: Bitcoin,
+      explorer: "https://www.blockchain.com/explorer/addresses/btc/",
     },
     // doge: {
     //   name: "Dogecoin",
@@ -174,26 +178,31 @@ const TymtCore = {
       name: "Solana",
       ticker: "SOL",
       wallet: Solana,
+      explorer: "https://solscan.io/account/",
     },
     polygon: {
       name: "Polygon",
       ticker: "MATIC",
       wallet: Polygon,
+      explorer: "https://polygonscan.com/address/",
     },
     avalanche: {
       name: "Avalanche",
       ticker: "AVAX",
       wallet: Avalanche,
+      explorer: "https://avascan.info/blockchain/all/address/",
     },
     arbitrum: {
       name: "Arbitrum One",
       ticker: "ETH",
       wallet: Arbitrum,
+      explorer: "https://arbiscan.io/address/",
     },
     op: {
       name: "Optimism",
       ticker: "ETH",
       wallet: Optimism,
+      explorer: "https://optimistic.etherscan.io/address/",
     },
     // cardano: {
     //   name: "Cardano",

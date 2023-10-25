@@ -6,7 +6,7 @@ import {mnemonicToSeed} from 'bip39'
 class Arbitrum implements IWallet {
     address:string;
     ticker: "ETH";
-    
+            
     constructor(mnemonic:string) {
         this.address = ""
     }

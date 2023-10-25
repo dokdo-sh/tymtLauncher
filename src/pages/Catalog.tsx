@@ -7,6 +7,7 @@ import { downloadGame } from "../lib/api/Downloads";
 import Games, { Game } from "../lib/api/Games";
 import TymtCore from "../lib/core/TymtCore";
 import {change} from '../lib/store/gameSlice'
+import { getSearch } from "../lib/store/searchSlice";
 import { getSession, Session } from "../lib/store/sessionSlice";
 import { Button } from "./components/Button";
 import { Login, SessionView } from "./SessionView";
@@ -45,6 +46,7 @@ export const Catalog = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate()
     const session : Session = useAppSelector(getSession);
+    const searchTxt = useAppSelector(getSearch);
     const [availableGames, setAvailableGames] = useState([])
     const [currentPreview, setCurrentPreview] = useState("/backgrounds/d53slider.png")
     async function gameAction(game: {key:string, data: Game}) {
@@ -151,15 +153,19 @@ export const Catalog = () => {
                     </div> */}
                     <div className="col-span-10">
                         <div className="grid grid-cols-3">
-                        { availableGames.map((game) => {return (
-                            <div className="col-span-1">
-                                <div className="mx-auto hover:scale-110 w-[301px] rounded-lg ease-in duration-150 cursor-pointer ">
-                                <img src={game.data.thumbnail} onClick={() => navigate(`/games/${game.key}`)} className="border-2 hover:border-white w-fit border-gray-800/50  rounded-lg " alt="" />
-                                <div className="py-1 font-bold text-xl">{game.data.name}</div>
-                                <div className="text-sm text-justify">A virtual desktop and mobile voxel based metaverse game.</div>
-                            </div>
-                            </div>
-                        )})}
+                            { availableGames.map((game) => {
+                                if (!searchTxt || (searchTxt && game.data.name.toLowerCase().includes(searchTxt.toLocaleLowerCase()))){
+                                    return (
+                                        <div className="col-span-1">
+                                            <div className="mx-auto hover:scale-110 w-[301px] rounded-lg ease-in duration-150 cursor-pointer ">
+                                            <img src={game.data.thumbnail} onClick={() => navigate(`/games/${game.key}`)} className="border-2 hover:border-white w-fit border-gray-800/50  rounded-lg " alt="" />
+                                            <div className="py-1 font-bold text-xl">{game.data.name}</div>
+                                            <div className="text-sm text-justify">A virtual desktop and mobile voxel based metaverse game.</div>
+                                        </div>
+                                        </div>
+                                    )
+                                }
+                            })}
                         </div>
                         
                     </div>
