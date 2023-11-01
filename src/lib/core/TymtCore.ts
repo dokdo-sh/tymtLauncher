@@ -109,25 +109,32 @@ const TymtCore = {
       async function getBinaryLocation() {
         let [platform, baseDir] = await Promise.all([
           type(),
-          (async () => { return `${await appDir()}games/${gamekey}` })()
+          (async () => { return `/games/${gamekey}` })()
         ]);
 
         switch (platform) {
           case 'Linux':
-            return `${baseDir}/${gamekey}.AppImage`;
+            return `${gamekey}.AppImage`;
 
           case 'Darwin':
-            return `${baseDir}/${gamekey}.app`;
+            return `${gamekey}.app`;
 
           case 'Windows_NT':
-            return `${baseDir}/bin/${Games[gamekey].executables.windows.file ? Games[gamekey].executables.windows.file : gamekey}.exe`;
+            return `${Games[gamekey].executables.windows.file ? Games[gamekey].executables.windows.file : gamekey}.exe`;
         }
-
       }
+      const platform = await type();
+      let os_type = 1   // Linux, MacOS
+      if (platform === 'Windows_NT')
+      {
+        os_type = 2     // windows
+      } 
+      
       await invoke('open_game', {
         loc: await getBinaryLocation(),
-        contentDir: `${await appDir()}/games/${gamekey}`,
-        args: args
+        contentDir: `/games/${gamekey}`,
+        args: args,
+        platform: os_type
       });
 
     },
