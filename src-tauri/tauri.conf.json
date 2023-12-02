@@ -1,0 +1,117 @@
+{
+  "$schema": "../../../node_modules/@tauri-apps/cli/schema.json",
+  "build": {
+    "beforeBuildCommand": "npm run build",
+    "beforeDevCommand": "npm start",
+    "devPath": "http://localhost:3000",
+    "distDir": "../build"
+  },
+  "package": {
+    "productName": "tymtLauncher",
+    "version": "0.1.0"
+  },
+  "tauri": {
+    "allowlist": {
+      "os": {
+          "all": true
+      },
+      "clipboard": {
+        "all":true
+      },
+      "dialog": {
+          "all": true
+      },
+      "path": {
+          "all": true
+      },
+      "shell": {
+          "execute": true,
+          "open": ".*"
+      },
+      "window": {
+        "all": true
+      },
+      "protocol": {
+          "asset": true,
+          "assetScope": [
+              "$APP/versions/*"
+          ]
+      },
+      "fs": {
+          "readFile": true,
+          "writeFile": true,
+          "readDir": true,
+          "copyFile": true,
+          "createDir": true,
+          "renameFile": true,
+          "scope": [
+              "$APP/settings.json",
+              "$APP",
+              "$APP/games",
+              "$APP/games/*",
+              "$APP/tmp.zip"
+          ]
+      },
+      "http": {
+          "request": true,
+          "scope": [
+              "https://servers.minetest.net/list",
+              "https://serverlist.mainnet.sh/list",
+              "https://github.com/minetest/district53/releases/download/*",
+              "https://api.github.com/repos/district53/minetest/releases",
+              "https://api.github.com/repos/district53/minetest/download/*",
+              "https://blog.minetest.net/feed.rss",
+              "https://content.minetest.net/api/*",
+              "https://map.district53.io/*",
+              "https://**"
+          ]
+      }
+  },
+    "bundle": {
+      "active": true,
+      "category": "DeveloperTool",
+      "copyright": "",
+      "deb": {
+        "depends": []
+      },
+      "externalBin": [],
+      "icon": [
+        "icons/icon.png",
+        "icons/icon.icns",
+        "icons/icons.ico"
+      ],
+      "identifier": "tymtLauncher",
+      "longDescription": "",
+      "macOS": {
+        "entitlements": null,
+        "exceptionDomain": "",
+        "frameworks": [],
+        "providerShortName": null,
+        "signingIdentity": null
+      },
+      "resources": [],
+      "shortDescription": "",
+      "targets": "all",
+      "windows": {
+        "certificateThumbprint": null,
+        "digestAlgorithm": "sha256",
+        "timestampUrl": ""
+      }
+    },
+    "security": {
+      "csp": "default-src 'self' 'unsafe-eval' 'unsafe-inline'; script-src 'self' 'unsafe-eval' https://fonts.googleapis.com; img-src 'self' *; font-src 'self' https://fonts.gstatic.com/; style-src 'self' https://fonts.googleapis.com/ 'unsafe-inline';"
+    },
+    "updater": {
+      "active": false
+    },
+    "windows": [
+      {
+        "fullscreen": false,
+        "height": 800,
+        "resizable": true,
+        "title": "tymtLauncher",
+        "width": 1000
+      }
+    ]
+  }
+}
