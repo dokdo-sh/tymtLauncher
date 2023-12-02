@@ -8,6 +8,7 @@ import { MdArrowBack } from "react-icons/md";
 import TymtCore, { BlockchainKey } from "../../lib/core/TymtCore";
 import { writeText } from '@tauri-apps/api/clipboard';
 import { redirect, useNavigate } from "react-router-dom";
+import { WalletAddresses } from "./Import";
 
 export const Create = (props: {password:string}) => {
   const [network, setNetwork] = useState(undefined)
@@ -180,7 +181,7 @@ const VerifyWallet = (props: {passphrase:string}) => {
 
 const WalletSetup = (props: { passphrase:string, password:string }) => {
   const { nextStep, previousStep } = useWizard();
-  const [addresses, setAddresses] = useState({})
+  const [addresses, setAddresses] = useState<WalletAddresses>({})
   const navigate = useNavigate()
 
   async function getAddresses() {

@@ -15,6 +15,7 @@
     "@types/react": "^18.0.24",
     "@types/react-dom": "^18.0.8",
     "assert": "^2.0.0",
+    "axios": "^1.6.2",
     "big.js": "^6.2.1",
     "bip39": "^3.0.4",
     "buffer": "^6.0.3",
@@ -44,7 +45,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "BROWSER=none react-app-rewired start",
+    "start": "set \"GENERATE_SOURCEMAP=false\" && react-app-rewired start",
     "start:windows": "BROWSER=none react-app-rewired start",
     "build": "react-app-rewired build"
   },

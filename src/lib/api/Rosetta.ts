@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { Axios, AxiosRequestConfig } from 'axios';
 import { BlockchainNetwork, Block, Transaction } from './types';
 
 const BASE_URL = 'https://api.rosetta.io';
@@ -13,10 +13,10 @@ const DEFAULT_OPTIONS = {
 };
 
 class RosettaClient {
-  private readonly httpClient: axios.AxiosInstance;
+  private readonly httpClient: Axios;
 
-  public constructor(options?: axios.AxiosRequestConfig) {
-    this.httpClient = axios.create({
+  public constructor(options?: AxiosRequestConfig) {
+    this.httpClient = new Axios({
       ...DEFAULT_OPTIONS,
       ...options,
     });
