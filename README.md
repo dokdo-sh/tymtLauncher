@@ -47,7 +47,11 @@ Need to have installed before they can use your project.
   ```
   yarn tauri build
   ```
-
+5. Run application in dev mode
+  ```
+  yarn run start
+  yarn tauri dev
+  ```
 Built path of the application 
 ```
   /src-tauri/target/release
