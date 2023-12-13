@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { change } from '../../lib/store/gameSlice';
 import { selectWallet } from '../../lib/store/walletSlice';
+import { net_name } from '../../configs';
 export const ProfileSelector = () => {
 
     const walletState = useAppSelector(selectWallet);
@@ -10,7 +11,7 @@ export const ProfileSelector = () => {
     const navigate = useNavigate();
 
     function getAddress() {
-        Managers.configManager.setFromPreset("mainnet");
+        Managers.configManager.setFromPreset(net_name);
         return  Identities.Address.fromPassphrase(walletState.mnemonic);
     }
 

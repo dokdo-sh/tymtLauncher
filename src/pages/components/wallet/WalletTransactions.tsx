@@ -7,11 +7,12 @@ import { t } from "i18next";
 import { MdHowToVote } from "react-icons/md";
 import { CoreTransactionTypeKey, CoreTransactionTypes } from "./SolarTxType";
 import Solar from "../../../lib/wallets/Solar";
+import { api_url } from "../../../configs";
 
 export const WalletTransactions = (props:{currentWallet: Solar, setModalTx: (tx:string) => void, setShowTransaction: (b:boolean) => void}) => {
-    const [currentWallet, setCurrentWallet] = useState(undefined);
+    const [currentWallet] = useState(props.currentWallet);
     
-    const url = new URL(`https://sxp.mainnet.sh/api/wallets/${props.currentWallet.address}/transactions?limit=10`);
+    const url = new URL(`${api_url}/wallets/${props.currentWallet.address}/transactions?limit=10`);
     ;
     const { data, error, isLoading } = useSWR(url.toString(), {
       refreshInterval: 3000,

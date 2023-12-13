@@ -126,7 +126,7 @@ const SecondStep = (props: {setPerformAction: (action:any) => void, txData: any,
             </div>
             <Button className="flex items-center space-x-3 mx-auto py-3 w-fit" onClick={() => {
                 let performAction = (password:string) => {
-                    // (props.currentWallet as Solar).sendTransaction({recipients:props.txData.recipients,fee:props.txData.fee,vendorField:props.txData.vendorfield},password)
+                    (props.currentWallet as Solar).sendTransaction({recipients:props.txData.recipients,fee:props.txData.fee,vendorField:props.txData.vendorfield},password)
                     goToStep(0)
                 }
                 props.setPerformAction(() => performAction);

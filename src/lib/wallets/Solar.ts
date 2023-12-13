@@ -2,8 +2,10 @@
 import {Managers, Identities, Transactions} from "@solar-network/crypto"; 
 import { generateMnemonic } from "bip39";
 import { IWallet } from "./IWallet";
+import Big from "big.js";
+import SolarAPI from "../api/SolarAPI";
+import { net_name, api_url } from "../../configs";
 
-const api_url = "https://sxp.mainnet.sh/api/";
 
 export class Solar implements IWallet {
 
@@ -16,6 +18,8 @@ export class Solar implements IWallet {
     ticker: "SXP";
     
     constructor(mnemonic:string) {
+        Managers.configManager.setFromPreset(net_name);
+
         this.passphrase = mnemonic;
         this.address = Identities.Address.fromPassphrase(mnemonic);
         fetch(`${api_url}/wallets/${this.address}`).then((response) => {
@@ -26,6 +30,7 @@ export class Solar implements IWallet {
     }
 
     static async getAddress(mnemonic:string) : Promise<string> {
+        Managers.configManager.setFromPreset(net_name);
         return Identities.Address.fromPassphrase(mnemonic);
     }
 
@@ -40,7 +45,7 @@ export class Solar implements IWallet {
     static async getBalance(addr:string) : Promise<number> {       
 
         try {
-            return ((await (await fetch(`https://sxp.mainnet.sh/api/wallets/${addr}`)).json()).data.balance as number) / 100000000;
+            return ((await (await fetch(`${api_url}/wallets/${addr}`)).json()).data.balance as number) / 100000000;
        } catch {
            return 0;
        }
@@ -48,8 +53,8 @@ export class Solar implements IWallet {
     }
 
     static validateAddress(address:string) : boolean {
-            Managers.configManager.setFromPreset("mainnet")
-            return Identities.Address.validate(address);
+        Managers.configManager.setFromPreset(net_name);
+        return Identities.Address.validate(address);
         
      }
      static isValidPassphrase(passphrase:string) : boolean {
@@ -92,7 +97,7 @@ export class Solar implements IWallet {
         return await this.isSecondSignatureFromAddress(this.addressFromPassphrase(passphrase))
      }
      static async isValidSecondSignature(passphrase:string, secondpassphrase:string) : Promise<boolean> {
-        Managers.configManager.setFromPreset("mainnet");
+        Managers.configManager.setFromPreset(net_name);
         let testTx = Transactions.BuilderFactory.vote()
         .nonce("1")
         .votesAsset({})
@@ -109,12 +114,13 @@ export class Solar implements IWallet {
         
      }
      static addressFromPassphrase(passphrase:string) : string {
-        Managers.configManager.setFromPreset("mainnet")
+        Managers.configManager.setFromPreset(net_name);
         return Identities.Address.fromPassphrase(passphrase)
      }
+
      validateAddress(address:string) : boolean {
-            Managers.configManager.setFromPreset("mainnet")
-            return Identities.Address.validate(address);
+        Managers.configManager.setFromPreset(net_name);
+        return Identities.Address.validate(address);
      }
 
     async getVote() : Promise<any> {
@@ -133,70 +139,87 @@ export class Solar implements IWallet {
         }
      } 
 
-    //  async sendTransaction(tx : {recipients: any[], fee : string,  vendorField? : string}, password : string) {
-    //     let nonce : number = await this.getCurrentNonce()
-    //     if (tx.recipients.length>0) {
-    //         if (tx.recipients.length>1) {
-    //                 Managers.configManager.setFromPreset("mainnet");
-    //                 let transaction = Transactions.BuilderFactory.transfer()
-    //             tx.recipients.map((recipient) => {
-    //                 transaction.addTransfer(recipient.address,Big(recipient.amount).times(10 ** 8).toFixed(0))
-    //             })
-    //           let itransaction = transaction.fee(Big(tx.fee).times(10 ** 8).toFixed(0))
-    //             .nonce((nonce + 1).toString());
-    //             if (tx.vendorField && tx.vendorField.length>0) {
-    //                 itransaction = itransaction.memo(tx.vendorField)
-    //             }
-    //             let passphrase = await Armor.Vault.getPassphrase(this.passphrase,password)
-    //             let txJson = itransaction.sign(passphrase)
+     async sendTransaction(tx : {recipients: any[], fee : string,  vendorField? : string}, password : string) {
+        let nonce : number = await this.getCurrentNonce()
+        if (tx.recipients.length>0) {
+            if (tx.recipients.length>1) {
+                    Managers.configManager.setFromPreset(net_name);
+                    let transaction = Transactions.BuilderFactory.transfer()
+                tx.recipients.map((recipient) => {
+                    transaction.addTransfer(recipient.address,Big(recipient.amount).times(10 ** 8).toFixed(0))
+                })
+              let itransaction = transaction.fee(Big(tx.fee).times(10 ** 8).toFixed(0))
+                .nonce((nonce + 1).toString());
+                if (tx.vendorField && tx.vendorField.length>0) {
+                    itransaction = itransaction.memo(tx.vendorField)
+                }
+                let txJson = itransaction.sign(this.passphrase)
+                if (this.secondPassphrase.length) {
+                    txJson = itransaction.secondSign(this.secondPassphrase)
+                }
+                let iTxJson = txJson.build().toJson();
+                let res = SolarAPI.addTxToQueue(JSON.stringify({transactions: [iTxJson]}), api_url)
+                return res
 
-    //             if (this.secondPassphrase.length) {
-    //                 let spp = await Armor.Vault.getSecondPassphrase(this.secondPassphrase,password)
-    //                 if (spp != "") {
-    //                     txJson = itransaction.secondSign(spp)
-    //                 }
-    //             }
-    //                 txJson = txJson.build().toJson();
+                // let passphrase = await Armor.Vault.getPassphrase(this.passphrase,password)
+                // let txJson = itransaction.sign(passphrase)
+
+                // if (this.secondPassphrase.length) {
+                //     let spp = await Armor.Vault.getSecondPassphrase(this.secondPassphrase,password)
+                //     if (spp != "") {
+                //         txJson = itransaction.secondSign(spp)
+                //     }
+                // }
+                //     txJson = txJson.build().toJson();
                 
-    //             Armor.addTxToQueue(JSON.stringify({transactions: [txJson]}),api_url);
-    //         } else {
+                // Armor.addTxToQueue(JSON.stringify({transactions: [txJson]}),api_url);
+            } else {
                 
-    //                 Managers.configManager.setFromPreset("mainnet");
-    //                 let transaction = Transactions.BuilderFactory.transfer()
-    //             .recipientId(tx.recipients[0].address)
-    //             .version(3)
-    //             .amount(Big(tx.recipients[0].amount).times(10 ** 8).toFixed(0))
-    //           let itransaction = transaction.fee(
-    //               Big(tx.fee)
-    //                 .times(10 ** 8)
-    //                 .toFixed(0)
-    //             )
-    //             .nonce((nonce + 1).toString());
-    //             if (tx.vendorField && tx.vendorField.length>0) {
-    //                 itransaction = itransaction.memo(tx.vendorField)
-    //             }
-    //             let passphrase = await Armor.Vault.getPassphrase(this.passphrase,password)
-    //             let txJson = itransaction.sign(passphrase)
+                Managers.configManager.setFromPreset(net_name);
+                let transaction = Transactions.BuilderFactory.transfer()
+                    .recipientId(tx.recipients[0].address)
+                    .version(3)
+                    .amount(Big(tx.recipients[0].amount).times(10 ** 8).toFixed(0))
+                let itransaction = transaction.fee(
+                    Big(tx.fee)
+                        .times(10 ** 8)
+                        .toFixed(0)
+                    )
+                    .nonce((nonce + 1).toString());
+                if (tx.vendorField && tx.vendorField.length>0) {
+                    itransaction = itransaction.memo(tx.vendorField)
+                }
 
-    //             if (this.secondPassphrase && this.secondPassphrase.length > 0) {
-    //                 let spp = await Armor.Vault.getSecondPassphrase(this.secondPassphrase,password)
-    //                 if (spp != "") {
-    //                     txJson = itransaction.secondSign(spp)
-    //                 }
-    //             }
-    //             txJson = txJson.build().toJson();
+                let txJson = itransaction.sign(this.passphrase)
 
-    //             Armor.addTxToQueue(JSON.stringify({transactions: [txJson]}),api_url);
-    //         }
-    //     }
-    //  }
+                if (this.secondPassphrase && this.secondPassphrase.length > 0) {
+                    txJson = itransaction.secondSign(this.secondPassphrase)
+                }
+                
+                let res = SolarAPI.addTxToQueue(JSON.stringify({ transactions: [txJson.build().toJson()] }), api_url)
+                return res
+
+                // let passphrase = await Armor.Vault.getPassphrase(this.passphrase,password)
+                // let txJson = itransaction.sign(passphrase)
+
+                // if (this.secondPassphrase && this.secondPassphrase.length > 0) {
+                //     let spp = await Armor.Vault.getSecondPassphrase(this.secondPassphrase,password)
+                //     if (spp != "") {
+                //         txJson = itransaction.secondSign(spp)
+                //     }
+                // }
+                // txJson = txJson.build().toJson();
+
+                // Armor.addTxToQueue(JSON.stringify({transactions: [txJson]}),api_url);
+            }
+        }
+     }
 
      getCurrentNonce() {
         return new Promise<number>((resolve, reject) => {
           (async () => {
             try {
-              let walletInfo: any = await (await fetch(
-                api_url + "wallets/" + this.address
+              let walletInfo: any = await (await fetch(`${api_url}/wallets/${this.address}`
               )).json();
               resolve(parseInt(walletInfo.data.nonce));
             } catch (e) {
@@ -209,7 +232,7 @@ export class Solar implements IWallet {
     //  async vote(votesAsset: any, fee:string, password:string) {
 
     //     let nonce = await this.getCurrentNonce()
-    //     Managers.configManager.setFromPreset("mainnet");
+    //     Managers.configManager.setFromPreset(net_name);
     //     let passphrase = await Armor.Vault.getPassphrase(this.passphrase,password)
     //     let txJson = Transactions.BuilderFactory.vote()
     //     .nonce((nonce + 1).toString())

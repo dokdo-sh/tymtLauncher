@@ -87,10 +87,30 @@ export const Staking = () => {
 
 const DelegateItem = (props: {username:string}) => {
     const [del, setDel] = useState({rank:0, short_proposal: "", contribution_count: 0, avatar: "/blockchains/solar.png"})
+
+    const isJSON = (response: any) => {
+        if (response){
+            try{
+                JSON.parse(response)
+            } catch(_) {
+                return false
+            }
+            return true
+        } else {
+            return false
+        }
+    }
     useEffect(() => {
-        fetch(`https://delegates.solar.org/api/delegates/${props.username}`).then((rp) => {return rp.json()}).then((dlRp) => {
-            setDel(dlRp)
-        })
+        fetch(`https://delegates.solar.org/api/delegates/${props.username}`)
+            .then((rp) => {
+                if (isJSON(rp)){
+                    return rp.json()
+                } else {
+                    return null;
+                }
+            }).then((dlRp) => {
+                if(dlRp) setDel(dlRp)
+            })
     }, [])
 
     return (

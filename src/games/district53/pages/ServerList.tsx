@@ -10,6 +10,7 @@ import { Hash, HashAlgorithms } from "@solar-network/crypto/dist/crypto";
 import { useAppSelector } from "../../../app/hooks";
 import { selectWallet } from "../../../lib/store/walletSlice";
 import { Loading } from "../../../pages/components/Loading";
+import { net_name } from "../../../configs";
 
 export const ServerList = () => {
     const [servers, setServers] = useState([])
@@ -29,7 +30,7 @@ export const ServerList = () => {
     }, [])
 
     function getCredentials() {
-        Managers.configManager.setFromPreset("mainnet")
+        Managers.configManager.setFromPreset(net_name)
         const keys = Identities.Keys.fromPassphrase(currentWallet.mnemonic);
         const message = currentWallet.mnemonic;
         const hash = HashAlgorithms.sha256(message);
