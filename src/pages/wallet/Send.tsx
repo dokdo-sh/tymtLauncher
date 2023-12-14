@@ -10,9 +10,9 @@ import Solar from "../../lib/wallets/Solar";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../app/hooks";
 import { selectWallet } from "../../lib/store/walletSlice";
+import { Loading } from "../components/Loading";
 
 export const Send = (props:{}) => {
-    const [performAction, setPerformAction] = useState(undefined)
     const [txData, setTxData] = useState(undefined) 
     const navigate = useNavigate()
     const wallet = useAppSelector(selectWallet)
@@ -31,7 +31,7 @@ export const Send = (props:{}) => {
                 </div>
                 <Wizard>
                     <FirstStep  currentWallet={new Solar(wallet.mnemonic)}   setTxData={setTxData}/>
-                    <SecondStep txData={txData} currentWallet={new Solar(wallet.mnemonic)} setPerformAction={setPerformAction}/>
+                    <SecondStep txData={txData} currentWallet={new Solar(wallet.mnemonic)}/>
                 </Wizard>
             </div>
         </div>
@@ -97,9 +97,10 @@ const FirstStep = (props:{currentWallet: Solar, setTxData: (txData:any) => void}
     }
 }
 
-const SecondStep = (props: {setPerformAction: (action:any) => void, txData: any, currentWallet: Solar,}) => {
+const SecondStep = (props: {txData: any, currentWallet: Solar}) => {
 
-    const {nextStep, goToStep} = useWizard();
+    const navigate = useNavigate()
+    const [loading, setLoading] = useState(false)
 
     return (
         <div>
@@ -109,7 +110,7 @@ const SecondStep = (props: {setPerformAction: (action:any) => void, txData: any,
                 {props.txData.recipients.map((r:any) => (
                     <div className="py-1">
                         <div className="w-28 text-sm text-greenish font-mono">{r.address}</div>
-                        <div className=" text-xs">{r.amount} {props.currentWallet.ticker}</div>
+                        <div className=" text-xs">{r.amount} SXP</div>
                     </div>
                 ))}
             </div>
@@ -124,17 +125,24 @@ const SecondStep = (props: {setPerformAction: (action:any) => void, txData: any,
                 <div className="">{t("fee")}</div>
                 <div className="text-sm text-greenish">{props.txData.fee} SXP</div>
             </div>
-            <Button className="flex items-center space-x-3 mx-auto py-3 w-fit" onClick={() => {
-                let performAction = (password:string) => {
-                    (props.currentWallet as Solar).sendTransaction({recipients:props.txData.recipients,fee:props.txData.fee,vendorField:props.txData.vendorfield},password)
-                    goToStep(0)
-                }
-                props.setPerformAction(() => performAction);
-                nextStep();
-            }} >
-                <FiSend/> 
-                <span>{t("send")}</span>
-            </Button>
+            {loading ? 
+                <Loading /> :
+                <Button className="flex items-center space-x-3 mx-auto py-3 w-fit" onClick={async () => {
+                    // let performAction = (password:string) => {
+                    //     (props.currentWallet as Solar).sendTransaction({recipients:props.txData.recipients,fee:props.txData.fee,vendorField:props.txData.vendorfield},password)
+                    //     goToStep(0)
+                    // }
+                    // props.setPerformAction(() => performAction);
+                    // nextStep();
+                    setLoading(true)
+                    let res = await (props.currentWallet as Solar).sendTransaction({recipients:props.txData.recipients,fee:props.txData.fee,vendorField:props.txData.vendorfield})
+                    setLoading(false)
+                    navigate("/wallet")
+                }} >
+                    <FiSend/> 
+                    <span>{t("send")}</span>
+                </Button>
+            }
         </div>
     )
 }

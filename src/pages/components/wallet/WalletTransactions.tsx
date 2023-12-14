@@ -13,7 +13,7 @@ export const WalletTransactions = (props:{currentWallet: Solar, setModalTx: (tx:
     const [currentWallet] = useState(props.currentWallet);
     
     const url = new URL(`${api_url}/wallets/${props.currentWallet.address}/transactions?limit=10`);
-    ;
+    
     const { data, error, isLoading } = useSWR(url.toString(), {
       refreshInterval: 3000,
       dedupingInterval: 10000,

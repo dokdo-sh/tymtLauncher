@@ -55,6 +55,10 @@ const delegates = {
     "nybl": 2
 }
 
+export type Delegate = {
+    
+}
+
 export const Staking = () => {
     const navigate = useNavigate()
     return (
@@ -87,6 +91,7 @@ export const Staking = () => {
 
 const DelegateItem = (props: {username:string}) => {
     const [del, setDel] = useState({rank:0, short_proposal: "", contribution_count: 0, avatar: "/blockchains/solar.png"})
+    // const [resp, setResp] = useState("")
 
     const isJSON = (response: any) => {
         if (response){
@@ -102,7 +107,8 @@ const DelegateItem = (props: {username:string}) => {
     }
     useEffect(() => {
         fetch(`https://delegates.solar.org/api/delegates/${props.username}`)
-            .then((rp) => {
+            .then(async (rp) => {
+                // setResp(await rp.text())
                 if (isJSON(rp)){
                     return rp.json()
                 } else {
@@ -118,14 +124,31 @@ const DelegateItem = (props: {username:string}) => {
             <div className="flex-none w-38"> 
                 <img src={del.avatar? del.avatar :  "/blockchains/solar.png"} className="rounded-full bg-white border border-gray-100 shadow-sm w-16 h-16 aspect-square" alt="" />
             </div>
-            <div className="px-4 grow">
-                <div className=" font-bold">{props.username}<span className="text-gray-400">#{del.rank}</span> </div>
-                <div className="text-sm text-gray-400 py-2">{del.short_proposal}</div>
-                <div className="flex flex-row">
-                    <div className="bg-green-500/30 border border-green-500/20 w-fit p-1 text-xs rounded text-green-200 my-1">Active</div>
-                    <div className="bg-greenish/70 w-fit p-1 text-xs rounded text-white border border-gray-200/20 my-1 mx-2">{del.contribution_count} contributions</div>
+            <div className="flex flex-row justify-between w-full">
+                <div className="px-4">
+                    <div className=" font-bold">{props.username}<span className="text-gray-400">#{del.rank}</span> </div>
+                    <div className="text-sm text-gray-400 py-2">{del.short_proposal}</div>
+                    <div className="flex flex-row">
+                        <div className="bg-green-500/30 border border-green-500/20 w-fit p-1 text-xs rounded text-green-200 my-1">Active</div>
+                        <div className="bg-greenish/70 w-fit p-1 text-xs rounded text-white border border-gray-200/20 my-1 mx-2">{del.contribution_count} contributions</div>
+                    </div>
+                    {/* <div className="flex flex-row">
+                    <div className="bg-green-500/30 border border-green-500/20 w-fit p-1 text-xs rounded text-green-200 my-1">{resp}</div>
+                    </div> */}
+                </div>
+
+                <div className="py-2">
+                    <input
+                        type="text"
+                        className={`bg-transparent w-full outline-none border-b dark:text-white dark:border-0 px-1 py-1 text-sm text-right $`}
+                        placeholder="votes"
+                    />                    
+                    <div className="font-mono flex flex-row justify-end text-gray-600 cursor-pointer w-full text-sm py-1">
+                        tSXP 0.00
+                    </div>
                 </div>
             </div>
+            
         </div>
     )
 }

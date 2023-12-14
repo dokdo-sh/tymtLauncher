@@ -42,20 +42,17 @@ export class Solar implements IWallet {
         }
     }
 
-    static async getBalance(addr:string) : Promise<number> {       
-
+    static async getBalance(addr:string) : Promise<number> {
         try {
             return ((await (await fetch(`${api_url}/wallets/${addr}`)).json()).data.balance as number) / 100000000;
-       } catch {
-           return 0;
-       }
-
+        } catch {
+            return 0;
+        }
     }
 
     static validateAddress(address:string) : boolean {
         Managers.configManager.setFromPreset(net_name);
-        return Identities.Address.validate(address);
-        
+        return Identities.Address.validate(address);        
      }
      static isValidPassphrase(passphrase:string) : boolean {
         if (passphrase.split(" ").length >= 8) {
@@ -99,12 +96,12 @@ export class Solar implements IWallet {
      static async isValidSecondSignature(passphrase:string, secondpassphrase:string) : Promise<boolean> {
         Managers.configManager.setFromPreset(net_name);
         let testTx = Transactions.BuilderFactory.vote()
-        .nonce("1")
-        .votesAsset({})
-        .fee("42")
-        .sign(passphrase)
-        .secondSign(secondpassphrase)
-        .getStruct()
+            .nonce("1")
+            .votesAsset({})
+            .fee("42")
+            .sign(passphrase)
+            .secondSign(secondpassphrase)
+            .getStruct()
         let walletPublicKey = (await (await fetch(`${api_url}/wallets/${this.addressFromPassphrase(passphrase)}`)).json()).data.attributes.secondPublicKey
         if (walletPublicKey) {
             return Transactions.Verifier.verifySecondSignature(testTx,walletPublicKey)
@@ -131,7 +128,7 @@ export class Solar implements IWallet {
         }
      } 
 
-     async getTransaction(txId:string) : Promise<any> {
+    async getTransaction(txId:string) : Promise<any> {
         try {
          return (await (await fetch(`${api_url}/transactions/${txId}`)).json()).data;
         } catch {
@@ -139,7 +136,7 @@ export class Solar implements IWallet {
         }
      } 
 
-     async sendTransaction(tx : {recipients: any[], fee : string,  vendorField? : string}, password : string) {
+    async sendTransaction(tx : {recipients: any[], fee : string,  vendorField? : string}) {
         let nonce : number = await this.getCurrentNonce()
         if (tx.recipients.length>0) {
             if (tx.recipients.length>1) {
@@ -160,19 +157,6 @@ export class Solar implements IWallet {
                 let iTxJson = txJson.build().toJson();
                 let res = SolarAPI.addTxToQueue(JSON.stringify({transactions: [iTxJson]}), api_url)
                 return res
-
-                // let passphrase = await Armor.Vault.getPassphrase(this.passphrase,password)
-                // let txJson = itransaction.sign(passphrase)
-
-                // if (this.secondPassphrase.length) {
-                //     let spp = await Armor.Vault.getSecondPassphrase(this.secondPassphrase,password)
-                //     if (spp != "") {
-                //         txJson = itransaction.secondSign(spp)
-                //     }
-                // }
-                //     txJson = txJson.build().toJson();
-                
-                // Armor.addTxToQueue(JSON.stringify({transactions: [txJson]}),api_url);
             } else {
                 
                 Managers.configManager.setFromPreset(net_name);
@@ -198,24 +182,11 @@ export class Solar implements IWallet {
                 
                 let res = SolarAPI.addTxToQueue(JSON.stringify({ transactions: [txJson.build().toJson()] }), api_url)
                 return res
-
-                // let passphrase = await Armor.Vault.getPassphrase(this.passphrase,password)
-                // let txJson = itransaction.sign(passphrase)
-
-                // if (this.secondPassphrase && this.secondPassphrase.length > 0) {
-                //     let spp = await Armor.Vault.getSecondPassphrase(this.secondPassphrase,password)
-                //     if (spp != "") {
-                //         txJson = itransaction.secondSign(spp)
-                //     }
-                // }
-                // txJson = txJson.build().toJson();
-
-                // Armor.addTxToQueue(JSON.stringify({transactions: [txJson]}),api_url);
             }
         }
-     }
+    }
 
-     getCurrentNonce() {
+    getCurrentNonce() {
         return new Promise<number>((resolve, reject) => {
           (async () => {
             try {
@@ -227,29 +198,30 @@ export class Solar implements IWallet {
             }
           })();
         });
-      }
+    }
 
-    //  async vote(votesAsset: any, fee:string, password:string) {
+    async vote(votesAsset: any, fee:string, password:string) {
+        Managers.configManager.setFromPreset(net_name)
+        let nonce = await this.getCurrentNonce()        
+        // let passphrase = await Armor.Vault.getPassphrase(this.passphrase,password)
+        let tx = Transactions.BuilderFactory.vote()
+            .nonce((nonce + 1).toString())
+            .votesAsset(votesAsset)
+            .fee(Big(fee).times(10 ** 8).toFixed(0))
+            .sign(this.passphrase)
 
-    //     let nonce = await this.getCurrentNonce()
-    //     Managers.configManager.setFromPreset(net_name);
-    //     let passphrase = await Armor.Vault.getPassphrase(this.passphrase,password)
-    //     let txJson = Transactions.BuilderFactory.vote()
-    //     .nonce((nonce + 1).toString())
-    //     .votesAsset(votesAsset)
-    //     .fee(Big(fee).times(10 ** 8).toFixed(0))
-    //     .sign(passphrase)
-
-    //             if (this.secondPassphrase && this.secondPassphrase.length > 0) {
-    //                 let spp = await Armor.Vault.getSecondPassphrase(this.secondPassphrase,password)
-    //                 if (spp != "") {
-    //                     txJson = txJson.secondSign(spp)
-    //                 }
-    //             }
-    //             txJson = txJson.build().toJson();
+        if (this.secondPassphrase && this.secondPassphrase.length > 0) {
+            // let spp = await Armor.Vault.getSecondPassphrase(this.secondPassphrase,password)
+            // if (spp != "") {
+            //     txJson = txJson.secondSign(spp)
+            // }
+            tx = tx.secondSign(this.secondPassphrase)
+        }
+        let txJson = tx.build().toJson();
         
-    //     Armor.addTxToQueue(JSON.stringify({transactions: [txJson]}),api_url)     
-    // }
+        // Armor.addTxToQueue(JSON.stringify({transactions: [txJson]}),api_url)
+        let res = SolarAPI.addTxToQueue(JSON.stringify({ transactions: [txJson] }), api_url)
+    }
     
     // async getLatestTransactions() : Promise<any> {
     //     try {

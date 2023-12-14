@@ -31,7 +31,7 @@ export const WalletView = () => {
       let addr = await blockchain.data.wallet.getAddress(wallet ? wallet.mnemonic : "")
       let bal = (await blockchain.data.wallet.getBalance(addr)).toFixed(2)
       let url = blockchain.data.explorer
-      console.log(addr)
+      
       setAddresses(addresses => ({
         ...addresses,
         ...{ [blockchain.key]: { address: addr, balance: bal, explorer: url+addr } }
