@@ -88,13 +88,14 @@ export const WalletView = () => {
             </div>
           </div>
         </div>
-        <div>
-
+        <div className="grid grid-cols-6 space-x-2">
+          <div className="col-span-4 w-full divide-y divide-gray-800 cursor-pointer">
             <div className="text-2xl py-4">Latest transactions</div>
-            <div className="py-2 rounded bg-gray-800/30 border border-gray-800/30 col-span-4 h-fit text-gray-400">
-                <WalletTransactions currentWallet={cW} setShowTransaction={(b) => { }} setModalTx={(a) => { }} />
+            <div className="py-2 rounded bg-gray-800/30 border border-gray-800/30 col-span-4 text-gray-400">
+                  <WalletTransactions currentWallet={cW} setShowTransaction={(b) => { }} setModalTx={(a) => { }} />
             </div>
-            <div className="h-96"></div>
+            {/* <div className="h-96"></div> */}
+          </div>
         </div>
       </div>
     );

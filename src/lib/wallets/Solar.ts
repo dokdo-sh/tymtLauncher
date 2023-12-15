@@ -200,7 +200,7 @@ export class Solar implements IWallet {
         });
     }
 
-    async vote(votesAsset: any, fee:string, password:string) {
+    async vote(votesAsset: any, fee:string) {
         Managers.configManager.setFromPreset(net_name)
         let nonce = await this.getCurrentNonce()        
         // let passphrase = await Armor.Vault.getPassphrase(this.passphrase,password)
@@ -211,25 +211,14 @@ export class Solar implements IWallet {
             .sign(this.passphrase)
 
         if (this.secondPassphrase && this.secondPassphrase.length > 0) {
-            // let spp = await Armor.Vault.getSecondPassphrase(this.secondPassphrase,password)
-            // if (spp != "") {
-            //     txJson = txJson.secondSign(spp)
-            // }
             tx = tx.secondSign(this.secondPassphrase)
         }
         let txJson = tx.build().toJson();
         
         // Armor.addTxToQueue(JSON.stringify({transactions: [txJson]}),api_url)
         let res = SolarAPI.addTxToQueue(JSON.stringify({ transactions: [txJson] }), api_url)
+        return res
     }
-    
-    // async getLatestTransactions() : Promise<any> {
-    //     try {
-    //         return (await (await fetch(`${api_url}/wallets/${this.address}/transactions?limit=10`)).json()).data as any;
-    //     } catch {
-    //         return null;
-    //     }
-    //  }
 
 }
 export default Solar;
