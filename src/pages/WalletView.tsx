@@ -1,6 +1,6 @@
 import TymtCore, { BlockchainKey } from "../lib/core/TymtCore";
-import { selectWallet } from "../lib/store/walletSlice";
-import { useAppSelector } from "../app/hooks";
+import { selectWallet, changeWallet } from "../lib/store/walletSlice";
+import { useAppSelector, useAppDispatch } from "../app/hooks";
 import { useEffect, useState } from "react";
 import { Loading } from "./components/Loading";
 import QRCode from "react-qr-code";
@@ -22,7 +22,9 @@ export const WalletView = () => {
   const wallet = useAppSelector(selectWallet)
   const [addresses, setAddresses] = useState<WalletAddress>({})
   const [selectedBlockchain, setSelectedBlockchain] = useState("solar")
+  const dispatch = useAppDispatch();
   const navigate = useNavigate()
+
   const cW = new Solar(wallet.mnemonic)
   async function getAddresses() {
     Object.keys(TymtCore.Blockchains).map((key: string) => {
@@ -43,6 +45,12 @@ export const WalletView = () => {
     getAddresses()
   }, [])
 
+  useEffect(()=>{
+    if (addresses && addresses[selectedBlockchain]) {
+      dispatch(changeWallet({mnemonic: wallet ? wallet.mnemonic : "", addresses: {key: selectedBlockchain, address: addresses[selectedBlockchain].address} }))
+    }
+  }, [selectedBlockchain])
+
   if (Object.keys(addresses).length > -1) {
     return (
       <div className="max-w-7xl mx-auto pb-16 px-8">
@@ -50,8 +58,8 @@ export const WalletView = () => {
           <div className="flex flex-row max-w-3xl space-x-3 mt-8">
             <div className="text-4xl ">Your wallet</div>
             <div className="grow"></div>
-            <Button className="bg-primary/80 hover:bg-primary" onClick={() => navigate("/wallet/send")}>  Send</Button>
-            <Button className="bg-[#f64a28] hover:bg-greenish" onClick={() => navigate("/wallet/staking")}> <img src="/blockchains/solar.png" className="w-6 mr-2" alt="" /> Staking</Button>
+            <Button className="bg-primary/80 hover:bg-primary" onClick={() => navigate("/wallet/send")}> <img src={`/blockchains/${selectedBlockchain}.png`} className="w-6 mr-2" alt="" /> Send</Button>
+            { selectedBlockchain === "solar" && <Button className="bg-[#f64a28] hover:bg-greenish" onClick={() => navigate("/wallet/staking")}> <img src="/blockchains/solar.png" className="w-6 mr-2" alt="" /> Staking</Button>}
             <Button className="bg-primary/80 hover:bg-primary" onClick={() => navigate("/")}>  Back</Button>
           </div>
         </div>
