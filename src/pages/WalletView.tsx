@@ -24,8 +24,7 @@ export const WalletView = () => {
   const [selectedBlockchain, setSelectedBlockchain] = useState("solar")
   const dispatch = useAppDispatch();
   const navigate = useNavigate()
-
-  const cW = new Solar(wallet.mnemonic)
+  
   async function getAddresses() {
     Object.keys(TymtCore.Blockchains).map((key: string) => {
       return { key: key as BlockchainKey, data: TymtCore.Blockchains[key as BlockchainKey] }
@@ -39,6 +38,9 @@ export const WalletView = () => {
         ...{ [blockchain.key]: { address: addr, balance: bal, explorer: url+addr } }
       }))
     })
+    if (wallet.addresses && wallet.addresses.key) {
+      setSelectedBlockchain(wallet.addresses.key)
+    }
   }
 
   useEffect(() => {
@@ -100,7 +102,7 @@ export const WalletView = () => {
           <div className="col-span-4 w-full divide-y divide-gray-800 cursor-pointer">
             <div className="text-2xl py-4">Latest transactions</div>
             <div className="py-2 rounded bg-gray-800/30 border border-gray-800/30 col-span-4 text-gray-400">
-                  <WalletTransactions currentWallet={cW} setShowTransaction={(b) => { }} setModalTx={(a) => { }} />
+                  <WalletTransactions selectedkey={selectedBlockchain} setShowTransaction={(b) => { }} setModalTx={(a) => { }} />
             </div>
             {/* <div className="h-96"></div> */}
           </div>

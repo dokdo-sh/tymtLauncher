@@ -2,12 +2,14 @@ import { IWallet } from "./IWallet"
 import {ethers} from 'ethers'
 import {hdkey} from 'ethereumjs-wallet'
 import {mnemonicToSeed} from 'bip39'
+import axios from "axios"
+import { avax_provider_url } from "../../configs"
 
 class Avalanche implements IWallet {
     address:string;
     ticker: "AVAX";
     
-    constructor(mnemonic:string) {
+    constructor() {
         this.address = ""
     }
 
@@ -24,11 +26,34 @@ class Avalanche implements IWallet {
 
     static async getBalance(addr:string) : Promise<number> {
         try {
-            const customProvider = new ethers.providers.JsonRpcProvider("https://api.avax.network/ext/bc/C/rpc");
+            const customProvider = new ethers.providers.JsonRpcProvider(avax_provider_url);
             return parseFloat(ethers.utils.formatEther(await customProvider.getBalance(addr)))    
         } catch {
             return 0
         }
+    }
+
+    static async getTransactions(address: string) : Promise<any> {
+        try {
+            const customProvider = new ethers.providers.JsonRpcProvider(avax_provider_url)
+                        const response = await axios.get(
+                avax_provider_url,
+                {
+                    params: {
+                    format: 'json',
+                    action: 'avm.getTransactions',
+                    address,
+                    },
+                }
+            );
+        
+            const transactions = response.data.result.transactions;
+            console.log('Recent Transactions:', transactions);
+            return transactions;
+          } catch (error) {
+            console.error('Error fetching transactions:', error);
+            return []
+          }
     }
 }
 

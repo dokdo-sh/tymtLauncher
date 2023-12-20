@@ -128,6 +128,14 @@ export class Solar implements IWallet {
         }
      } 
 
+    static async getTransactions(addr: string) : Promise<any> {
+        try {
+            return (await (await fetch(`${api_url}/wallets/${addr}/transactions?limit=10`)).json()).data;
+        } catch {
+            return undefined;
+        }
+    }
+
     async getTransaction(txId:string) : Promise<any> {
         try {
          return (await (await fetch(`${api_url}/transactions/${txId}`)).json()).data;
@@ -219,6 +227,5 @@ export class Solar implements IWallet {
         let res = SolarAPI.addTxToQueue(JSON.stringify({ transactions: [txJson] }), api_url)
         return res
     }
-
 }
 export default Solar;
