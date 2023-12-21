@@ -2,12 +2,14 @@ import { IWallet } from "./IWallet"
 import {ethers} from 'ethers'
 import {hdkey} from 'ethereumjs-wallet'
 import {mnemonicToSeed} from 'bip39'
+import { arb_api_key, arb_api_url } from "../../configs"
+
 
 class Arbitrum implements IWallet {
     address:string;
     ticker: "ETH";
             
-    constructor(mnemonic:string) {
+    constructor() {
         this.address = "";
     }
 
@@ -23,11 +25,25 @@ class Arbitrum implements IWallet {
     }
 
     static async getBalance(addr:string) : Promise<number> {
-        try {
-            const customProvider = new ethers.providers.JsonRpcProvider("https://arb1.arbitrum.io/rpc");
-            return parseFloat(ethers.utils.formatEther(await customProvider.getBalance(addr)))    ;
+        try{
+            const result = (await (await fetch(`${arb_api_url}?module=account&action=balance&address=${addr}&tag=latest&apikey=${arb_api_key}`)).json()).result;
+            return (result as number)/1000000000/1000000000
         } catch {
             return 0;
+        }
+        // try {
+        //     const customProvider = new ethers.providers.JsonRpcProvider("https://arb1.arbitrum.io/rpc");
+        //     return parseFloat(ethers.utils.formatEther(await customProvider.getBalance(addr)))    ;
+        // } catch {
+        //     return 0;
+        // }
+    }
+
+    static async getTransactions(addr: string) : Promise<any> {
+        try {
+            return (await (await fetch(`${arb_api_url}?module=account&action=txlist&address=${addr}&startblock=0&endblock=latest&page=1&offset=10&sort=desc&apikey=${arb_api_key}`)).json()).result;
+        } catch {
+            return undefined;
         }
     }
 }

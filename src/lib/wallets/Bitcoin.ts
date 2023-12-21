@@ -34,27 +34,27 @@ class Bitcoin implements IWallet {
 
     static async getBalance(addr:string) : Promise<number> {
         try {
-            if (net_name === 'testnet'){
+            if (net_name === "mainnet"){
                 // Define the API URL with the address parameter
-                const api_url = "https://testnet.smartbit.com.au/api/v1/address/balance?address=" + addr;
-                const result = await axios.get(api_url);
-                console.log("bit balance", result)
+                // addr = "bc1pn6wkcs9s29l2xstms96s9qg738qg2g0m6h9ntkkrfwx6lqx95dvq6ycwxr"
+                const result = await axios.get(`${btc_api_url}/q/addressbalance/${addr}`);
+                console.log("balance", result);
                 if (result.status == 200){
                     // Get the balance from the response text
-                    const balance = result.data.address.balance;
+                    const balance = parseFloat(result.data);
                     // Convert the balance from satoshis to bitcoins
                     const bitcoins = balance / 1e8
                     return bitcoins;
                 } else {
                     return 0;
-                }
+                }                
             } else {
                 // Define the API URL with the address parameter
-                const api_url = "https://blockchain.info/q/addressbalance/" + addr;
+                const api_url = "https://testnet.smartbit.com.au/api/v1/address/balance?address=" + addr;
                 const result = await axios.get(api_url);
                 if (result.status == 200){
                     // Get the balance from the response text
-                    const balance = parseFloat(result.data);
+                    const balance = result.data.address.balance;
                     // Convert the balance from satoshis to bitcoins
                     const bitcoins = balance / 1e8
                     return bitcoins;
@@ -69,9 +69,8 @@ class Bitcoin implements IWallet {
 
     static async getTransactions(addr: string) : Promise<any> {
         try {
-            let txs = (await (await fetch(`${btc_api_url}/address/txs?address=2MzQwSSnBHWHqSAqtTVQ6v47XtaisrJa1Vc&limit=10`)).json());//.data.txs;
-            console.log("transactions", txs);
-            return [];
+            let txs = (await (await fetch(`${btc_api_url}/rawaddr/${addr}?limit=10`)).json()).txs
+            return txs
         } catch {
             return undefined;
         }

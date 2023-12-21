@@ -3,7 +3,7 @@ import {ethers} from 'ethers'
 import {hdkey} from 'ethereumjs-wallet'
 import {mnemonicToSeed} from 'bip39'
 import axios from "axios"
-import { avax_provider_url } from "../../configs"
+import { avax_api_url, avax_rpc_url } from "../../configs"
 
 class Avalanche implements IWallet {
     address:string;
@@ -26,30 +26,18 @@ class Avalanche implements IWallet {
 
     static async getBalance(addr:string) : Promise<number> {
         try {
-            const customProvider = new ethers.providers.JsonRpcProvider(avax_provider_url);
+            // addr = "0x5152Cafa4321CFA6f02f5aB7676e4F3920764Fcb"
+            const customProvider = new ethers.providers.JsonRpcProvider(avax_rpc_url);
             return parseFloat(ethers.utils.formatEther(await customProvider.getBalance(addr)))    
         } catch {
             return 0
         }
     }
 
-    static async getTransactions(address: string) : Promise<any> {
+    static async getTransactions(addr: string) : Promise<any> {
         try {
-            const customProvider = new ethers.providers.JsonRpcProvider(avax_provider_url)
-                        const response = await axios.get(
-                avax_provider_url,
-                {
-                    params: {
-                    format: 'json',
-                    action: 'avm.getTransactions',
-                    address,
-                    },
-                }
-            );
-        
-            const transactions = response.data.result.transactions;
-            console.log('Recent Transactions:', transactions);
-            return transactions;
+            // addr = "0x5152Cafa4321CFA6f02f5aB7676e4F3920764Fcb"
+            return (await (await fetch(`${avax_api_url}/address/${addr}/transactions?sort=desc&limit=10`)).json()).items
           } catch (error) {
             console.error('Error fetching transactions:', error);
             return []

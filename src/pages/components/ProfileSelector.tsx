@@ -15,17 +15,13 @@ export const ProfileSelector = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    function getAddress() {
-        Managers.configManager.setFromPreset(net_name);
-        return  Identities.Address.fromPassphrase(walletState.mnemonic);
-    }
-
     useEffect(()=> {
         if(walletState.addresses && walletState.addresses.key){
             setChainKey(walletState.addresses.key)
             setAddress(walletState.addresses.address)
         } else {
-            setAddress(getAddress())
+            Managers.configManager.setFromPreset(net_name === "mainnet" ? "mainnet" : "testnet");
+            setAddress(Identities.Address.fromPassphrase(walletState.mnemonic))
         }
     }, [walletState])
 

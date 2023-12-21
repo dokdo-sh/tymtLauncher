@@ -18,7 +18,7 @@ export class Solar implements IWallet {
     ticker: "SXP";
     
     constructor(mnemonic:string) {
-        Managers.configManager.setFromPreset(net_name);
+        Managers.configManager.setFromPreset(net_name === "mainnet" ? "mainnet" : "testnet");
 
         this.passphrase = mnemonic;
         this.address = Identities.Address.fromPassphrase(mnemonic);
@@ -30,7 +30,7 @@ export class Solar implements IWallet {
     }
 
     static async getAddress(mnemonic:string) : Promise<string> {
-        Managers.configManager.setFromPreset(net_name);
+        Managers.configManager.setFromPreset(net_name === "mainnet" ? "mainnet" : "testnet");
         return Identities.Address.fromPassphrase(mnemonic);
     }
 
@@ -51,7 +51,7 @@ export class Solar implements IWallet {
     }
 
     static validateAddress(address:string) : boolean {
-        Managers.configManager.setFromPreset(net_name);
+        Managers.configManager.setFromPreset(net_name === "mainnet" ? "mainnet" : "testnet");
         return Identities.Address.validate(address);        
      }
      static isValidPassphrase(passphrase:string) : boolean {
@@ -94,7 +94,7 @@ export class Solar implements IWallet {
         return await this.isSecondSignatureFromAddress(this.addressFromPassphrase(passphrase))
      }
      static async isValidSecondSignature(passphrase:string, secondpassphrase:string) : Promise<boolean> {
-        Managers.configManager.setFromPreset(net_name);
+        Managers.configManager.setFromPreset(net_name === "mainnet" ? "mainnet" : "testnet");
         let testTx = Transactions.BuilderFactory.vote()
             .nonce("1")
             .votesAsset({})
@@ -111,12 +111,12 @@ export class Solar implements IWallet {
         
      }
      static addressFromPassphrase(passphrase:string) : string {
-        Managers.configManager.setFromPreset(net_name);
+        Managers.configManager.setFromPreset(net_name === "mainnet" ? "mainnet" : "testnet");
         return Identities.Address.fromPassphrase(passphrase)
      }
 
      validateAddress(address:string) : boolean {
-        Managers.configManager.setFromPreset(net_name);
+        Managers.configManager.setFromPreset(net_name === "mainnet" ? "mainnet" : "testnet");
         return Identities.Address.validate(address);
      }
 
@@ -148,7 +148,7 @@ export class Solar implements IWallet {
         let nonce : number = await this.getCurrentNonce()
         if (tx.recipients.length>0) {
             if (tx.recipients.length>1) {
-                    Managers.configManager.setFromPreset(net_name);
+                    Managers.configManager.setFromPreset(net_name === "mainnet" ? "mainnet" : "testnet");
                     let transaction = Transactions.BuilderFactory.transfer()
                 tx.recipients.map((recipient) => {
                     transaction.addTransfer(recipient.address,Big(recipient.amount).times(10 ** 8).toFixed(0))
@@ -167,7 +167,7 @@ export class Solar implements IWallet {
                 return res
             } else {
                 
-                Managers.configManager.setFromPreset(net_name);
+                Managers.configManager.setFromPreset(net_name === "mainnet" ? "mainnet" : "testnet");
                 let transaction = Transactions.BuilderFactory.transfer()
                     .recipientId(tx.recipients[0].address)
                     .version(3)
@@ -209,7 +209,7 @@ export class Solar implements IWallet {
     }
 
     async vote(votesAsset: any, fee:string) {
-        Managers.configManager.setFromPreset(net_name)
+        Managers.configManager.setFromPreset(net_name === "mainnet" ? "mainnet" : "testnet")
         let nonce = await this.getCurrentNonce()        
         // let passphrase = await Armor.Vault.getPassphrase(this.passphrase,password)
         let tx = Transactions.BuilderFactory.vote()

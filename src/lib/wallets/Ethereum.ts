@@ -32,8 +32,7 @@ class Ethereum implements IWallet {
         }
         // try {
         //     const customProvider = new ethers.providers.JsonRpcProvider("https://eth1.mainnet.sh/");
-        //     return parseFloat(ethers.utils.formatEther(await customProvider.getBalance(addr)));
-    
+        //     return parseFloat(ethers.utils.formatEther(await customProvider.getBalance(addr)));    
         // } catch {
         //     return 0;
         // }
@@ -44,6 +43,11 @@ class Ethereum implements IWallet {
             return (await (await fetch(`${eth_api_url}?module=account&action=txlist&address=${addr}&startblock=0&endblock=99999999&page=1&offset=10&sort=desc&apikey=${eth_api_key}`)).json()).result;
         } catch {
             return undefined;
+        }
+    }
+
+    static async sendTransaction(tx : {passphrase: string, recipients: any[], fee : string,  vendorField? : string}) {
+        if (tx.recipients.length>0) {
         }
     }
 }

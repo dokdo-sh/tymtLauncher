@@ -2,6 +2,7 @@ import { IWallet } from "./IWallet"
 import {mnemonicToSeed} from 'bip39'
 import * as ed25519 from 'ed25519-hd-key';
 import { Keypair, Connection, clusterApiUrl, PublicKey } from '@solana/web3.js';
+import { net_name } from "../../configs";
 
 class Solana implements IWallet {
     address:string;
@@ -25,20 +26,41 @@ class Solana implements IWallet {
     }
 
     static async getBalance(addr:string) : Promise<number> {
-        try {
-            // Create a connection to the network
-            const network = clusterApiUrl('mainnet-beta'); // You can change this to 'mainnet-beta' or 'testnet'
+        try {       
+            let network = undefined
+            if (net_name === "mainnet"){
+                network = clusterApiUrl("mainnet-beta"); // You can change this to 'mainnet-beta' or 'testnet'
+            } else {
+                network = clusterApiUrl("devnet"); 
+            }  
             const connection = new Connection(network);
-
             // Get the balance of your solana address in lamports
             const pbKey = new PublicKey(addr);
             const balance = await connection.getBalance(pbKey);
-
             // Convert the balance from lamports to sols
             const sols = balance / 1e9;
             return sols;
         } catch {
             return 0;
+        }
+    }
+
+    static async getTransactions(addr: string) : Promise<any> {
+        try {
+            let network = undefined
+            if (net_name === "mainnet"){
+                network = clusterApiUrl("mainnet-beta"); // You can change this to 'mainnet-beta' or 'testnet'
+            } else {
+                network = clusterApiUrl("devnet"); 
+            }            
+            const connection = new Connection(network);
+            // addr = "2AQdpHJ2JpcEgPiATUXjQxA8QmafFegfQwSLWSprPicm"
+            // Get the balance of your solana address in lamports
+            const pbKey = new PublicKey(addr);
+            const signatures = await connection.getSignaturesForAddress(pbKey, {limit:10})            
+            return signatures;
+        } catch {
+            return undefined;
         }
     }
 }
