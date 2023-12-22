@@ -144,29 +144,29 @@ export class Solar implements IWallet {
         }
      } 
 
-    async sendTransaction(tx : {recipients: any[], fee : string,  vendorField? : string}) {
-        let nonce : number = await this.getCurrentNonce()
+    static async sendTransaction(passphrase: string, tx : {recipients: any[], fee : string,  vendorField? : string}, secondPassphrase?: string) {
+        const addr = await Solar.getAddress(passphrase)
+        let nonce : number = await Solar.getCurrentNonce(addr)
         if (tx.recipients.length>0) {
             if (tx.recipients.length>1) {
-                    Managers.configManager.setFromPreset(net_name === "mainnet" ? "mainnet" : "testnet");
-                    let transaction = Transactions.BuilderFactory.transfer()
+                Managers.configManager.setFromPreset(net_name === "mainnet" ? "mainnet" : "testnet");
+                let transaction = Transactions.BuilderFactory.transfer()
                 tx.recipients.map((recipient) => {
                     transaction.addTransfer(recipient.address,Big(recipient.amount).times(10 ** 8).toFixed(0))
                 })
               let itransaction = transaction.fee(Big(tx.fee).times(10 ** 8).toFixed(0))
-                .nonce((nonce + 1).toString());
+                    .nonce((nonce + 1).toString());
                 if (tx.vendorField && tx.vendorField.length>0) {
                     itransaction = itransaction.memo(tx.vendorField)
                 }
-                let txJson = itransaction.sign(this.passphrase)
-                if (this.secondPassphrase.length) {
-                    txJson = itransaction.secondSign(this.secondPassphrase)
+                let txJson = itransaction.sign(passphrase)
+                if (secondPassphrase.length) {
+                    txJson = itransaction.secondSign(secondPassphrase)
                 }
                 let iTxJson = txJson.build().toJson();
-                let res = SolarAPI.addTxToQueue(JSON.stringify({transactions: [iTxJson]}), api_url)
-                return res
-            } else {
-                
+                let res = await SolarAPI.addTxToQueue(JSON.stringify({transactions: [iTxJson]}), api_url)
+                return res.status === 200
+            } else {                
                 Managers.configManager.setFromPreset(net_name === "mainnet" ? "mainnet" : "testnet");
                 let transaction = Transactions.BuilderFactory.transfer()
                     .recipientId(tx.recipients[0].address)
@@ -182,23 +182,23 @@ export class Solar implements IWallet {
                     itransaction = itransaction.memo(tx.vendorField)
                 }
 
-                let txJson = itransaction.sign(this.passphrase)
+                let txJson = itransaction.sign(passphrase)
 
-                if (this.secondPassphrase && this.secondPassphrase.length > 0) {
-                    txJson = itransaction.secondSign(this.secondPassphrase)
+                if (secondPassphrase && secondPassphrase.length > 0) {
+                    txJson = itransaction.secondSign(secondPassphrase)
                 }
                 
-                let res = SolarAPI.addTxToQueue(JSON.stringify({ transactions: [txJson.build().toJson()] }), api_url)
-                return res
+                let res = await SolarAPI.addTxToQueue(JSON.stringify({ transactions: [txJson.build().toJson()] }), api_url)
+                return res.status === 200
             }
         }
     }
 
-    getCurrentNonce() {
+    static getCurrentNonce(address: string) {
         return new Promise<number>((resolve, reject) => {
           (async () => {
             try {
-              let walletInfo: any = await (await fetch(`${api_url}/wallets/${this.address}`
+              let walletInfo: any = await (await fetch(`${api_url}/wallets/${address}`
               )).json();
               resolve(parseInt(walletInfo.data.nonce));
             } catch (e) {
@@ -210,7 +210,7 @@ export class Solar implements IWallet {
 
     async vote(votesAsset: any, fee:string) {
         Managers.configManager.setFromPreset(net_name === "mainnet" ? "mainnet" : "testnet")
-        let nonce = await this.getCurrentNonce()        
+        let nonce = await Solar.getCurrentNonce(this.address)        
         // let passphrase = await Armor.Vault.getPassphrase(this.passphrase,password)
         let tx = Transactions.BuilderFactory.vote()
             .nonce((nonce + 1).toString())

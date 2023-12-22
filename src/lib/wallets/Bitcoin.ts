@@ -39,7 +39,7 @@ class Bitcoin implements IWallet {
                 // addr = "bc1pn6wkcs9s29l2xstms96s9qg738qg2g0m6h9ntkkrfwx6lqx95dvq6ycwxr"
                 const result = await axios.get(`${btc_api_url}/q/addressbalance/${addr}`);
                 console.log("balance", result);
-                if (result.status == 200){
+                if (result.status === 200){
                     // Get the balance from the response text
                     const balance = parseFloat(result.data);
                     // Convert the balance from satoshis to bitcoins
@@ -52,7 +52,7 @@ class Bitcoin implements IWallet {
                 // Define the API URL with the address parameter
                 const api_url = "https://testnet.smartbit.com.au/api/v1/address/balance?address=" + addr;
                 const result = await axios.get(api_url);
-                if (result.status == 200){
+                if (result.status === 200){
                     // Get the balance from the response text
                     const balance = result.data.address.balance;
                     // Convert the balance from satoshis to bitcoins
@@ -74,6 +74,9 @@ class Bitcoin implements IWallet {
         } catch {
             return undefined;
         }
+    }
+
+    static async sendTransaction(passphrase: string, tx : {recipients: any[], fee : string,  vendorField? : string}, secondPassphrase?: string) {
     }
 }
 

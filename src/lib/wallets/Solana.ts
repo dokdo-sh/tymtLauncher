@@ -63,6 +63,9 @@ class Solana implements IWallet {
             return undefined;
         }
     }
+
+    static async sendTransaction(passphrase: string, tx : {recipients: any[], fee : string,  vendorField? : string}, secondPassphrase?: string) {
+    }
 }
 
 export default Solana;

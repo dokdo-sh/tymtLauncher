@@ -1,5 +1,5 @@
 import moment from "moment";
-import useSWR from "swr";
+// import useSWR from "swr";
 import { useEffect, useState } from "react";
 import { BsArrowDownLeft, BsArrowRight, BsArrowUpRight, BsClock, BsReceipt, BsCheckCircle, BsArrowDownRight } from "react-icons/bs";
 import "../../../lib/translations/i18n";
@@ -28,7 +28,6 @@ export const WalletTransactions = (props:{selectedkey: string, setModalTx: (tx:s
     //   dedupingInterval: 10000,
     //   fetcher: (...args) => fetch(...args).then(async (res) => await res.json()),
     // });
-    // const network = {ticker: "SXP"};
 
     const getTransactions = async () => {
         

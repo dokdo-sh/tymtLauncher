@@ -7,7 +7,7 @@ export const btc_api_url = process.env.REACT_APP_NETWORK_NAME === "mainnet" ? pr
 
 export const bsc_api_key = process.env.REACT_APP_BSC_API_KEY
 export const bsc_api_url = process.env.REACT_APP_NETWORK_NAME === "mainnet" ? process.env.REACT_APP_MAINNET_BSC_URL : process.env.REACT_APP_TESTNET_BSC_URL
-export const bsc_rpc_url = process.env.REACT_APP_NETWORK_NAME === "mainnet" ? "https://bsc-dataseed.binance.org/" : "https://bsc-testnet.drpc.org/"
+export const bsc_rpc_url = process.env.REACT_APP_NETWORK_NAME === "mainnet" ? "https://bsc.drpc.org" : "https://bsc-testnet.drpc.org"
 
 export const eth_api_key = process.env.REACT_APP_ETH_API_KEY
 export const eth_api_url = process.env.REACT_APP_NETWORK_NAME === "mainnet" ? process.env.REACT_APP_MAINNET_ETH_URL : process.env.REACT_APP_TESTNET_ETH_URL

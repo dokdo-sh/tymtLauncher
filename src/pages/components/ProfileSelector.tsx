@@ -22,6 +22,7 @@ export const ProfileSelector = () => {
         } else {
             Managers.configManager.setFromPreset(net_name === "mainnet" ? "mainnet" : "testnet");
             setAddress(Identities.Address.fromPassphrase(walletState.mnemonic))
+            setChainKey('solar')
         }
     }, [walletState])
 

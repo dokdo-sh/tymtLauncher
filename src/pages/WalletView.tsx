@@ -38,18 +38,21 @@ export const WalletView = () => {
         ...{ [blockchain.key]: { address: addr, balance: bal, explorer: url+addr } }
       }))
     })
-    if (wallet.addresses && wallet.addresses.key) {
-      setSelectedBlockchain(wallet.addresses.key)
-    }
   }
 
   useEffect(() => {
+    if (wallet.addresses && wallet.addresses.key) {
+      setSelectedBlockchain(wallet.addresses.key)
+    }
     getAddresses()
   }, [])
 
   useEffect(()=>{
     if (addresses && addresses[selectedBlockchain]) {
-      dispatch(changeWallet({mnemonic: wallet ? wallet.mnemonic : "", addresses: {key: selectedBlockchain, address: addresses[selectedBlockchain].address} }))
+        dispatch(changeWallet({mnemonic: wallet ? wallet.mnemonic : "", addresses: {key: selectedBlockchain, address: addresses[selectedBlockchain].address} }))
+    } else if (selectedBlockchain === "solar"){
+        const solar = new Solar(wallet.mnemonic)
+        dispatch(changeWallet({mnemonic: wallet ? wallet.mnemonic : "", addresses: {key: selectedBlockchain, address: solar.address} }))
     }
   }, [selectedBlockchain])
 
