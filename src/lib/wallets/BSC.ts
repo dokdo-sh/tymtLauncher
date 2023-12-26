@@ -58,6 +58,7 @@ class BSC implements IWallet {
                 const customProvider = new ethers.providers.JsonRpcProvider(bsc_rpc_url)
                 wallet = wallet.connect(customProvider)
                 tx.recipients.map(async (recipient) => {
+                    console.log("receipient", recipient)
                     const response = await wallet.sendTransaction({to: recipient.address, value: ethers.utils.parseEther(recipient.amount)}); // send the transaction
                     console.log("trx", response)
                     const receipt = await response.wait(1); // wait for 1 confirmation

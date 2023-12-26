@@ -1,5 +1,4 @@
 import moment from "moment";
-// import useSWR from "swr";
 import { useEffect, useState } from "react";
 import { BsArrowDownLeft, BsArrowRight, BsArrowUpRight, BsClock, BsReceipt, BsCheckCircle, BsArrowDownRight } from "react-icons/bs";
 import "../../../lib/translations/i18n";
@@ -9,45 +8,37 @@ import { CoreTransactionTypeKey, CoreTransactionTypes } from "./SolarTxType";
 import TymtCore, { BlockchainKey } from "../../../lib/core/TymtCore";
 import { selectWallet } from "../../../lib/store/walletSlice";
 import { useAppSelector } from "../../../app/hooks";
+import { net_name } from "../../../configs";
 
 
 export const WalletTransactions = (props:{selectedkey: string, setModalTx: (tx:string) => void, setShowTransaction: (b:boolean) => void}) => {
     const wallet = useAppSelector(selectWallet)
     const [data, setData] = useState([])
-    const [isLoading, setIsLoading] = useState(false)
-    const [error, setError] = useState(false)
     const [currentAddr, setCurrentAddr] = useState('')
     const [ticker, setTicker] = useState("SXP")
+    const [isLoading, setIsLoading] = useState(false)
 
-    const MINUTE_MS = 20000;
-    
-    // const url = new URL(`${api_url}/wallets/${props.currentWallet.address}/transactions?limit=10`);
-    
-    // const { data, error, isLoading } = useSWR(url.toString(), {
-    //   refreshInterval: 3000,
-    //   dedupingInterval: 10000,
-    //   fetcher: (...args) => fetch(...args).then(async (res) => await res.json()),
-    // });
+    const MINUTE_MS = 15000;
 
     const getTransactions = async () => {
         
-        setIsLoading(true)
         try{
             const block = TymtCore.Blockchains[props.selectedkey as BlockchainKey]
             const addr = await block.wallet.getAddress(wallet.mnemonic)
             setCurrentAddr(addr)
-            const trxs = await block.wallet.getTransactions(addr)
-            setIsLoading(false)
             setTicker(TymtCore.Blockchains[props.selectedkey as BlockchainKey].ticker)
+            const trxs = await block.wallet.getTransactions(addr)
             setData(trxs)
-        } catch(_) {
             setIsLoading(false)
-            setError(true)
+        } catch(e) {
+            console.log("trx fetch error: ", e)
+            setData([])
+            setIsLoading(false)
         }
     }
 
-    useEffect(()=> {
-        setData([])
+    useEffect(()=> {        
+        setIsLoading(true)
         getTransactions()
         const interval = setInterval(() => {
             getTransactions()
@@ -58,7 +49,15 @@ export const WalletTransactions = (props:{selectedkey: string, setModalTx: (tx:s
 
     return (
         <div>
-            { data && (props.selectedkey === "solar" ?
+            { (isLoading|| !data || data.length === 0 ) ?
+                <div className="flex flex-col text-white">
+                    <div className="flex-1 grow">
+                        <div className=" h-full divide-y divide-gray-800/30">
+                            <span>{ isLoading ? ' Loading...' : ' No transactions'}</span>
+                        </div>
+                    </div>
+                </div> : 
+            (props.selectedkey === "solar" ?
                 <div className="flex flex-col text-white">
                     <div className="flex-1 grow">
                         <div className=" h-full divide-y divide-gray-800/30">
@@ -195,7 +194,7 @@ export const WalletTransactions = (props:{selectedkey: string, setModalTx: (tx:s
                                 <div className="py-4 items-center hover:bg-gray-800/30 cursor-pointer select-none px-6" 
                                     onClick={
                                         () => {
-                                            props.setModalTx(transaction.hash); 
+                                            props.setModalTx(net_name === 'mainnet' ? transaction.hash : transaction.txid); 
                                             props.setShowTransaction(true)
                                         }
                                     }
@@ -214,7 +213,8 @@ export const WalletTransactions = (props:{selectedkey: string, setModalTx: (tx:s
                                             <div className="flex flex-col">
                                                 <div className="flex flex-row">
                                                     <div className="text-gray-400 text-xs mr-1">ID:</div>
-                                                    <div className="text-red-300 text-xs">{transaction.hash.substring(0,4)}-{transaction.hash.substring(transaction.hash.length-4)}</div>
+                                                    {net_name === 'mainnet' ? (transaction.hash && transaction.hash.length > 4 && <div className="text-red-300 text-xs">{transaction.hash.substring(0,4)}-{transaction.hash.substring(transaction.hash.length-4)}</div> ) :
+                                                     (transaction.txid && transaction.txid.length > 4 && <div className="text-red-300 text-xs">{transaction.txid.substring(0,4)}-{transaction.txid.substring(transaction.txid.length-4)}</div> )}
                                                 </div>                                            
                                                 <div className="text-gray-400 text-xs"><BsClock className="inline-block mr-1"/> {moment((transaction.time as number) * 1000).fromNow()}</div>
                                             </div>
@@ -323,7 +323,8 @@ export const WalletTransactions = (props:{selectedkey: string, setModalTx: (tx:s
                         </div>
                     </div>
                 </div>
-            )}
+            )
+            }
         </div>
     );
 };

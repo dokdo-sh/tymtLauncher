@@ -7,7 +7,7 @@ export const btc_api_url = process.env.REACT_APP_NETWORK_NAME === "mainnet" ? pr
 
 export const bsc_api_key = process.env.REACT_APP_BSC_API_KEY
 export const bsc_api_url = process.env.REACT_APP_NETWORK_NAME === "mainnet" ? process.env.REACT_APP_MAINNET_BSC_URL : process.env.REACT_APP_TESTNET_BSC_URL
-export const bsc_rpc_url = process.env.REACT_APP_NETWORK_NAME === "mainnet" ? "https://bsc.drpc.org" : "https://bsc-testnet.drpc.org"
+export const bsc_rpc_url = process.env.REACT_APP_NETWORK_NAME === "mainnet" ? "https://bsc-dataseed.binance.org/" : "https://data-seed-prebsc-1-s1.bnbchain.org:8545"
 
 export const eth_api_key = process.env.REACT_APP_ETH_API_KEY
 export const eth_api_url = process.env.REACT_APP_NETWORK_NAME === "mainnet" ? process.env.REACT_APP_MAINNET_ETH_URL : process.env.REACT_APP_TESTNET_ETH_URL
@@ -19,7 +19,7 @@ export const matic_rpc_url = process.env.REACT_APP_NETWORK_NAME === "mainnet" ? 
 
 export const arb_api_key = process.env.REACT_APP_ARB_API_KEY
 export const arb_api_url = process.env.REACT_APP_NETWORK_NAME === "mainnet" ? process.env.REACT_APP_MAINNET_ARB_URL : process.env.REACT_APP_TESTNET_ARB_URL
-export const arb_rpc_url = process.env.REACT_APP_NETWORK_NAME === "mainnet" ? "https://arb-mainnet.g.alchemy.com/v2/" + alchemy_api_key : "https://arb-goerli.g.alchemy.com/v2/your-api-key" + alchemy_api_key
+export const arb_rpc_url = process.env.REACT_APP_NETWORK_NAME === "mainnet" ? "https://arb-mainnet.g.alchemy.com/v2/" + alchemy_api_key : "https://arb-sepolia.g.alchemy.com/v2/" + alchemy_api_key
 
 export const op_api_key = process.env.REACT_APP_OP_API_KEY
 export const op_api_url = process.env.REACT_APP_NETWORK_NAME === "mainnet" ? process.env.REACT_APP_MAINNET_OP_URL : process.env.REACT_APP_TESTNET_OP_URL

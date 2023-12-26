@@ -144,7 +144,7 @@ const SecondStep = (props: {txData: any, currentWallet: Wallet}) => {
                     setLoading(true)
                     const chain = TymtCore.Blockchains[props.currentWallet.addresses.key as BlockchainKey]
                     const res = await chain.wallet.sendTransaction(props.currentWallet.mnemonic, {recipients:props.txData.recipients,fee:props.txData.fee,vendorField:props.txData.vendorfield})
-                    console.log("send response :", res)
+                    console.log("trx res ", res)
                     setLoading(false)
                     navigate("/wallet")
                 }} >

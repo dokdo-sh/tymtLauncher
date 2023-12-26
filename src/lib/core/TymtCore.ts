@@ -56,7 +56,7 @@ const TymtCore = {
         try {
           let raw_settings = await readTextFile("settings.json", {
             dir: BaseDirectory.App
-          });
+          })
           return raw_settings.startsWith('{"data":')
         }
         catch {

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useWizard, Wizard } from "react-use-wizard";
 import { MdArrowBack } from "react-icons/md";
-
 import "../../lib/translations/i18n";
 import { t } from "i18next";
 import TymtCore, { BlockchainKey } from "../../lib/core/TymtCore";
