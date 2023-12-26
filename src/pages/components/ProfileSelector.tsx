@@ -24,7 +24,7 @@ export const ProfileSelector = () => {
             setAddress(Identities.Address.fromPassphrase(walletState.mnemonic))
             setChainKey('solar')
         }
-    }, [walletState])
+    }, [walletState, navigate])
 
     return (
         <div className="flex flex-row px-2">
