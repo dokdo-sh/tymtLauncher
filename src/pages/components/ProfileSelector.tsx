@@ -16,6 +16,7 @@ export const ProfileSelector = () => {
     const navigate = useNavigate();
 
     useEffect(()=> {
+        console.log("walletState :", walletState)
         if(walletState.addresses && walletState.addresses.key){
             setChainKey(walletState.addresses.key)
             setAddress(walletState.addresses.address)
@@ -24,7 +25,7 @@ export const ProfileSelector = () => {
             setAddress(Identities.Address.fromPassphrase(walletState.mnemonic))
             setChainKey('solar')
         }
-    }, [walletState, navigate])
+    }, [walletState])
 
     return (
         <div className="flex flex-row px-2">

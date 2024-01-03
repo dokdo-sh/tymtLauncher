@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import {change, selectGame} from '../../lib/store/gameSlice';
 import {changeTab, selectCurrentGame} from '../../lib/store/currentGameSlice'
@@ -63,13 +63,13 @@ export const Navbar = () => {
                     </a>
                     <ProfileSelector/>
                     <div className='text-primary flex flex-row items-center gap-3 text-sm border border-primary px-3 hover:text-white/70 hover:border hover:border-white/30 py-1 ease-in duration-200 hover:bg-primary/10 cursor-pointer rounded mx-2' 
-                        // onClick={() => {
-                        //     const webview = new WebviewWindow('theUniqueLabel', {
-                        //         url: '/chat ',
-                        //         title: 'tymt Chat'
-                        //     });
-                        // }}
-                        onMouseEnter={()=> setHover(true)} onMouseLeave={()=>setHover(false)}
+                        onClick={() => {
+                            const webview = new WebviewWindow('theUniqueLabel', {
+                                url: '/chat ',
+                                title: 'tymt Chat'
+                            });
+                        }}
+                        // onMouseEnter={()=> setHover(true)} onMouseLeave={()=>setHover(false)}
                     > 
                         <BsChat className='inline-block'/> 
                         { hover && <span>Coming soon</span> }
