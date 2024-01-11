@@ -52,10 +52,10 @@ export const WalletView = () => {
     if (addresses && addresses[selectedBlockchain]) {
         dispatch(changeWallet({mnemonic: wallet ? wallet.mnemonic : "", addresses: {key: selectedBlockchain, address: addresses[selectedBlockchain].address} }))
     } 
-    // else if (selectedBlockchain === "solar"){
-    //     const solar = new Solar(wallet.mnemonic)
-    //     dispatch(changeWallet({mnemonic: wallet ? wallet.mnemonic : "", addresses: {key: selectedBlockchain, address: solar.address} }))
-    // }
+    else if (selectedBlockchain === "solar"){
+        const solar = new Solar(wallet.mnemonic)
+        dispatch(changeWallet({mnemonic: wallet ? wallet.mnemonic : "", addresses: {key: selectedBlockchain, address: solar.address} }))
+    }
   }, [selectedBlockchain])
 
   if (Object.keys(addresses).length > -1) {

@@ -7,7 +7,12 @@ import { t } from "i18next";
 export const AddressInput = (props: {onChange: (text:string) => void, onBlur?: () => {}, value:string, search?: boolean, validate?: (v:boolean) => void}) => {
 const [valid, setValid] = useState(false);
     async function validateAddress(address:string) : Promise<boolean> {
-        return true;
+        if (address.length > 24){
+            return true
+        } else {
+            return false
+        }
+        
     }
 
     useEffect(() => {
