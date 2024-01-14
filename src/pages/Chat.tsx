@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import io from 'socket.io-client'
 import { UserList } from './chat/UserList'
 import { Messages } from './chat/Messages'
@@ -13,7 +13,7 @@ export const Chat = (props: any) => {
     const [room, setRoom] = useState('')
     const [myId, setMyId] = useState('')
 
-    function generateRandomString(length: number) {
+    const generateRandomString = useCallback((length: number) => {
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         const charactersLength = characters.length;
         const randomValues = new Uint32Array(length);
@@ -23,7 +23,8 @@ export const Chat = (props: any) => {
           result += characters.charAt(randomValues[i] % charactersLength);
         }
         return result;
-      }
+      }, []) 
+      
 
     useEffect(() => {
         let id = generateRandomString(16)
