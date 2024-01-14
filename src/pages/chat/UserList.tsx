@@ -8,31 +8,29 @@ import { AddressInput } from '../components/wallet/AddressInput';
 import { net_name } from '../../configs';
 
 
-export const UserList = (props:{username: string, setUsername: (name:string) => void , setRoom: (room:string) => void, socket: Socket}) => {
+export const UserList = (props:{username: string, setUsername: (name:string) => void , setRoom: (room:string) => void, socket: Socket, myId: string}) => {
 
     const walletState = useAppSelector(selectWallet)
     const [myAddress, setMyAddress] = useState('') 
-
-    const [contacts, setContacts] = useState(['0xfD2820fF09f7c627528a13649ebb4A6F48982D4b', 'DM81JgVzyjHHHzi2aWfgH9yJ9HZujuSgRT'])
+    const [Id , setId] = useState(props.myId)
+        // const [contacts, setContacts] = useState(['0xfD2820fF09f7c627528a13649ebb4A6F48982D4b', 'DM81JgVzyjHHHzi2aWfgH9yJ9HZujuSgRT'])
+    const [contacts, setContacts] = useState([])
     const [selected, setSelected] = useState(props.username)
     const [searchtxt, setSearchtxt] = useState('')
     const [bAdd, setBAdd] = useState(false)
     const [addAddress, setAddAddress] = useState('')
 
     const onSelect = (user: string) => {
-        console.log("user:", user)
-        console.log("myaddress:", myAddress)
-        if (user.length > 25 && myAddress.length > 25) {
-            let room_name = user + '-' + myAddress
-            if (user > myAddress) {
-                room_name = myAddress + '-' + user
-            } 
-            props.setRoom(room_name)
-            props.socket.emit('join_room', {user, room_name})
-            console.log("room:", room_name)
-        }
         props.setUsername(user)
         setSelected(user)
+
+        let room_name = user + '-' + Id
+        console.log("user:", user)
+        console.log("Id:", Id)
+        console.log("room:", room_name)
+        props.setRoom(room_name)
+        props.socket.emit('join_room', {user, room_name})
+
     }
 
     useEffect(()=> {
@@ -42,6 +40,16 @@ export const UserList = (props:{username: string, setUsername: (name:string) => 
             setMyAddress(Identities.Address.fromPassphrase(walletState.mnemonic))
         }
     }, [walletState])
+    
+    useEffect(()=> {
+        props.socket.emit('getUsers');
+        props.socket.on('sendUsersList', ({users}) => {
+            setContacts(users);
+        })
+        return ()=> { 
+            props.socket.off('sendUsersList')
+        }
+    })
     
     return (
         <div className="w-1/3 border-r border-gray-800">

@@ -10,7 +10,7 @@ export const SendMessage = (props:{username: string, room: string, socket: Socke
     const [username] = useState(props.username)
 
     const handleOnEnter = (text: string) => {
-        console.log('enter', text)
+        console.log('enter', text,  username)
         if (text.length > 0) {
             const __createdtime__ = Date.now()
             props.socket.emit('send-message', { username, room, text, __createdtime__})
