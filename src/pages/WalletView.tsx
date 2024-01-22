@@ -1,6 +1,6 @@
 import TymtCore, { BlockchainKey } from "../lib/core/TymtCore";
-import { selectWallet } from "../lib/store/walletSlice";
-import { useAppSelector } from "../app/hooks";
+import { selectWallet, changeWallet } from "../lib/store/walletSlice";
+import { useAppSelector, useAppDispatch } from "../app/hooks";
 import { useEffect, useState } from "react";
 import { Loading } from "./components/Loading";
 import QRCode from "react-qr-code";
@@ -22,8 +22,9 @@ export const WalletView = () => {
   const wallet = useAppSelector(selectWallet)
   const [addresses, setAddresses] = useState<WalletAddress>({})
   const [selectedBlockchain, setSelectedBlockchain] = useState("solar")
+  const dispatch = useAppDispatch();
   const navigate = useNavigate()
-  const cW = new Solar(wallet.mnemonic)
+  
   async function getAddresses() {
     Object.keys(TymtCore.Blockchains).map((key: string) => {
       return { key: key as BlockchainKey, data: TymtCore.Blockchains[key as BlockchainKey] }
@@ -31,17 +32,31 @@ export const WalletView = () => {
       let addr = await blockchain.data.wallet.getAddress(wallet ? wallet.mnemonic : "")
       let bal = (await blockchain.data.wallet.getBalance(addr)).toFixed(2)
       let url = blockchain.data.explorer
-      console.log(addr)
+      
       setAddresses(addresses => ({
         ...addresses,
         ...{ [blockchain.key]: { address: addr, balance: bal, explorer: url+addr } }
       }))
+      if (wallet.addresses && wallet.addresses.key) {
+        setSelectedBlockchain(wallet.addresses.key)
+      }
     })
   }
 
-  useEffect(() => {
+  useEffect(() => {    
     getAddresses()
   }, [])
+
+  useEffect(()=>{
+    console.log(addresses[selectedBlockchain])
+    if (addresses && addresses[selectedBlockchain]) {
+        dispatch(changeWallet({mnemonic: wallet ? wallet.mnemonic : "", addresses: {key: selectedBlockchain, address: addresses[selectedBlockchain].address} }))
+    } 
+    // else if (selectedBlockchain === "solar"){
+    //     const solar = new Solar(wallet.mnemonic)
+    //     dispatch(changeWallet({mnemonic: wallet ? wallet.mnemonic : "", addresses: {key: selectedBlockchain, address: solar.address} }))
+    // }
+  }, [selectedBlockchain])
 
   if (Object.keys(addresses).length > -1) {
     return (
@@ -50,8 +65,8 @@ export const WalletView = () => {
           <div className="flex flex-row max-w-3xl space-x-3 mt-8">
             <div className="text-4xl ">Your wallet</div>
             <div className="grow"></div>
-            <Button className="bg-primary/80 hover:bg-primary" onClick={() => navigate("/wallet/send")}>  Send</Button>
-            <Button className="bg-[#f64a28] hover:bg-greenish" onClick={() => navigate("/wallet/staking")}> <img src="/blockchains/solar.png" className="w-6 mr-2" alt="" /> Staking</Button>
+            <Button className="bg-primary/80 hover:bg-primary" onClick={() => navigate("/wallet/send")}> <img src={`/blockchains/${selectedBlockchain}.png`} className="w-6 mr-2" alt="" /> Send</Button>
+            { selectedBlockchain === "solar" && <Button className="bg-[#f64a28] hover:bg-greenish" onClick={() => navigate("/wallet/staking")}> <img src="/blockchains/solar.png" className="w-6 mr-2" alt="" /> Staking</Button>}
             <Button className="bg-primary/80 hover:bg-primary" onClick={() => navigate("/")}>  Back</Button>
           </div>
         </div>
@@ -88,13 +103,14 @@ export const WalletView = () => {
             </div>
           </div>
         </div>
-        <div>
-
+        <div className="grid grid-cols-6 space-x-2">
+          <div className="col-span-4 w-full divide-y divide-gray-800 cursor-pointer">
             <div className="text-2xl py-4">Latest transactions</div>
-            <div className="py-2 rounded bg-gray-800/30 border border-gray-800/30 col-span-4 h-fit text-gray-400">
-                <WalletTransactions currentWallet={cW} setShowTransaction={(b) => { }} setModalTx={(a) => { }} />
+            <div className="py-2 rounded bg-gray-800/30 border border-gray-800/30 col-span-4 text-gray-400">
+                  <WalletTransactions selectedkey={selectedBlockchain} setShowTransaction={(b) => { }} setModalTx={(a) => { }} />
             </div>
-            <div className="h-96"></div>
+            {/* <div className="h-96"></div> */}
+          </div>
         </div>
       </div>
     );

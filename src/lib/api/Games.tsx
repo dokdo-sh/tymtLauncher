@@ -12,8 +12,8 @@ const Games : {[key:string] : Game} = {
         thumbnail: "/backgrounds/District53.png",
         tabs : {
             "servers": "Servers",
-            "auctions": "Land auctions",
-            "map": "Land map"
+            // "auctions": "Land auctions",
+            // "map": "Land map"
         },
         executables: {
             linux: {url: "https://github.com/district53/minetest/releases/download/5.6.0/Minetest-5.6.0-x86_64.AppImage", type: "exec"},

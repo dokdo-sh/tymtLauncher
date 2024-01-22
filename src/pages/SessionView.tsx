@@ -13,18 +13,28 @@ import { Import } from "./wallet/Import";
 export const SessionView = () => {
     const [hasMnemonic, setHasMnemonic] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [reload, setReload] = useState(false)
     
     useEffect(() => {
         TymtCore.Launcher.Settings.hasMnemonic().then((hm) => {
+            console.log("has", hm)
             setHasMnemonic(hm);
             setLoading(false);
+        })
+        TymtCore.Launcher.Settings.load('').then((val) => {
+            if (val.settings) {
+                console.log("Settings", val.settings.wallet)   
+                if (!val.settings.wallet.mnemonic) {
+                    setReload(true)
+                }
+            } 
         })
     }, [])
 
     if (loading) {
         return <Loading/>  
     } else {
-        if (hasMnemonic) {
+        if (hasMnemonic && !reload) {
             return <Login/>
         } else {
             return <SignUp/>
@@ -67,6 +77,9 @@ export const Login = () => {
                                     <div className="mx-auto">LOGIN</div>
                                 </Button>
                             </div>
+                            <div className="text-primary text-right py-1 text-xs hover:underline" onClick={()=> {
+                                TymtCore.Launcher.Settings.save({ mnemonic: '', addresses: {} }, '').then(() => window.location.href = "/session")
+                            }}>New account Or Change account</div>
                         </div>
                     </div>
                 </div>
@@ -112,7 +125,7 @@ const FirstStep = (props: {setPassword: (password:string) => void}) => {
                     <div className="border border-red-500 rounded space-y-4 p-6 w-full h-full">
                         <img src="/logo.png" className="h-16 mx-auto" alt="" />
                         <div className="text-3xl text-center py-3  font-bold">Welcome to <span className="text-primary">tymt</span></div>
-                        <div className="">
+                        <div>
                             <div className=" text-center py-4 text-xs"> Set up a local password to encrypt your mnemonic.</div>
                             <div className="mx-auto w-fit my-2">
                                 <input value={password} onChange={(e) => setPassword(e.currentTarget.value)} type="password" className="rounded bg-white/10 py-1 px-2" placeholder="Password"/>
@@ -121,7 +134,7 @@ const FirstStep = (props: {setPassword: (password:string) => void}) => {
                                 <input value={confirmPassword} onChange={(e) => setConfirmPassword(e.currentTarget.value)} type="password" placeholder="Confirm password" className="rounded bg-white/10 py-1 px-2" />
                             </div>
                             { !passwordsMatch && <div className="text-red-800 text-center text-xs pb-4">Passwords do not match</div> }
-                            <div className="py-3">
+                            <div className="flex flex-row py-3 justify-center">
                                 <Button onClick={signup}>Next</Button>
                             </div>
                         </div>

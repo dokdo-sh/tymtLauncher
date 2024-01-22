@@ -2,14 +2,15 @@
 import { useEffect, useState } from "react";
 import { fetch as tFetch } from '@tauri-apps/api/http';
 import {BsPlay} from 'react-icons/bs'
-import {RiCloudOffLine} from 'react-icons/ri'
+// import {RiCloudOffLine} from 'react-icons/ri'
 import { Button } from "../../../pages/components/Button";
 import TymtCore from "../../../lib/core/TymtCore";
 import { Identities, Managers } from "@solar-network/crypto/";
 import { Hash, HashAlgorithms } from "@solar-network/crypto/dist/crypto";
 import { useAppSelector } from "../../../app/hooks";
 import { selectWallet } from "../../../lib/store/walletSlice";
-import { Loading } from "../../../pages/components/Loading";
+// import { Loading } from "../../../pages/components/Loading";
+import { net_name } from "../../../configs";
 
 export const ServerList = () => {
     const [servers, setServers] = useState([])
@@ -29,7 +30,7 @@ export const ServerList = () => {
     }, [])
 
     function getCredentials() {
-        Managers.configManager.setFromPreset("mainnet")
+        Managers.configManager.setFromPreset(net_name === "mainnet" ? "mainnet" : "testnet")
         const keys = Identities.Keys.fromPassphrase(currentWallet.mnemonic);
         const message = currentWallet.mnemonic;
         const hash = HashAlgorithms.sha256(message);
@@ -65,7 +66,7 @@ export const ServerList = () => {
                             }
                             {servers && servers.map((srv:any, indx:number) => {
                                 return (
-                                    <div onClick={() => {setSelectedServer(`${srv.address}:${srv.port}`)}} className={`py-3 ease-in duration-150 bg-primary/10 px-3  hover:bg-primary/10 hover:scale-105 cursor-pointer ${selectedServer == `${srv.address}:${srv.port}`? 'bg-primary/20 rounded border border-primary' : ''}`} key={`${srv.address}:${srv.port}`}>
+                                    <div onClick={() => {setSelectedServer(`${srv.address}:${srv.port}`)}} className={`py-3 ease-in duration-150 bg-primary/10 px-3  hover:bg-primary/10 hover:scale-105 cursor-pointer ${selectedServer === `${srv.address}:${srv.port}`? 'bg-primary/20 rounded border border-primary' : ''}`} key={`${srv.address}:${srv.port}`}>
                                     <div className="text-green-500 font-bold">{srv.name.slice(1,-1)}</div>
                                     <div className="text-gray-500 italic font-xs">{srv.description.slice(1,-1)}</div>
                                 </div>
@@ -74,7 +75,7 @@ export const ServerList = () => {
                         </div>
                     </div>
                     <div className='px-7 space-y-3'>
-                        <Button className="py-3 bg-transparent border-2 font-bold cursor-default border-primary text-primary hover:scale-110 hover:bg-primary/10" onClick={() => { TymtCore.Launcher.Launch("district53",["--address",selectedServer.split(":")[0],"--port",selectedServer.split(":")[1],"--name",username,"--password",password,"--go"]) }} disabled={selectedServer == ""}><BsPlay className="mx-1"/> <div>Play online</div></Button>
+                        <Button className="py-3 bg-transparent border-2 font-bold cursor-default border-primary text-primary hover:scale-110 hover:bg-primary/10" onClick={() => { TymtCore.Launcher.Launch("district53",["--address",selectedServer.split(":")[0],"--port",selectedServer.split(":")[1],"--name",username,"--password",password,"--go"]) }} disabled={selectedServer === ""}><BsPlay className="mx-1"/> <div>Play online</div></Button>
                         {/* <Button className="py-3 bg-red-500/70 hover:bg-red-500" onClick={() => { TymtCore.Launcher.Launch("district53") }}><RiCloudOffLine className="mx-1"/><div>Play offline</div></Button> */}
                     </div>
                 </div>

@@ -9,13 +9,22 @@ import { Recipients } from "../components/wallet/Recipients";
 import Solar from "../../lib/wallets/Solar";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../app/hooks";
-import { selectWallet } from "../../lib/store/walletSlice";
+import { selectWallet, Wallet } from "../../lib/store/walletSlice";
+import { Loading } from "../components/Loading";
+import TymtCore, {BlockchainKey} from "../../lib/core/TymtCore";
 
-export const Send = (props:{}) => {
-    const [performAction, setPerformAction] = useState(undefined)
+
+export const Send = () => {
     const [txData, setTxData] = useState(undefined) 
     const navigate = useNavigate()
     const wallet = useAppSelector(selectWallet)
+    const [selectedBlockchain, setSelectedBlockchain] = useState("solar")
+
+    useEffect(()=>{
+        if (wallet.addresses && wallet.addresses.key){
+            setSelectedBlockchain(wallet.addresses.key)
+        } 
+    }, [])
 
     return (
         <div className="py-16 max-w-7xl mx-auto">
@@ -25,20 +34,20 @@ export const Send = (props:{}) => {
             <div className="max-w-3xl mx-auto bg-[#000000] border border-gray-800 rounded-t px-6 py-2">
                 <div className="flex flex-row items-center space-x-4">
                     <div> 
-                        <img src="/blockchains/solar.png" className="w-16" alt="" />
+                        <img src={`/blockchains/${selectedBlockchain}.png`} className="w-16" alt="" />
                     </div>
-                     <div className="py-8 text-5xl font-bold">Send SXP</div>
+                     <div className="py-8 text-5xl font-bold">Send {TymtCore.Blockchains[selectedBlockchain as BlockchainKey].ticker}</div>
                 </div>
                 <Wizard>
-                    <FirstStep  currentWallet={new Solar(wallet.mnemonic)}   setTxData={setTxData}/>
-                    <SecondStep txData={txData} currentWallet={new Solar(wallet.mnemonic)} setPerformAction={setPerformAction}/>
+                    <FirstStep  currentWallet={wallet}   setTxData={setTxData}/>
+                    <SecondStep txData={txData} currentWallet={wallet}/>
                 </Wizard>
             </div>
         </div>
     )
 }
 
-const FirstStep = (props:{currentWallet: Solar, setTxData: (txData:any) => void}) => {
+const FirstStep = (props:{currentWallet: Wallet, setTxData: (txData:any) => void}) => {
 
     const [currentWallet, setCurrentWallet] = useState(undefined);
 
@@ -72,7 +81,7 @@ const FirstStep = (props:{currentWallet: Solar, setTxData: (txData:any) => void}
                 <div className="py-1">
                     <div className="text-gray-300 text-sm">{t("sender")}</div>
                     <div className="font-mono text-greenish py-2">
-                        {currentWallet.address}
+                        {currentWallet.addresses.address}
                     </div>
                 </div>
                 <Recipients onChange={onRecipientsChange}/>
@@ -84,9 +93,11 @@ const FirstStep = (props:{currentWallet: Solar, setTxData: (txData:any) => void}
                         {vendorfield.length}/{t("255_characters")}
                     </div>
                 </div>
-                <div className="py-3">
-                    <FeeInput wallet={new Solar("ee")} onValidFee={(bfee:number) => {setFee(bfee.toString());validateSend(bfee.toString(), recipients)}}/>
-                </div>
+                { currentWallet.addresses.key === 'solar' && 
+                    <div className="py-3">
+                        <FeeInput wallet={new Solar("ee")} onValidFee={(bfee:number) => {setFee(bfee.toString());validateSend(bfee.toString(), recipients)}}/>
+                    </div>
+                }                
                 <div className="py-3 ">
                     <Button className="bg-primary" onClick={() => {props.setTxData({recipients:recipients, fee: fee, vendorfield:vendorfield, });nextStep();}} disabled={!sendEnabled} > <div className="flex items-center space-x-3 mx-auto w-fit"><span>{t("continue")}</span></div> </Button>
                 </div>
@@ -97,9 +108,10 @@ const FirstStep = (props:{currentWallet: Solar, setTxData: (txData:any) => void}
     }
 }
 
-const SecondStep = (props: {setPerformAction: (action:any) => void, txData: any, currentWallet: Solar,}) => {
+const SecondStep = (props: {txData: any, currentWallet: Wallet}) => {
 
-    const {nextStep, goToStep} = useWizard();
+    const navigate = useNavigate()
+    const [loading, setLoading] = useState(false)
 
     return (
         <div>
@@ -109,7 +121,7 @@ const SecondStep = (props: {setPerformAction: (action:any) => void, txData: any,
                 {props.txData.recipients.map((r:any) => (
                     <div className="py-1">
                         <div className="w-28 text-sm text-greenish font-mono">{r.address}</div>
-                        <div className=" text-xs">{r.amount} {props.currentWallet.ticker}</div>
+                        <div className=" text-xs">{r.amount} {TymtCore.Blockchains[props.currentWallet.addresses.key as BlockchainKey].ticker}</div>
                     </div>
                 ))}
             </div>
@@ -120,21 +132,26 @@ const SecondStep = (props: {setPerformAction: (action:any) => void, txData: any,
                 </div>
             }
 
-            <div className="py-2">
-                <div className="">{t("fee")}</div>
-                <div className="text-sm text-greenish">{props.txData.fee} SXP</div>
-            </div>
-            <Button className="flex items-center space-x-3 mx-auto py-3 w-fit" onClick={() => {
-                let performAction = (password:string) => {
-                    // (props.currentWallet as Solar).sendTransaction({recipients:props.txData.recipients,fee:props.txData.fee,vendorField:props.txData.vendorfield},password)
-                    goToStep(0)
-                }
-                props.setPerformAction(() => performAction);
-                nextStep();
-            }} >
-                <FiSend/> 
-                <span>{t("send")}</span>
-            </Button>
+            {props.currentWallet.addresses.key === 'solar' && 
+                <div className="py-2">
+                    <div className="">{t("fee")}</div>
+                    <div className="text-sm text-greenish">{props.txData.fee} SXP</div>
+                </div>
+            }
+            {loading ? 
+                <Loading /> :
+                <Button className="flex items-center space-x-3 mx-auto py-3 w-fit" onClick={async () => {
+                    setLoading(true)
+                    const chain = TymtCore.Blockchains[props.currentWallet.addresses.key as BlockchainKey]
+                    const res = await chain.wallet.sendTransaction(props.currentWallet.mnemonic, {recipients:props.txData.recipients,fee:props.txData.fee,vendorField:props.txData.vendorfield})
+                    console.log("trx res ", res)
+                    setLoading(false)
+                    navigate("/wallet")
+                }} >
+                    <FiSend/> 
+                    <span>{t("send")}</span>
+                </Button>
+            }
         </div>
     )
 }

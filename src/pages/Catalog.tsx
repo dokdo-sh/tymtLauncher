@@ -48,9 +48,9 @@ export const Catalog = () => {
         <div className="">
             <div className="max-w-7xl border-x border-[#161616] mx-auto flex flex-row items-center px-8 h-[600px] " style={{background: `url('/backgrounds/banner.jpg') no-repeat`}}>
                 <div className="py-16 h-fit">
-                    <div className="text-6xl font-bold" style={{textShadow: '4px 4px #161616;'}}>District 53</div>
+                    <div className="text-6xl font-bold" style={{textShadow: '4px 4px #161616'}}>District 53</div>
                     <div className="font-bold py-3">Recent release</div>
-                    <div className="w-1/2 py-2" style={{textShadow: '4px 4px #000000;'}}>District 53 is a virtual desktop and mobile voxel based metaverse game.
+                    <div className="w-1/2 py-2" style={{textShadow: '4px 4px #000000'}}>District 53 is a virtual desktop and mobile voxel based metaverse game.
                     It has unique features utilizing the SXP blockchain with the Minetest codebase.</div>
                     <div className="py-3">
                         <Button className="font-bold" onClick={() => {navigate(`/games/district53`)}}>ADD TO LIBRARY</Button>
