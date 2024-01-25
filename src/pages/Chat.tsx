@@ -4,6 +4,7 @@ import { UserList } from './chat/UserList'
 import { Messages } from './chat/Messages'
 import { SendMessage } from './chat/SendMessage'
 import { chat_socket_addr } from '../configs'
+import { emit, listen } from '@tauri-apps/api/event'
 
 const socket_server_url = chat_socket_addr || "http://127.0.0.1:5000";
 const socket = io(socket_server_url);
@@ -11,7 +12,7 @@ const socket = io(socket_server_url);
 export const Chat = (props: any) => {
     const [username, setUsername] = useState('')
     const [room, setRoom] = useState('')
-    const [myId, setMyId] = useState('')
+    const [myId, setMyId] = useState<string>('')
 
     const generateRandomString = useCallback((length: number) => {
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -27,16 +28,16 @@ export const Chat = (props: any) => {
       
 
     useEffect(() => {
-        let id = generateRandomString(16)
-        setMyId(id)
-        console.log("first:", id)
-        socket.on('connect', () => {
-            socket.emit('addressMapId', { chatId: id})
+        listen('chatWindow-loaded', ({ event, payload }: { event: string, payload: string }) => { 
+            console.log("event: ", event)
+            console.log("payload: ", payload)
+            setMyId(payload)
+            socket.emit('addressMapId', { chatId: payload})
         });
         return ()=> { 
             socket.off('connect')
         }
-    }, [])
+    }, [socket, listen, generateRandomString])
 
     return (
         <div>
