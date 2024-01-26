@@ -27,7 +27,7 @@ export const Messages = (props:{username: string, room: string, socket: Socket})
     }
 
     return (
-        <div className="h-full">
+        <div className="h-full overflow-y-auto">
             <div className="py-3 px-4 border-b border-gray-800 flex flex-row items-center">
                 <div className="grow">
                     <div className="font-bold py-1">{props.username.length == 0 ? '[User]': props.username.substring(0,4) + '-' + props.username.substring(props.username.length-4)}</div>
