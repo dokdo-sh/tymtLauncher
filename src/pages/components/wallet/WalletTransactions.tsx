@@ -28,6 +28,7 @@ export const WalletTransactions = (props:{selectedkey: string, setModalTx: (tx:s
             setCurrentAddr(addr)
             setTicker(TymtCore.Blockchains[props.selectedkey as BlockchainKey].ticker)
             const trxs = await block.wallet.getTransactions(addr)
+            console.log("trans:", trxs)
             setData(trxs)
             setIsLoading(false)
         } catch(e) {
