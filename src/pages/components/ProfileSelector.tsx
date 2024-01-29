@@ -16,7 +16,7 @@ export const ProfileSelector = () => {
     const navigate = useNavigate();
 
     useEffect(()=> {
-        console.log("walletState :", walletState)
+        // console.log("walletState :", walletState)
         if(walletState.addresses && walletState.addresses.key){
             setChainKey(walletState.addresses.key)
             setAddress(walletState.addresses.address)
