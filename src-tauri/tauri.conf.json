@@ -46,6 +46,7 @@
           "renameFile": true,
           "scope": [
               "$APP/settings.json",
+              "$APP/contacts.json",
               "$APP",
               "$APP/games",
               "$APP/games/*",

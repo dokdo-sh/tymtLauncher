@@ -17,10 +17,11 @@ export const AddressInput = (props: {onChange: (text:string) => void, onBlur?: (
         
     }
 
+    const initContacts = async () => {
+        await Contact.init()
+    }
+
     useEffect(() => {
-        const initContacts = async () => {
-            await Contact.init()
-        }
         initContacts()
     }, [])
 
@@ -44,6 +45,9 @@ export const AddressInput = (props: {onChange: (text:string) => void, onBlur?: (
         setValid(false)
         const contacts = await Contact.load();
         console.log(contacts)
+        if (!contacts) {
+            await Contact.save([]);
+        }
         contacts.push(address);
         // Save the updated contacts
         await Contact.save(contacts);
