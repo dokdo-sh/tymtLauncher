@@ -1,6 +1,7 @@
 import { Socket } from 'socket.io-client'
 import { useState, useEffect } from 'react';
-import { time } from 'console';
+// import { time } from 'console';
+import { decrypt } from "../../lib/core/AES";
 
 export const Messages = (props:{username: string, room: string, socket: Socket}) => {
     const [msgReceived, setMsgReceived] = useState([])
@@ -10,7 +11,7 @@ export const Messages = (props:{username: string, room: string, socket: Socket})
             setMsgReceived((state) => [
                 ...state,
                 {
-                    message: data.message,
+                    message: decrypt(data.message),
                     username: data.username,
                     __createdtime__: data.__createdtime__,
                 },

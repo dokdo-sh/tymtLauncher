@@ -5,7 +5,7 @@ import Games from "../api/Games";
 import { BaseDirectory, createDir, readDir, readTextFile, writeTextFile } from "@tauri-apps/api/fs";
 import { invoke } from "@tauri-apps/api";
 import { type } from "@tauri-apps/api/os";
-import { appDir } from "@tauri-apps/api/path";
+// import { appDir } from "@tauri-apps/api/path";
 import { encrypt, decrypt } from '@metamask/browser-passworder'
 import { Wallet } from "../store/walletSlice";
 import BSC from "../wallets/BSC";

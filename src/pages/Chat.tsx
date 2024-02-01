@@ -14,19 +14,6 @@ export const Chat = (props: any) => {
     const [room, setRoom] = useState('')
     const [myId, setMyId] = useState<string>('')
 
-    const generateRandomString = useCallback((length: number) => {
-        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        const charactersLength = characters.length;
-        const randomValues = new Uint32Array(length);
-        window.crypto.getRandomValues(randomValues);
-        let result = '';
-        for (let i = 0; i < length; i++) {
-          result += characters.charAt(randomValues[i] % charactersLength);
-        }
-        return result;
-      }, []) 
-      
-
     useEffect(() => {
         listen('chatWindow-loaded', ({ event, payload }: { event: string, payload: string }) => { 
             console.log("event: ", event)
@@ -37,7 +24,7 @@ export const Chat = (props: any) => {
         return ()=> { 
             socket.off('connect')
         }
-    }, [socket, listen, generateRandomString])
+    }, [socket, listen])
 
     return (
         <div>
