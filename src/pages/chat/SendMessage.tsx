@@ -15,8 +15,7 @@ export const SendMessage = ({ myId, to, room, socket }: Props) => {
   const [message, setMessage] = useState("");
 
   const handleOnEnter = (text: string) => {
-    console.log("enter", text, to);
-    if (text.length > 0) {
+    if (text.length > 0 && myId.length > 0 && to.length > 0) {
       const __createdtime__ = Date.now();
       console.log("my id: ", myId)
       socket.emit("send-message", {
@@ -41,7 +40,7 @@ export const SendMessage = ({ myId, to, room, socket }: Props) => {
         cleanOnEnter
         onEnter={handleOnEnter}
         placeholder="Type a message"
-        disableRecent={true}
+        disableRecent={myId.length == 0 || to.length == 0}
       />
       {/* <div className="px-3 py-2 hover:bg-gray-800">
                 <BsSend className="mx-auto"/>

@@ -130,7 +130,7 @@ export class Solar implements IWallet {
 
     static async getTransactions(addr: string) : Promise<any> {
         try {
-            return (await (await fetch(`${api_url}/wallets/${addr}/transactions?limit=10`)).json()).data;
+            return (await (await fetch(`${api_url}/wallets/${addr}/transactions?page=1`)).json()).data;
         } catch {
             return undefined;
         }

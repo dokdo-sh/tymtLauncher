@@ -4,17 +4,18 @@ import { useState, useEffect } from 'react';
 
 export const Messages = (props:{myId: string, partnerName: string, room: string, socket: Socket}) => {
     const [msgReceived, setMsgReceived] = useState([])
-
     useEffect(() => {
         props.socket.on('receive_message', (data) => {
-            setMsgReceived((state) => [
-                ...state,
-                {
-                    message: data.message,
-                    from: data.from,
-                    __createdtime__: data.__createdtime__,
-                },
-            ])
+            if(data.from && data.to) {
+                setMsgReceived((state) => [
+                    ...state,
+                    {
+                        message: data.message,
+                        from: data.from,
+                        __createdtime__: data.__createdtime__,
+                    },
+                ])
+            }
         })
         return ()=> { 
             props.socket.off('receive_message')
@@ -41,24 +42,26 @@ export const Messages = (props:{myId: string, partnerName: string, room: string,
             <div className="grow">
                 { msgReceived.map((msg, i) => (
                     (props.myId === msg.from) ? 
-                        <div className='flex flex-col items-start'>
-                            <div className='bg-gray-800 rounded-md mb-2 p-3 max-w-64' key={`msg-${i}`}>
-                                <div className='flex justify-between'>
+                        <div className='flex flex-col items-end'>
+                            <div className='bg-gray-800 rounded-md mb-2 p-3 max-w-lg' key={`msg-${i}`}>
+                                <div className='flex justify-between items-end'>
                                     <span className='text-cyan-300 text-sm'>{msg.from.substring(0,4)}-{msg.from.substring(msg.from.length-4)}</span>
-                                    <span className='text-cyan-300 text-sm'>{formatDateFromTimestamp(msg.__createdtime__)}</span>
+                                    &nbsp;&nbsp;
+                                    <span className='text-cyan-600 text-xs'>{formatDateFromTimestamp(msg.__createdtime__)}</span>
                                 </div>
-                                <p className='text-white'>{msg.message}</p>
+                                <p className='text-white break-words'>{msg.message}</p>
                                 <br />
                             </div>
                         </div>
                         :
-                        <div className='flex flex-col items-end'>
-                            <div className='bg-gray-800 rounded-md mb-2 p-3 max-w-64' key={`msg-${i}`}>
-                                <div className='flex justify-between'>
+                        <div className='flex flex-col items-start'>
+                            <div className='bg-gray-800 rounded-md mb-2 p-3 max-w-lg' key={`msg-${i}`}>
+                                <div className='flex justify-between items-end'>
                                     <span className='text-cyan-300 text-sm'>{msg.from.substring(0,4)}-{msg.from.substring(msg.from.length-4)}</span>
-                                    <span className='text-cyan-300 text-sm'>{formatDateFromTimestamp(msg.__createdtime__)}</span>
+                                    &nbsp;&nbsp;
+                                    <span className='text-cyan-600 text-xs'>{formatDateFromTimestamp(msg.__createdtime__)}</span>
                                 </div>
-                                <p className='text-white'>{msg.message}</p>
+                                <p className='text-white break-words'>{msg.message}</p>
                                 <br />
                             </div>
                         </div>
