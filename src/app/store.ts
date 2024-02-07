@@ -5,6 +5,7 @@ import currentWalletReducer from '../lib/store/walletSlice';
 import sessionReducer from '../lib/store/sessionSlice'
 import appReducer from '../lib/store/appSlice'
 import searchReducer from '../lib/store/searchSlice'
+import chatReducer from '../lib/store/chatSlice'
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     session: sessionReducer,
     app: appReducer,
     search: searchReducer,
+    chat: chatReducer,
   },
 });
 

@@ -20,6 +20,7 @@ export const ProfileSelector = () => {
         if(walletState.addresses && walletState.addresses.key){
             setChainKey(walletState.addresses.key)
             setAddress(walletState.addresses.address)
+            console.log(walletState.addresses.address)
         } else {
             Managers.configManager.setFromPreset(net_name === "mainnet" ? "mainnet" : "testnet");
             setAddress(Identities.Address.fromPassphrase(walletState.mnemonic))

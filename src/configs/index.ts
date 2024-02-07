@@ -1,4 +1,9 @@
 export const net_name = process.env.REACT_APP_NETWORK_NAME
+
+export const secret_key_aes = process.env.REACT_APP_SECRET_KEY_AES
+
+export const chat_socket_addr = process.env.REACT_APP_SOCKET_ADDR
+
 export const alchemy_api_key = process.env.REACT_APP_ALCHEMY_KEY
 
 export const api_url = process.env.REACT_APP_NETWORK_NAME === "mainnet" ? process.env.REACT_APP_MAINNET_API_URL : process.env.REACT_APP_TESTNET_API_URL

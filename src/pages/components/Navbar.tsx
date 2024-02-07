@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Identities, Managers } from '@solar-network/crypto';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import {change, selectGame} from '../../lib/store/gameSlice';
 import {changeTab, selectCurrentGame} from '../../lib/store/currentGameSlice'
@@ -8,15 +9,30 @@ import { BsChat, BsChevronCompactRight, BsDownload } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 import { changeSession } from '../../lib/store/sessionSlice';
 import { changeSearch } from "../../lib/store/searchSlice";
+import { selectWallet } from '../../lib/store/walletSlice';
 import { WebviewWindow } from '@tauri-apps/api/window';
+import { emit } from '@tauri-apps/api/event'
+import { net_name } from '../../configs';
 
 export const Navbar = () => {
     const game = useAppSelector(selectGame);
+    const walletState = useAppSelector(selectWallet);
     const [hover, setHover] = useState(false);
     const currentGame = useAppSelector(selectCurrentGame);
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const [searchText, setSearchText] = useState("");
+    const [address, setAddress] = useState('')
+    
+    useEffect(()=> {
+        // console.log("walletState :", walletState)
+        if(walletState.addresses && walletState.addresses.key){
+            setAddress(walletState.addresses.address)
+        } else {
+            Managers.configManager.setFromPreset(net_name === "mainnet" ? "mainnet" : "testnet");
+            setAddress(Identities.Address.fromPassphrase(walletState.mnemonic))
+        }
+    }, [walletState])
 
     return (
         <div className=" border-b border-gray-800 top-0 sticky bg-black bg-opacity-90 z-50 shadow-lg shadow-black">
@@ -67,6 +83,12 @@ export const Navbar = () => {
                             const webview = new WebviewWindow('theUniqueLabel', {
                                 url: '/chat ',
                                 title: 'tymt Chat'
+                            });
+                            webview.once('tauri://created', async function () {
+                                setTimeout(async () => {
+                                    console.log("address: =========>", typeof address);
+                                    emit('chatWindow-loaded', address);
+                                }, 2000);
                             });
                         }}
                         // onMouseEnter={()=> setHover(true)} onMouseLeave={()=>setHover(false)}

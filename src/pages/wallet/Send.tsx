@@ -21,6 +21,7 @@ export const Send = () => {
     const [selectedBlockchain, setSelectedBlockchain] = useState("solar")
 
     useEffect(()=>{
+        console.log("wallet:", wallet)
         if (wallet.addresses && wallet.addresses.key){
             setSelectedBlockchain(wallet.addresses.key)
         } 
