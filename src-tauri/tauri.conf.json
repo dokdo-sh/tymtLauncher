@@ -64,6 +64,7 @@
               "https://blog.minetest.net/feed.rss",
               "https://content.minetest.net/api/*",
               "https://map.district53.io/*",
+              "https://api.mainnet-beta.solana.com/*",
               "https://**"
           ]
       }
