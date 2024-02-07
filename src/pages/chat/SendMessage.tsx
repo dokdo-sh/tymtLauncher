@@ -3,26 +3,27 @@ import { useState } from "react";
 // import { BsSend } from "react-icons/bs";
 import InputEmojiWithRef from "react-input-emoji";
 // import { use } from "i18next";
-import { EncryptedData, encrypt } from "../../lib/core/AES";
 
 interface Props {
-  username: string;
+  myId: string;
+  to: string;
   room: string;
   socket: Socket;
 }
 
-export const SendMessage = ({ username, room, socket }: Props) => {
+export const SendMessage = ({ myId, to, room, socket }: Props) => {
   const [message, setMessage] = useState("");
 
   const handleOnEnter = (text: string) => {
-    const _text: EncryptedData = encrypt(text)
-    console.log("enter", _text, username);
-    if (_text.content.length > 0) {
+    console.log("enter", text, to);
+    if (text.length > 0) {
       const __createdtime__ = Date.now();
+      console.log("my id: ", myId)
       socket.emit("send-message", {
-        username: username,
+        to: to,
+        from: myId,
         room,
-        _text,
+        text,
         __createdtime__,
       });
       setMessage("");

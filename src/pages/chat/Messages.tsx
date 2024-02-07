@@ -1,9 +1,8 @@
 import { Socket } from 'socket.io-client'
 import { useState, useEffect } from 'react';
 // import { time } from 'console';
-import { decrypt } from "../../lib/core/AES";
 
-export const Messages = (props:{username: string, room: string, socket: Socket}) => {
+export const Messages = (props:{myId: string, partnerName: string, room: string, socket: Socket}) => {
     const [msgReceived, setMsgReceived] = useState([])
 
     useEffect(() => {
@@ -11,8 +10,8 @@ export const Messages = (props:{username: string, room: string, socket: Socket})
             setMsgReceived((state) => [
                 ...state,
                 {
-                    message: decrypt(data.message),
-                    username: data.username,
+                    message: data.message,
+                    from: data.from,
                     __createdtime__: data.__createdtime__,
                 },
             ])
@@ -31,7 +30,7 @@ export const Messages = (props:{username: string, room: string, socket: Socket})
         <div className="h-full overflow-y-auto">
             <div className="py-3 px-4 border-b border-gray-800 flex flex-row items-center">
                 <div className="grow">
-                    <div className="font-bold py-1">{props.username.length == 0 ? '[User]': props.username.substring(0,4) + '-' + props.username.substring(props.username.length-4)}</div>
+                    <div className="font-bold py-1">{props.partnerName.length == 0 ? '[User]': props.partnerName.substring(0,4) + '-' + props.partnerName.substring(props.partnerName.length-4)}</div>
                     <div className="italic text-gray-400 text-xs">last seen recently</div>
                 </div>
                 
@@ -40,17 +39,30 @@ export const Messages = (props:{username: string, room: string, socket: Socket})
                     {/* <BsSearch className="mx-2 text-gray-300 hover:text-white cursor-pointer"/> */}
             </div>
             <div className="grow">
-                { msgReceived.map((msg, i) => {
-                    return(
-                    <div className='bg-gray-800 rounded-md mb-2 max-w-lg p-3' key={i}>
-                        <div className='flex justify-between'>
-                            <span className='text-cyan-300 text-sm'>{msg.username}</span>
-                            <span className='text-cyan-300 text-sm'>{formatDateFromTimestamp(msg.__createdtime__)}</span>
+                { msgReceived.map((msg, i) => (
+                    (props.myId === msg.from) ? 
+                        <div className='flex flex-col items-start'>
+                            <div className='bg-gray-800 rounded-md mb-2 p-3 max-w-64' key={`msg-${i}`}>
+                                <div className='flex justify-between'>
+                                    <span className='text-cyan-300 text-sm'>{msg.from.substring(0,4)}-{msg.from.substring(msg.from.length-4)}</span>
+                                    <span className='text-cyan-300 text-sm'>{formatDateFromTimestamp(msg.__createdtime__)}</span>
+                                </div>
+                                <p className='text-white'>{msg.message}</p>
+                                <br />
+                            </div>
                         </div>
-                        <p className='text-white'>{msg.message}</p>
-                        <br />
-                    </div>
-                )})
+                        :
+                        <div className='flex flex-col items-end'>
+                            <div className='bg-gray-800 rounded-md mb-2 p-3 max-w-64' key={`msg-${i}`}>
+                                <div className='flex justify-between'>
+                                    <span className='text-cyan-300 text-sm'>{msg.from.substring(0,4)}-{msg.from.substring(msg.from.length-4)}</span>
+                                    <span className='text-cyan-300 text-sm'>{formatDateFromTimestamp(msg.__createdtime__)}</span>
+                                </div>
+                                <p className='text-white'>{msg.message}</p>
+                                <br />
+                            </div>
+                        </div>
+                ))
                 }
             </div>
 

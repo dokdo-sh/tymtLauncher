@@ -8,20 +8,20 @@ import { AddressInput } from '../components/wallet/AddressInput';
 import { net_name } from '../../configs';
 
 
-export const UserList = (props:{username: string, setUsername: (name:string) => void , setRoom: (room:string) => void, socket: Socket, myId: string}) => {
+export const UserList = (props:{partnerName: string, setPartnerName: (name:string) => void , setRoom: (room:string) => void, socket: Socket, myId: string}) => {
 
     const walletState = useAppSelector(selectWallet)
     const [myAddress, setMyAddress] = useState('') 
     const [Id , setId] = useState(props.myId)
         // const [contacts, setContacts] = useState(['0xfD2820fF09f7c627528a13649ebb4A6F48982D4b', 'DM81JgVzyjHHHzi2aWfgH9yJ9HZujuSgRT'])
     const [contacts, setContacts] = useState([])
-    const [selected, setSelected] = useState(props.username)
+    const [selected, setSelected] = useState(props.partnerName)
     const [searchtxt, setSearchtxt] = useState('')
     const [bAdd, setBAdd] = useState(false)
     const [addAddress, setAddAddress] = useState('')
 
     const onSelect = (user: string) => {
-        props.setUsername(user)
+        props.setPartnerName(user)
         setSelected(user)
 
         let room_name = user + '-' + Id

@@ -6,11 +6,11 @@ import { SendMessage } from './chat/SendMessage'
 import { chat_socket_addr } from '../configs'
 import { emit, listen } from '@tauri-apps/api/event'
 
-const socket_server_url = chat_socket_addr || "http://127.0.0.1:5000";
-const socket = io(socket_server_url);
+const socket_server_url = chat_socket_addr || undefined;
+let socket: any = io(socket_server_url, { secure: false });
 
 export const Chat = (props: any) => {
-    const [username, setUsername] = useState('')
+    const [partnerName, setPartnerName] = useState('')
     const [room, setRoom] = useState('')
     const [myId, setMyId] = useState<string>('')
 
@@ -24,26 +24,28 @@ export const Chat = (props: any) => {
         return ()=> { 
             socket.off('connect')
         }
-    }, [socket, listen])
+    }, [])
 
     return (
         <div>
             <div className="flex flex-row h-screen">
                 <UserList 
-                    username={username}
-                    setUsername={setUsername}
+                    partnerName={partnerName}
+                    setPartnerName={setPartnerName}
                     setRoom={setRoom}
                     socket={socket}
                     myId={myId}
                 />
                 <div className="grow flex flex-col">
                     <Messages 
-                        username={username}
+                        myId={myId}
+                        partnerName={partnerName}
                         room={room}
                         socket={socket}
                     />
                     <SendMessage 
-                        username={username}
+                        myId={myId}
+                        to={partnerName}
                         room={room}
                         socket={socket}
                     />
