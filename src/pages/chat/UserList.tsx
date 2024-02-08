@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import {Socket} from 'socket.io-client'
-import { BsChat, BsPlusCircle } from "react-icons/bs";
+import { BsPlusCircle } from "react-icons/bs";
 import { Identities, Managers } from '@solar-network/crypto';
 import { useAppSelector } from '../../app/hooks';
 import { selectWallet } from '../../lib/store/walletSlice';
@@ -8,11 +8,11 @@ import { AddressInput } from '../components/wallet/AddressInput';
 import { net_name } from '../../configs';
 
 
-export const UserList = (props:{partnerName: string, setPartnerName: (name:string) => void , setRoom: (room:string) => void, socket: Socket, myId: string}) => {
+export const UserList = (props:{partnerName: string, socket: Socket, myId: string, onSelectUser: (user:string) => void}) => {
 
     const walletState = useAppSelector(selectWallet)
     const [myAddress, setMyAddress] = useState('') 
-    const [Id , setId] = useState(props.myId)
+    // const [Id , setId] = useState(props.myId)
         // const [contacts, setContacts] = useState(['0xfD2820fF09f7c627528a13649ebb4A6F48982D4b', 'DM81JgVzyjHHHzi2aWfgH9yJ9HZujuSgRT'])
     const [contacts, setContacts] = useState([])
     const [selected, setSelected] = useState(props.partnerName)
@@ -21,16 +21,8 @@ export const UserList = (props:{partnerName: string, setPartnerName: (name:strin
     const [addAddress, setAddAddress] = useState('')
 
     const onSelect = (user: string) => {
-        props.setPartnerName(user)
+        props.onSelectUser(user)
         setSelected(user)
-
-        let room_name = user + '-' + Id
-        console.log("user:", user)
-        console.log("Id:", Id)
-        console.log("room:", room_name)
-        props.setRoom(room_name)
-        props.socket.emit('join_room', {user, room_name})
-
     }
 
     useEffect(()=> {

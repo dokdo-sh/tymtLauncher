@@ -1,32 +1,15 @@
-import { Socket } from "socket.io-client";
 import { useState } from "react";
 // import { BsSend } from "react-icons/bs";
 import InputEmojiWithRef from "react-input-emoji";
 // import { use } from "i18next";
 
-interface Props {
-  myId: string;
-  to: string;
-  room: string;
-  socket: Socket;
-}
 
-export const SendMessage = ({ myId, to, room, socket }: Props) => {
+export const SendMessage = (props:{ myId:string, to:string, onHandleSend: (text:string) => void }) => {
   const [message, setMessage] = useState("");
 
   const handleOnEnter = (text: string) => {
-    if (text.length > 0 && myId.length > 0 && to.length > 0) {
-      const __createdtime__ = Date.now();
-      console.log("my id: ", myId)
-      socket.emit("send-message", {
-        to: to,
-        from: myId,
-        room,
-        text,
-        __createdtime__,
-      });
-      setMessage("");
-    }
+    props.onHandleSend(text)
+    setMessage("");
   };
 
   return (
@@ -40,7 +23,7 @@ export const SendMessage = ({ myId, to, room, socket }: Props) => {
         cleanOnEnter
         onEnter={handleOnEnter}
         placeholder="Type a message"
-        disableRecent={myId.length == 0 || to.length == 0}
+        disableRecent={props.myId.length == 0 || props.to.length == 0}
       />
       {/* <div className="px-3 py-2 hover:bg-gray-800">
                 <BsSend className="mx-auto"/>
