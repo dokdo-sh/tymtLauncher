@@ -5,6 +5,7 @@ import { Messages } from './chat/Messages'
 import { SendMessage } from './chat/SendMessage'
 import { chat_socket_addr } from '../configs'
 import { listen } from '@tauri-apps/api/event'
+import ChatHistory from '../lib/core/ChatHistory'
 
 
 export interface MSG {
@@ -15,6 +16,8 @@ export interface MSG {
     __createdtime__: number,
 }
 
+const SAVE_DURATION = 2 * 24 * 60 * 60 * 1000;     // 2 days
+
 const socket_server_url = chat_socket_addr || undefined;
 let socket: any = io(socket_server_url, { secure: false });
 
@@ -24,16 +27,35 @@ export const Chat = (props: any) => {
     const [myId, setMyId] = useState("")
     const [msgReceived, setMsgReceived] = useState<MSG[]>([])
     const [roomMsg, setRoomMsg] = useState<MSG[]>([])
+    const [history, setHistory] = useState<MSG[]>([])
+    const [newMsg, setNewMsg] = useState<MSG>()
 
     const onSelectUser = (user : string) => {
         let room_name = user + '-' + myId
         if (user> myId) {
             room_name = myId + '-' + user
         }
-        console.log("room:", room_name)
         setRoom(room_name)
         setPartnerName(user)
+        loadHistory(room_name)
         socket.emit('join_room', {user, room_name})
+    }
+
+    const loadHistory = async (room_name: string) => {
+        const history: MSG[] = await ChatHistory.load()
+        console.log("history", history)
+        setHistory(history)
+        const room_history = history.filter(item => item.room === room_name)
+        setMsgReceived([ ...msgReceived, ...room_history])
+    }
+
+    const handleSaveHistory = async ( msg: MSG) => {
+        const curTime = Date.now()
+        const filtered = history.filter((item) => item.__createdtime__ > (curTime - SAVE_DURATION))
+        console.log("filtered", filtered)
+        const new_history = [msg, ...filtered];
+        setHistory(new_history)
+        await ChatHistory.save(new_history)
     }
 
     const handleSendMsg = (text: string) => {
@@ -50,26 +72,36 @@ export const Chat = (props: any) => {
         }
     }
 
-    const handleReceive = (data:any) => {
-        console.log("data", room)
+    const handleReceive = async (data:any) => {
         if(data.from && data.to) {
             let rv_room = data.from + '-' + data.to
             if (data.from > data.to) {
                 rv_room = data.to + '-' + data.from
-            }
-            console.log("rv_room", rv_room)
-            setMsgReceived((state) => [
-                ...state,
-                {
-                    room: rv_room,
-                    message: data.message,
-                    from: data.from,
-                    to: data.to,
-                    __createdtime__: data.__createdtime__,
-                },
-            ])
+            } 
+            
+            setNewMsg({
+                room: rv_room,
+                message: data.message,
+                from: data.from,
+                to: data.to,
+                __createdtime__: data.__createdtime__,
+            })
         }
     }
+
+    const initHistory = async () => {
+        await ChatHistory.init()
+    }
+
+    useEffect(()=> {
+        console.log("new msg", newMsg)
+        if (newMsg){            
+            setMsgReceived((state) => [
+                newMsg, ...state
+            ])
+            handleSaveHistory(newMsg)
+        }
+    }, [newMsg])
 
     useEffect(()=>{
         let msglist = msgReceived.filter(item => item.room === room)
@@ -84,6 +116,7 @@ export const Chat = (props: any) => {
     }, [socket])
 
     useEffect(() => {
+        initHistory()
         listen('chatWindow-loaded', ({ event, payload }: { event: string, payload: string }) => { 
             // console.log("payload: ", payload)
             setMyId(payload)
@@ -104,6 +137,16 @@ export const Chat = (props: any) => {
                     onSelectUser={onSelectUser}
                 />
                 <div className="grow flex flex-col">
+                    {partnerName.length > 0 && <div className="py-2 px-4 border-b border-gray-800 flex flex-row items-center top-0 right-0 left-0">
+                        <div className="grow">
+                            <div className="font-bold py-1">{partnerName.length == 0 ? '[User]': partnerName.substring(0,4) + '-' + partnerName.substring(partnerName.length-4)}</div>
+                            <div className="italic text-gray-400 text-xs">last seen recently</div>
+                        </div> 
+                    </div> }    
+                            {/* <div className="mx-2 rounded-full  hover:bg-greenish bg-[#f64a28] cursor-pointer py-1 px-4 text-sm font-bold"> 
+                                <img src="/blockchains/solar.png" className="w-6 inline-block" alt="" /> Send SXP</div> */}
+                            {/* <BsSearch className="mx-2 text-gray-300 hover:text-white cursor-pointer"/> */}
+                    
                     <Messages 
                         myId={myId}
                         partnerName={partnerName}
