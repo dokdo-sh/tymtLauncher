@@ -13,7 +13,7 @@ export const SendMessage = (props:{ myId:string, to:string, onHandleSend: (text:
   };
 
   return (
-    <div className="flex flex-row bg-gray-800/50 border-t border-gray-800">
+    <div className="flex flex-row bg-gray-800/50 border-t border-gray-800 w-full">
       {/* <input type="text" className="bg-transparent w-full  outline-none py-2 px-4 text-sm" placeholder="Write a message..." onChange={(e)=> {
                 setMessage(e.target.value)
             }}/> */}
