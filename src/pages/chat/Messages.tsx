@@ -29,7 +29,7 @@ export const Messages = (props:{myId: string, partnerName: string, msglist: MSG[
                                     &nbsp;&nbsp;
                                     <span className='text-cyan-600 text-xs'>{formatDateFromTimestamp(msg.__createdtime__)}</span>
                                 </div>
-                                <p className='text-white break-words'>{msg.message}</p>
+                                <p className='text-white break-words'>{msg.content}</p>
                             </div>
                         </div>
                         :
@@ -40,7 +40,7 @@ export const Messages = (props:{myId: string, partnerName: string, msglist: MSG[
                                     &nbsp;&nbsp;
                                     <span className='text-cyan-600 text-xs'>{formatDateFromTimestamp(msg.__createdtime__)}</span>
                                 </div>
-                                <p className='text-white break-words'>{msg.message}</p>
+                                <p className='text-white break-words'>{msg.content}</p>
                             </div>
                         </div>
                 ))

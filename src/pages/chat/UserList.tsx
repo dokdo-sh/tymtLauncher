@@ -12,7 +12,7 @@ export const UserList = (props:{partnerName: string, socket: Socket, myId: strin
 
     const walletState = useAppSelector(selectWallet)
     const [myAddress, setMyAddress] = useState('') 
-    // const [Id , setId] = useState(props.myId)
+    // const [Id , setId] = useState(props.myId) 
         // const [contacts, setContacts] = useState(['0xfD2820fF09f7c627528a13649ebb4A6F48982D4b', 'DM81JgVzyjHHHzi2aWfgH9yJ9HZujuSgRT'])
     const [contacts, setContacts] = useState([])
     const [selected, setSelected] = useState(props.partnerName)
@@ -76,10 +76,10 @@ export const UserList = (props:{partnerName: string, socket: Socket, myId: strin
             <div className="h-[1px] bg-gray-800"></div>
             <div>
                 {
-                    contacts.map((user) => {
+                    contacts.map((user, i) => {
                         if (!searchtxt || (searchtxt && user.toLowerCase().includes(searchtxt.toLocaleLowerCase()))){
                             return (
-                                <div className='py-2 px-3 flex flex-row hover:bg-gray-500' style={{background: user === selected ? '#008080': 'transparent'}} onClick={()=> onSelect(user)}>
+                                <div key={i} className='py-2 px-3 flex flex-row hover:bg-gray-500' style={{background: user === selected ? '#008080': 'transparent'}} onClick={()=> onSelect(user)}>
                                     <img className="rounded-full h-10 w-10 bg-gray-800" src={`/blockchains/solar.png`}></img>
                                     <div>
                                         <div className="px-3 font-bold">{user.substring(0,4)}-{user.substring(user.length-4)}</div>

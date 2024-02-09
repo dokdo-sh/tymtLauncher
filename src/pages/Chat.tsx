@@ -9,7 +9,7 @@ import { listen } from '@tauri-apps/api/event'
 
 export interface MSG {
     room: string,
-    message: string,
+    content: string,
     from: string,
     to:string,
     __createdtime__: number,
@@ -22,7 +22,7 @@ export const Chat = (props: any) => {
     const [partnerName, setPartnerName] = useState("")
     const [room, setRoom] = useState("")
     const [myId, setMyId] = useState("")
-    const [msgReceived, setMsgReceived] = useState<MSG[]>([])
+    const [msgs, setMsgs] = useState<MSG[]>([])
     const [roomMsg, setRoomMsg] = useState<MSG[]>([])
 
     const onSelectUser = (user : string) => {
@@ -33,7 +33,7 @@ export const Chat = (props: any) => {
         console.log("room:", room_name)
         setRoom(room_name)
         setPartnerName(user)
-        socket.emit('join_room', {user, room_name})
+        // socket.emit('join_room', {user, room_name})
     }
 
     const handleSendMsg = (text: string) => {
@@ -44,7 +44,7 @@ export const Chat = (props: any) => {
             to: partnerName,
             from: myId,
             room,
-            text,
+            content: text,
             __createdtime__,
           });
         }
@@ -58,11 +58,11 @@ export const Chat = (props: any) => {
                 rv_room = data.to + '-' + data.from
             }
             console.log("rv_room", rv_room)
-            setMsgReceived((state) => [
+            setMsgs((state) => [
                 ...state,
                 {
                     room: rv_room,
-                    message: data.message,
+                    content: data.content,
                     from: data.from,
                     to: data.to,
                     __createdtime__: data.__createdtime__,
@@ -72,14 +72,21 @@ export const Chat = (props: any) => {
     }
 
     useEffect(()=>{
-        let msglist = msgReceived.filter(item => item.room === room)
+        let msglist = msgs.filter(item => item.room === room)
         setRoomMsg(msglist)
-    }, [msgReceived, room])
+    }, [msgs, room])
 
     useEffect(() => {
         socket.on('receive_message', handleReceive)
+        socket.on('sendChatHistory', (chatHistory: MSG[]) => {
+            console.log("chat history", chatHistory.length)
+            setMsgs((state) => [
+                ...state, ...chatHistory
+            ])
+        })
         return ()=> { 
-            socket.off('receive_message')
+            socket.off('receive_message');
+            socket.off('sendChatHistory');
         }
     }, [socket])
 
