@@ -10,10 +10,10 @@ import ChatHistory from '../lib/core/ChatHistory'
 
 export interface MSG {
     room: string,
-    message: string,
+    content: string,
     from: string,
     to:string,
-    __createdtime__: number,
+    createdAt: number,
 }
 
 const SAVE_DURATION = 2 * 24 * 60 * 60 * 1000;     // 2 days
@@ -29,16 +29,18 @@ export const Chat = (props: any) => {
     const [roomMsg, setRoomMsg] = useState<MSG[]>([])
     const [history, setHistory] = useState<MSG[]>([])
     const [newMsg, setNewMsg] = useState<MSG>()
+    const [bLoadHistory, setBLoadHistory] = useState(false)
 
     const onSelectUser = (user : string) => {
         let room_name = user + '-' + myId
         if (user> myId) {
             room_name = myId + '-' + user
         }
+        setBLoadHistory(false)
         setRoom(room_name)
         setPartnerName(user)
         loadHistory(room_name)
-        socket.emit('join_room', {user, room_name})
+        // socket.emit('join_room', {user, room_name})
     }
 
     const loadHistory = async (room_name: string) => {
@@ -46,12 +48,15 @@ export const Chat = (props: any) => {
         console.log("history", history)
         setHistory(history)
         const room_history = history.filter(item => item.room === room_name)
-        setMsgReceived([ ...msgReceived, ...room_history])
+        if (room_history.length > 0) {
+            setMsgReceived([ ...msgReceived, ...room_history])
+            setBLoadHistory(true)
+        }        
     }
 
     const handleSaveHistory = async ( msg: MSG) => {
         const curTime = Date.now()
-        const filtered = history.filter((item) => item.__createdtime__ > (curTime - SAVE_DURATION))
+        const filtered = history.filter((item) => item.createdAt > (curTime - SAVE_DURATION))
         console.log("filtered", filtered)
         const new_history = [msg, ...filtered];
         setHistory(new_history)
@@ -66,7 +71,7 @@ export const Chat = (props: any) => {
             to: partnerName,
             from: myId,
             room,
-            text,
+            content: text,
             __createdtime__,
           });
         }
@@ -78,14 +83,30 @@ export const Chat = (props: any) => {
             if (data.from > data.to) {
                 rv_room = data.to + '-' + data.from
             } 
-            
+            console.log(data)
+
             setNewMsg({
                 room: rv_room,
-                message: data.message,
+                content: data.content,
                 from: data.from,
                 to: data.to,
-                __createdtime__: data.__createdtime__,
+                createdAt: data.createdAt,
             })
+        }
+    }
+
+    const handleServerHistory = async (chatHistory: MSG[]) => {
+        console.log("chat history", chatHistory)
+        if (chatHistory.length){
+            const curTime = Date.now()
+            const filtered = chatHistory.filter((item) => item.createdAt > (curTime - SAVE_DURATION))
+            
+            console.log("filtered history", filtered)
+            filtered.reverse()
+            setHistory(filtered)
+            await ChatHistory.save(filtered)
+            console.log("update history", filtered)
+            setMsgReceived(filtered)
         }
     }
 
@@ -95,7 +116,10 @@ export const Chat = (props: any) => {
 
     useEffect(()=> {
         console.log("new msg", newMsg)
-        if (newMsg){            
+        if (newMsg){
+            if (!bLoadHistory) {
+                loadHistory(room)
+            }
             setMsgReceived((state) => [
                 newMsg, ...state
             ])
@@ -110,8 +134,12 @@ export const Chat = (props: any) => {
 
     useEffect(() => {
         socket.on('receive_message', handleReceive)
+        socket.on('sendChatHistory', (chatHistory: MSG[]) => {            
+            handleServerHistory(chatHistory)
+        })
         return ()=> { 
-            socket.off('receive_message')
+            socket.off('receive_message');
+            socket.off('sendChatHistory');
         }
     }, [socket])
 

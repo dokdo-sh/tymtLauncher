@@ -17,9 +17,9 @@ export const Messages = (props:{myId: string, partnerName: string, msglist: MSG[
                             <div className='flex justify-between items-end'>
                                 <span className='text-cyan-300 text-sm'>{msg.from.substring(0,4)}-{msg.from.substring(msg.from.length-4)}</span>
                                 &nbsp;&nbsp;
-                                <span className='text-cyan-600 text-xs'>{formatDateFromTimestamp(msg.__createdtime__)}</span>
+                                <span className='text-cyan-600 text-xs'>{formatDateFromTimestamp(msg.createdAt)}</span>
                             </div>
-                            <p className='text-white break-words'>{msg.message}</p>
+                            <p className='text-white break-words'>{msg.content}</p>
                         </div>
                     </div>
                     :
@@ -28,9 +28,9 @@ export const Messages = (props:{myId: string, partnerName: string, msglist: MSG[
                             <div className='flex justify-between items-end'>
                                 <span className='text-cyan-300 text-sm'>{msg.from.substring(0,4)}-{msg.from.substring(msg.from.length-4)}</span>
                                 &nbsp;&nbsp;
-                                <span className='text-cyan-600 text-xs'>{formatDateFromTimestamp(msg.__createdtime__)}</span>
+                                <span className='text-cyan-600 text-xs'>{formatDateFromTimestamp(msg.createdAt)}</span>
                             </div>
-                            <p className='text-white break-words'>{msg.message}</p>
+                            <p className='text-white break-words'>{msg.content}</p>
                         </div>
                     </div>
             ))}
