@@ -6,6 +6,7 @@ import {
     writeTextFile,
   } from "@tauri-apps/api/fs";
 import { MSG } from '../../pages/Chat';
+import { encrypt, decrypt } from '@metamask/browser-passworder'
   
   const ChatHistory = {
     init: async () => {
@@ -26,19 +27,21 @@ import { MSG } from '../../pages/Chat';
       }
       console.log("done")
     },
-    load: async () => {
+    load: async (password: string) => {
       try {
-        let contacts = await readTextFile("chat_history.json", {
+        let raw_history = await readTextFile("chat_history.json", {
           dir: BaseDirectory.App,
         });
-        return JSON.parse(contacts);
+        let history = await decrypt<any>(password, raw_history)
+        return JSON.parse(history);
       } catch (e) {
         console.log(e);
         return [];
       }
     },
-    save: async (hisotry: MSG[]) => {
-      await writeTextFile("chat_history.json", JSON.stringify(hisotry), {
+    save: async (hisotry: MSG[], password: string) => {
+      let encrypted = await encrypt(password, JSON.stringify(hisotry))
+      await writeTextFile("chat_history.json", encrypted, {
         dir: BaseDirectory.App,
       });
     },

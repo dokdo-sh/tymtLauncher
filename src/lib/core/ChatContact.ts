@@ -5,6 +5,7 @@ import {
     readTextFile,
     writeTextFile,
   } from "@tauri-apps/api/fs";
+import { encrypt, decrypt } from '@metamask/browser-passworder'
   
   const ChatContact = {
     init: async () => {
@@ -25,19 +26,21 @@ import {
       }
       console.log("done")
     },
-    load: async () => {
+    load: async (password: string) => {
       try {
-        let contacts = await readTextFile("chat_contacts.json", {
+        let raw_contacts = await readTextFile("chat_contacts.json", {
           dir: BaseDirectory.App,
         });
+        let contacts = await decrypt<any>(password, raw_contacts)
         return JSON.parse(contacts);  
       } catch (e) {
         console.log(e);
         return [];
       }
     },
-    save: async (contacts: string[]) => {
-      await writeTextFile("chat_contacts.json", JSON.stringify(contacts), {
+    save: async (contacts: string[], password: string) => {
+      let encrypted = await encrypt(password, JSON.stringify(contacts))
+      await writeTextFile("chat_contacts.json", encrypted, {
         dir: BaseDirectory.App,
       });
     },

@@ -6,6 +6,7 @@ import { SendMessage } from './chat/SendMessage'
 import { chat_socket_addr } from '../configs'
 import { listen } from '@tauri-apps/api/event'
 import ChatHistory from '../lib/core/ChatHistory'
+import { secret_key_aes } from '../configs'
 
 
 export interface MSG {
@@ -44,7 +45,7 @@ export const Chat = (props: any) => {
     }
 
     const loadHistory = async (room_name: string) => {
-        const history: MSG[] = await ChatHistory.load()
+        const history: MSG[] = await ChatHistory.load(secret_key_aes)
         console.log("history", history)
         setHistory(history)
         const room_history = history.filter(item => item.room === room_name)
@@ -60,7 +61,7 @@ export const Chat = (props: any) => {
         console.log("filtered", filtered)
         const new_history = [msg, ...filtered];
         setHistory(new_history)
-        await ChatHistory.save(new_history)
+        await ChatHistory.save(new_history, secret_key_aes)
     }
 
     const handleSendMsg = (text: string) => {
@@ -101,11 +102,9 @@ export const Chat = (props: any) => {
             const curTime = Date.now()
             const filtered = chatHistory.filter((item) => item.createdAt > (curTime - SAVE_DURATION))
             
-            console.log("filtered history", filtered)
             filtered.reverse()
             setHistory(filtered)
-            await ChatHistory.save(filtered)
-            console.log("update history", filtered)
+            await ChatHistory.save(filtered, secret_key_aes)
             setMsgReceived(filtered)
         }
     }

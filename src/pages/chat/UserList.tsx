@@ -3,6 +3,7 @@ import {Socket} from 'socket.io-client'
 import { BsPlusCircle } from "react-icons/bs";
 import { AddressInput } from '../components/wallet/AddressInput';
 import ChatContact from '../../lib/core/ChatContact';
+import { secret_key_aes } from '../../configs'
 
 
 export const UserList = (props:{partnerName: string, socket: Socket, myId: string, onSelectUser: (user:string) => void}) => {
@@ -23,7 +24,7 @@ export const UserList = (props:{partnerName: string, socket: Socket, myId: strin
     const handleAddContact = async (addContact: string) => {
         if (contactList.indexOf(addContact) === -1 && props.myId !== addContact){
             // console.log("list add ", [...contactList, addContact])
-            ChatContact.save([...contactList, addContact])
+            ChatContact.save([...contactList, addContact], secret_key_aes)
             setContactList([...contactList, addContact])
             setAddAddress("")
         }
@@ -38,14 +39,14 @@ export const UserList = (props:{partnerName: string, socket: Socket, myId: strin
         })
         
         if (new_users.length) {
-            await ChatContact.save([...contactList, ...new_users])
+            await ChatContact.save([...contactList, ...new_users], secret_key_aes)
             setContactList([...contactList, ...new_users])
         }
     }
 
     const initContacts = async () => {
         await ChatContact.init()
-        const list = await ChatContact.load()
+        const list = await ChatContact.load(secret_key_aes)
         // console.log("list", list)
         setContactList(list)
     }
